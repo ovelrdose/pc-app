@@ -19,6 +19,7 @@ from app.expert.frames import (
     Motherboard,
     compute_status,
 )
+from app.expert.knowledge import KnowledgeSnapshot
 from app.services.catalog_csv import CatalogDirResult, read_catalog_dir
 
 KNOWLEDGE_DIR = Path(__file__).resolve().parents[3] / "knowledge"
@@ -66,6 +67,18 @@ def test_no_incomplete_items_in_seed_catalog() -> None:
         if compute_status(record.frame, known=None).status is not ComponentStatus.ACTIVE
     }
     assert not incomplete
+
+
+def test_no_needs_kb_items_in_seed_catalog(knowledge: KnowledgeSnapshot) -> None:
+    """Позиции с платформенными значениями вне справочников БЗ (сокеты, чипсеты, форм-факторы,
+    типы памяти) не должны попадать в сид: сначала дополняются справочники (§17 архитектуры)."""
+    known = knowledge.known_slot_values
+    needs_kb = {
+        record.frame.sku: compute_status(record.frame, known=known).issues
+        for record in catalog().records
+        if compute_status(record.frame, known=known).status is ComponentStatus.NEEDS_KB
+    }
+    assert not needs_kb
 
 
 def test_every_cpu_socket_has_motherboard_and_cooler() -> None:

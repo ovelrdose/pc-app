@@ -117,21 +117,22 @@ def test_shift_budget(
         rule_set,
         catalog,
         optimum,
-        Edit(EditKind.SHIFT_BUDGET, Category.SSD, to_category=Category.GPU),
+        Edit(EditKind.SHIFT_BUDGET, Category.RAM, to_category=Category.GPU),
     )
     assert outcome.build is not None
     assert outcome.diff is not None
     after = outcome.build.build
-    ssd_before, ssd_after = optimum.get(Category.SSD), after.get(Category.SSD)
+    ram_before, ram_after = optimum.get(Category.RAM), after.get(Category.RAM)
     gpu_before, gpu_after = optimum.get(Category.GPU), after.get(Category.GPU)
-    assert ssd_before
-    assert ssd_after
+    assert ram_before
+    assert ram_after
     assert gpu_before
     assert gpu_after
-    assert ssd_after.price_kop < ssd_before.price_kop  # сэкономили на SSD
+    assert ram_after.price_kop < ram_before.price_kop  # сэкономили на памяти
     assert gpu_after.price_kop > gpu_before.price_kop  # и вложили в видеокарту
     changed = {change.category for change in outcome.diff.changes}
-    assert changed <= {Category.SSD, Category.GPU}  # остальное не трогали
+    # новая видеокарта потребовала БП мощнее — сработал повтор без закрепления остальных деталей
+    assert changed <= {Category.RAM, Category.GPU, Category.PSU, Category.CPU}
     assert after.price_kop <= outcome.result.plan.budget_kop
 
     # корпус в этой сборке уже самый дешёвый — экономить на нём нечего

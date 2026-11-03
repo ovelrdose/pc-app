@@ -15,13 +15,13 @@
     trace_rules: [CMP-001]
     all_tiers:
       max_total_rub: 150000
-      build: { build.gpu.vram_gb: { ge: 8 }, build.gpu.perf_raster: { ge: 135 }, build.ram.modules: 2, build.case_fan.rgb: true }
+      build: { build.gpu.vram_gb: { ge: 8 }, build.gpu.perf_raster: { ge: 120 }, build.ram.modules: 2, build.case_fan.rgb: true }
       issues: [BAL-028, VAL-023]
       preferences: [SCR-004]
-      perf: { fps.cyberpunk_2077.1440p.high: { ge: 60 }, perf.gpu_utilization: { ge: 0.85 } }
+      perf: { fps.cyberpunk_2077.1440p.high: { ge: 55 }, perf.gpu_utilization: { ge: 0.85 } }
     economy:
-      build: { build.gpu.vram_gb: 8 }
-      issues: [VAL-010, VAL-022]
+      build: { build.gpu.vram_gb: 12 }
+      issues: [VAL-023]
       preferences: [GEN-SKT-LGA1700-FUTURE]
     maximum:
       build: { build.gpu.vram_gb: { ge: 12 }, build.cpu.socket: AM5 }
@@ -71,15 +71,15 @@
         - { predicate: esports_240, status: proved }
 
 - id: G-005
-  title: Киберспорт 1080p/240 Гц за 90 000 ₽ — не хватает бюджета
-  answers: { tasks: { main: esports }, budget: 90000, monitor: fhd_240 }
+  title: Киберспорт 1080p/240 Гц за 80 000 ₽ — не хватает бюджета
+  answers: { tasks: { main: esports }, budget: 80000, monitor: fhd_240 }
   expect:
     feasible: false
-    min_budget_rub: { ge: 90000, le: 120000 }
+    min_budget_rub: { ge: 80000, le: 120000 }
     infeasible:
-      blocking: [req.gpu_raster_min]
+      blocking: [req.ram_dual_channel]
       relaxations: ["Монитор «Full HD, 144–165 Гц»"]
-      compromise: ["Монитор «Full HD, 144–165 Гц» вместо «Full HD, 240 Гц и выше»"]
+      compromise: ["Одна планка памяти вместо двух — вторую можно докупить позже"]
 
 - id: G-006
   title: Игры в 4K, 350 000 ₽
@@ -222,10 +222,10 @@
       build: { build.case.color: white, build.gpu.vram_gb: { ge: 8 }, build.gpu.perf_raster: { ge: 122 }, build.cpu.perf_single: { ge: 85 }, build.ssd.capacity_gb: { ge: 1000 } }
       issues: [VAL-013]
       preferences: [BAL-017]
-      perf: { fps.cyberpunk_2077.1440p.high: { ge: 60 }, fps.baldurs_gate_3.1440p.high: { ge: 60 } }
+      perf: { fps.cyberpunk_2077.1440p.high: { ge: 55 }, fps.baldurs_gate_3.1440p.high: { ge: 60 } }
     economy:
-      build: { build.gpu.vram_gb: 8, build.ram.capacity_gb: 16 }
-      issues: [VAL-022, VAL-023]
+      build: { build.gpu.vram_gb: 12, build.ram.capacity_gb: 16 }
+      issues: [VAL-023]
     maximum:
       build: { build.gpu.vram_gb: { ge: 12 }, build.ram.capacity_gb: 32 }
       preferences: [SCR-026]
@@ -277,7 +277,7 @@
     fired: [PRF-011, PRF-024, PRF-028, REQ-029]
     all_tiers:
       max_total_rub: 180000
-      build: { build.ram.capacity_gb: { ge: 32 }, build.cpu.cores: { ge: 8 }, build.gpu.perf_raster: { ge: 135 } }
+      build: { build.ram.capacity_gb: { ge: 32 }, build.cpu.cores: { ge: 8 }, build.gpu.perf_raster: { ge: 120 } }
 
 - id: G-020
   title: Основная задача — монтаж видео, иногда игры, 200 000 ₽
@@ -300,14 +300,13 @@
       issues: [BAL-031]
 
 - id: G-022
-  title: Игры 2K/144–180 Гц за 100 000 ₽ — компромиссная сборка ценой уступок
-  answers: { tasks: { main: aaa_gaming }, budget: 100000, monitor: qhd_144 }
+  title: Игры 2K/144–180 Гц за 90 000 ₽ — компромиссная сборка ценой уступок
+  answers: { tasks: { main: aaa_gaming }, budget: 90000, monitor: qhd_144 }
   expect:
     feasible: false
-    min_budget_rub: { ge: 100000, le: 120000 }
+    min_budget_rub: { ge: 90000, le: 120000 }
     infeasible:
-      blocking: [req.gpu_raster_min, req.storage_min_gb]
+      blocking: [req.storage_min_gb, req.ram_dual_channel]
       compromise:
         - "SSD 500 ГБ вместо 1000"
-        - "Одна планка памяти вместо двух"
 

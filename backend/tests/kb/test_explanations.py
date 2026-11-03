@@ -114,11 +114,13 @@ def test_infeasible_report(knowledge: KnowledgeSnapshot, real_catalog: CatalogSn
     assert [r.min_budget_rub for r in report.relaxations] == sorted(
         r.min_budget_rub for r in report.relaxations
     )
-    # вместо «лучшего возможного» — компромисс: 4K → Full HD и слабее видеокарта
+    # вместо «лучшего возможного» — компромисс: 4K → 2K, любой цвет и диск меньше
     assert report.best_effort is None
     assert report.compromise is not None
     assert report.compromise.build.build.price_kop <= 90000 * 100
-    assert "req.gpu_raster_min" in report.compromise.waived
+    # уступка монитора снимает завышенное требование к растру сама: waiver не нужен
+    assert report.compromise.answers == {"storage_gb": 500, "color": "any", "monitor": "qhd_144"}
+    assert report.compromise.waived == ()
 
 
 def test_infeasible_suggests_any_memory_type(
@@ -140,16 +142,16 @@ def test_infeasible_suggests_any_memory_type(
 def test_compromise_concedes_in_priority_order(
     knowledge: KnowledgeSnapshot, real_catalog: CatalogSnapshot
 ) -> None:
-    answers = {"tasks": {"main": "aaa_gaming"}, "budget": 100000, "monitor": "qhd_144"}
+    answers = {"tasks": {"main": "aaa_gaming"}, "budget": 80000, "monitor": "qhd_144"}
     report = explain_infeasible(knowledge, real_catalog, answers)
     compromise = report.compromise
     assert compromise is not None
-    # сначала диск; монитор и процессор система уступала, но вернула: хватило одной планки
+    # сначала диск; затем процессор и память — по убыванию важности, до попадания в бюджет
     first_words = [c.title.split(" ")[0] for c in compromise.concessions]
-    assert first_words == ["SSD", "Одна"]
+    assert first_words == ["SSD", "Процессор", "Одна"]
     assert compromise.answers == {"storage_gb": 500}
-    assert compromise.waived == ("req.ram_dual_channel",)
-    assert compromise.build.build.price_kop <= 100000 * 100
+    assert compromise.waived == ("req.cpu_single_min", "req.ram_dual_channel")
+    assert compromise.build.build.price_kop <= 80000 * 100
     assert report.best_effort is None  # компромисс заменяет «лучшее возможное»
     # компромисс воспроизводится консультацией с этими ответами и уступками
     again = consult(
@@ -164,7 +166,7 @@ def test_compromise_returns_unneeded_concessions(
 ) -> None:
     answers = {
         "tasks": {"main": "aaa_gaming"},
-        "budget": 120000,
+        "budget": 100000,
         "monitor": "qhd_144",
         "storage_gb": 2000,
         "rgb": "yes",
@@ -175,4 +177,4 @@ def test_compromise_returns_unneeded_concessions(
     # подсветка дешёвая: уступать её не пришлось, а диск уступается первым
     assert not any("подсветк" in t for t in titles)
     assert titles[0].startswith("SSD")
-    assert report.compromise.build.build.price_kop <= 120000 * 100
+    assert report.compromise.build.build.price_kop <= 100000 * 100

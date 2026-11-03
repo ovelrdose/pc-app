@@ -15,6 +15,7 @@ KNOWN = KnownSlotValues(
     sockets=frozenset({"AM5", "LGA1700"}),
     chipsets=frozenset({"B650"}),
     form_factors=frozenset({"ATX", "Micro-ATX"}),
+    mem_types=frozenset({"DDR4", "DDR5"}),
 )
 
 
@@ -71,6 +72,30 @@ def test_cooler_needs_only_one_known_socket() -> None:
     assert compute_status(cooler, known=KNOWN).status is ComponentStatus.ACTIVE
     cooler = frame(Category.CPU_COOLER, sockets=["AM6"])
     assert compute_status(cooler, known=KNOWN).status is ComponentStatus.NEEDS_KB
+
+
+@pytest.mark.parametrize(
+    ("category", "override"),
+    [
+        (Category.RAM, {"mem_type": "DDR6"}),
+        (Category.MOTHERBOARD, {"mem_type": "DDR6"}),
+        (Category.CPU, {"mem_types": ["DDR5", "DDR6"]}),
+    ],
+)
+def test_unknown_mem_type_needs_kb(category: Category, override: dict[str, object]) -> None:
+    result = compute_status(frame(category, **override), known=KNOWN)
+    assert result.status is ComponentStatus.NEEDS_KB
+    assert result.issues == ("тип памяти DDR6 отсутствует в sockets",)
+
+
+def test_motherboard_reports_mem_type_along_other_unknown_values() -> None:
+    board = frame(Category.MOTHERBOARD, socket="AM6", mem_type="DDR6")
+    result = compute_status(board, known=KNOWN)
+    assert result.status is ComponentStatus.NEEDS_KB
+    assert result.issues == (
+        "сокет AM6 отсутствует в sockets",
+        "тип памяти DDR6 отсутствует в sockets",
+    )
 
 
 def test_kb_check_skipped_without_published_kb() -> None:

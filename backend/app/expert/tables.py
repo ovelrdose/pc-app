@@ -208,6 +208,7 @@ class KnowledgeTables(TableModel):
             sockets=frozenset(s.id for s in self.sockets),
             chipsets=frozenset(c.id for c in self.chipsets),
             form_factors=frozenset(f.id for f in self.form_factors.motherboard),
+            mem_types=frozenset(mem_type for s in self.sockets for mem_type in s.mem_types),
         )
 
     def chipsets_by_socket(self) -> Mapping[str, list[Chipset]]:

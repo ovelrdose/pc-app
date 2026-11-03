@@ -11,6 +11,7 @@
     "format": "prettier --write .",
     "typecheck": "tsc -b --noEmit",
     "test": "vitest",
+    "test:related": "vitest related",
     "gen:api": "cd ../backend && uv run python -m scripts.export_openapi ../frontend/openapi.json && cd ../frontend && openapi-typescript openapi.json -o src/api/generated/schema.ts && prettier --write src/api/generated/schema.ts"
   },
   "dependencies": {

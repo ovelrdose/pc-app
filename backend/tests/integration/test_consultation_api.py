@@ -169,20 +169,20 @@ async def test_compare_patch_and_pdf(api: httpx.AsyncClient, consultation: dict[
 async def test_infeasible_consultation(api: httpx.AsyncClient) -> None:
     answers = {
         "tasks": {"main": "esports"},
-        "budget": 90000,
+        "budget": 80000,
         "monitor": "fhd_240",
     }
     created = (await api.post("/api/v1/consultations", json={"answers": answers})).json()
     run = (await api.post(f"/api/v1/consultations/{created['id']}/builds")).json()
     assert run["status"] == "infeasible"
     assert run["builds"] == []
-    assert run["infeasibility"]["min_budget_rub"] > 90000
+    assert run["infeasibility"]["min_budget_rub"] > 80000
     report = (await api.get(f"/api/v1/consultations/{created['id']}/infeasible")).json()
-    assert any(b["fact"] == "req.gpu_raster_min" for b in report["blocking"])
+    assert any(b["fact"] == "req.ram_dual_channel" for b in report["blocking"])
     assert any("Full HD, 144–165 Гц" in r["title"] for r in report["relaxations"])
     compromise = report["compromise"]
-    assert compromise["total_price_kop"] <= 90000 * 100
-    assert compromise["answers"] == {"monitor": "fhd_144"}
+    assert compromise["total_price_kop"] <= 80000 * 100
+    assert compromise["answers"] == {}
     assert report["best_effort"] is None
 
     # «Подобрать с этими уступками» — новая консультация с изменёнными ответами
@@ -201,14 +201,18 @@ async def test_infeasible_consultation(api: httpx.AsyncClient) -> None:
 
 
 async def test_compromise_with_waived_requirement(api: httpx.AsyncClient) -> None:
-    answers = {"tasks": {"main": "aaa_gaming"}, "budget": 100000, "monitor": "qhd_144"}
+    answers = {"tasks": {"main": "aaa_gaming"}, "budget": 80000, "monitor": "qhd_144"}
     created = (await api.post("/api/v1/consultations", json={"answers": answers})).json()
     run = (await api.post(f"/api/v1/consultations/{created['id']}/builds")).json()
     assert run["status"] == "infeasible"
     report = (await api.get(f"/api/v1/consultations/{created['id']}/infeasible")).json()
     compromise = report["compromise"]
-    assert compromise["waived"] == ["req.ram_dual_channel"]
-    assert [c["title"].split()[0] for c in compromise["concessions"]] == ["SSD", "Одна"]
+    assert compromise["waived"] == ["req.cpu_single_min", "req.ram_dual_channel"]
+    assert [c["title"].split()[0] for c in compromise["concessions"]] == [
+        "SSD",
+        "Процессор",
+        "Одна",
+    ]
     accepted = (
         await api.post(
             "/api/v1/consultations",
@@ -220,9 +224,13 @@ async def test_compromise_with_waived_requirement(api: httpx.AsyncClient) -> Non
     ).json()
     assert accepted["waived"] == [
         {
+            "fact": "req.cpu_single_min",
+            "title": "Процессор слабее рекомендованного",
+        },
+        {
             "fact": "req.ram_dual_channel",
             "title": "Одна планка памяти вместо двух — вторую можно докупить позже",
-        }
+        },
     ]
     run = (await api.post(f"/api/v1/consultations/{accepted['id']}/builds")).json()
     assert run["status"] == "completed"

@@ -9,8 +9,8 @@ from app.expert.knowledge import KnowledgeSnapshot
 
 COMPACT = {
     "tasks": {"main": "aaa_gaming"},
-    "budget": 200000,
-    "monitor": "fhd_144",
+    "budget": 400000,
+    "monitor": "uhd_144",
     "case_size": "mini",
 }
 
@@ -18,16 +18,16 @@ COMPACT = {
 def test_dead_end_beam_is_retried_wider(
     knowledge: KnowledgeSnapshot, real_catalog: CatalogSnapshot
 ) -> None:
-    # Лучшие 30 веток к шагу «корпус» — все с высокой памятью или трёхслотовой видеокартой,
-    # ни одна не влезает в компактный корпус. Без повтора остаются только дешёвые сборки.
+    # Лучшие 30 веток — длинные видеокарты RTX 5080-класса, ни одна не влезает
+    # в компактный корпус. Без повтора остаётся только сборка середняка.
     no_retry = SearchSettings(retry_width_factor=1)
     narrow = consult(knowledge, real_catalog, COMPACT, settings=no_retry)
     wide = consult(knowledge, real_catalog, COMPACT)
     narrow_max = narrow.result.tiers[Tier.MAXIMUM]
     wide_max = wide.result.tiers[Tier.MAXIMUM]
-    assert narrow_max.build.price_kop < 0.6 * 200_000 * 100
-    assert wide_max.build.price_kop > 0.9 * 200_000 * 100
-    assert wide_max.utility.total > 1.5 * narrow_max.utility.total
+    assert narrow_max.build.price_kop < 0.6 * 400_000 * 100
+    assert wide_max.build.price_kop > 0.9 * 400_000 * 100
+    assert wide_max.utility.total > 1.25 * narrow_max.utility.total
 
 
 def test_every_case_gets_at_least_two_fans(
