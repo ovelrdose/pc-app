@@ -5,7 +5,7 @@
 
 - Архитектура: [`docs/architecture.md`](docs/architecture.md)
 - Как работает программа (вики): [`docs/wiki/README.md`](docs/wiki/README.md)
-- Правила работы с проектом: [`CLAUDE.md`](CLAUDE.md)
+
 
 ## Стек
 
