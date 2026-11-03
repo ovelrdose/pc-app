@@ -1,0 +1,878 @@
+# REQ — требования к деталям (req.*), выведенные из профиля и ответов.
+# Выведенные из базы правила (коды не переиспользуются) — в rules/retired.yaml.
+# CF ≥ 0.5 — обязательное требование (фильтр), меньше — желательное (баллы).
+- code: REQ-001
+  name: Без дискретной видеокарты
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.9
+  when:
+    fact: profile.no_dgpu
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.need.gpu
+    value: false
+  - action: assert
+    fact: req.cpu_igpu
+    value: true
+  explain: 'Дискретная видеокарта не нужна: изображение выводит встроенная графика процессора.'
+- code: REQ-002
+  name: Архив на HDD
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.archive
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.need.hdd
+    value: true
+  - action: assert
+    fact: req.hdd_min_gb
+    value: 2000
+  explain: Для архива фото и видео добавляется жёсткий диск от 2 ТБ — это дешевле, чем SSD того же объёма.
+- code: REQ-003
+  name: 'Подсветка: докупить RGB-вентиляторы'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    fact: user.rgb
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.need.case_fan
+    value: true
+  - action: assert
+    fact: req.rgb
+    value: true
+  explain: Вы хотите подсветку — в сборку добавляются вентиляторы с RGB.
+- code: REQ-004
+  name: 'Рабочая станция: дополнительный обдув'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: profile.workstation
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.need.case_fan
+    value: true
+  - action: assert
+    fact: req.extra_fans
+    value: 2
+  explain: Долгий рендер нагревает корпус — нужны дополнительные вентиляторы.
+- code: REQ-005
+  name: 'Мощная видеокарта: дополнительный обдув'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.6
+  when:
+    fact: profile.gaming_tier
+    op: eq
+    value: extreme
+  then:
+  - action: assert
+    fact: req.need.case_fan
+    value: true
+  explain: Топовая видеокарта выделяет много тепла — корпусу нужен хороший обдув.
+- code: REQ-006
+  name: Видеокарта для лёгких игр
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    all:
+    - fact: profile.gaming_tier
+      op: eq
+      value: light
+    - &id001
+      fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+  then:
+  - action: assert
+    fact: req.gpu_vram_min_gb
+    value: 8
+  explain: При лёгкой игровой нагрузке хватит 8 ГБ видеопамяти.
+- code: REQ-007
+  name: Видеокарта среднего класса
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    all:
+    - fact: profile.gaming_tier
+      op: eq
+      value: mid
+    - *id001
+  then:
+  - action: assert
+    fact: req.gpu_vram_min_gb
+    value: 8
+  explain: Для современных игр на средней нагрузке нужно от 8 ГБ видеопамяти.
+- code: REQ-008
+  name: Видеокарта высокого класса
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    all:
+    - fact: profile.gaming_tier
+      op: eq
+      value: high
+    - *id001
+  then:
+  - action: assert
+    fact: req.gpu_vram_min_gb
+    value: 8
+  explain: Для высокой игровой нагрузки нужно от 8 ГБ видеопамяти; больше — с запасом (см. советы).
+- code: REQ-009
+  name: Видеокарта топ-класса
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    all:
+    - fact: profile.gaming_tier
+      op: eq
+      value: extreme
+    - *id001
+  then:
+  - action: assert
+    fact: req.gpu_vram_min_gb
+    value: 16
+  explain: Топовая нагрузка (обычно 4K) требует 16 ГБ видеопамяти.
+- code: REQ-011
+  name: Трассировка лучей
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.6
+  when:
+    fact: profile.raytracing
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.gpu_rt_min
+    value: 150
+  explain: Для трассировки лучей нужна видеокарта с сильными RT-блоками.
+- code: REQ-013
+  name: Рендер на видеокарте
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.85
+  when:
+    fact: profile.gpu_compute
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.gpu_vram_min_gb
+    value: 12
+  - action: assert
+    fact: req.gpu_raster_min
+    value: 130
+  explain: Сцена для GPU-рендера должна целиком помещаться в видеопамять — нужно от 12 ГБ.
+- code: REQ-014
+  name: 'Монтаж: аппаратное ускорение'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.6
+  when:
+    fact: user.weight.video_editing
+    op: ge
+    value: 0.5
+  then:
+  - action: assert
+    fact: req.gpu_vram_min_gb
+    value: 8
+  explain: Монтажные программы ускоряют эффекты и экспорт на видеокарте.
+- code: REQ-015
+  name: 'Стриминг: кодирование на видеокарте'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.6
+  when:
+    fact: user.weight.streaming
+    op: ge
+    value: 0.3
+  then:
+  - action: assert
+    fact: req.gpu_raster_min
+    value: 95
+  explain: Стрим кодируется на видеокарте, ей нужен запас производительности.
+- code: REQ-018
+  name: 'Игры: процессор не ниже среднего'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: profile.gaming_tier
+    op: in
+    value:
+    - mid
+    - high
+    - extreme
+  then:
+  - action: assert
+    fact: req.cpu_single_min
+    value: 85
+  explain: Слабый процессор не даст видеокарте раскрыться в играх.
+- code: REQ-019
+  name: 'Рабочая станция: многоядерный процессор'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.85
+  when:
+    fact: profile.workstation
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.cpu_multi_min
+    value: 140
+  - action: assert
+    fact: req.cpu_cores_min
+    value: 8
+  explain: Рендер и экспорт видео распараллеливаются на все ядра — нужно от 8 ядер.
+- code: REQ-020
+  name: 'Программирование: ядра для сборки'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: user.weight.programming
+    op: ge
+    value: 0.5
+  then:
+  - action: assert
+    fact: req.cpu_multi_min
+    value: 100
+  - action: assert
+    fact: req.cpu_cores_min
+    value: 8
+  explain: Компиляция и тесты быстрее на многоядерном процессоре.
+- code: REQ-021
+  name: 'Игры со стримом: ядра на кодирование'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.75
+  when:
+    fact: profile.multitask
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.cpu_cores_min
+    value: 8
+  explain: Несколько тяжёлых задач одновременно требуют от 8 ядер.
+- code: REQ-022
+  name: 'Фото и CAD: быстрое ядро'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: user.weight.photo_cad
+    op: ge
+    value: 0.5
+  then:
+  - action: assert
+    fact: req.cpu_single_min
+    value: 100
+  explain: Photoshop и CAD-программы в основном используют одно ядро.
+- code: REQ-023
+  name: 'Офис: базовый процессор'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.5
+  when:
+    fact: profile.main
+    op: eq
+    value: office
+  then:
+  - action: assert
+    fact: req.cpu_cores_min
+    value: 4
+  explain: Для офиса и браузера хватит 4 ядер.
+- code: REQ-024
+  name: 'Игры: 16 ГБ ОЗУ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.6
+  when: &id002
+    fact: profile.gaming
+    op: ge
+    value: 0.3
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 16
+  explain: Современным играм нужно не меньше 16 ГБ оперативной памяти.
+- code: REQ-025
+  name: 'Тяжёлые проекты: 32 ГБ ОЗУ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.85
+  when:
+    fact: profile.ram_heavy
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 32
+  explain: Монтаж и 3D держат проект в памяти — нужно от 32 ГБ.
+- code: REQ-026
+  name: 'Профессиональная станция: 64 ГБ ОЗУ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.workstation
+      op: eq
+      value: true
+    - fact: profile.budget_class
+      op: eq
+      value: premium
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 64
+  explain: Для профессионального рендера при премиальном бюджете разумно 64 ГБ.
+- code: REQ-027
+  name: 'Офис: 8 ГБ ОЗУ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.6
+  when:
+    fact: profile.main
+    op: eq
+    value: office
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 8
+  explain: Для офиса достаточно 8 ГБ памяти.
+- code: REQ-028
+  name: 'Разработка: 32 ГБ ОЗУ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: user.weight.programming
+    op: ge
+    value: 0.5
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 32
+  explain: IDE, браузер и контейнеры вместе занимают много памяти.
+- code: REQ-029
+  name: 'Многозадачность: 32 ГБ ОЗУ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.86
+  when:
+    fact: profile.multitask
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 32
+  explain: Несколько тяжёлых задач одновременно требуют 32 ГБ.
+- code: REQ-030
+  name: 'Второй сценарий — монтаж: больше памяти'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.45
+  when:
+    all:
+    - fact: profile.secondary
+      op: in
+      value:
+      - video_editing
+      - render_3d
+    - *id002
+  then:
+  - action: assert
+    fact: req.ram_min_gb
+    value: 32
+  explain: Вы ещё и монтируете или рендерите — 32 ГБ желательны, но не обязательны.
+- code: REQ-031
+  name: Две планки памяти
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    any:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: profile.creator
+      op: ge
+      value: 0.3
+  then:
+  - action: assert
+    fact: req.ram_dual_channel
+    value: true
+  explain: Две планки работают в двухканальном режиме — это до 20% FPS в играх.
+- code: REQ-032
+  name: Объём SSD по ответу
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.storage_gb
+    op: exists
+  then:
+  - action: assert
+    fact: req.storage_min_gb
+    expr: user.storage_gb
+  explain: 'Вы указали объём быстрого накопителя: {user.storage_gb} ГБ.'
+- code: REQ-033
+  name: 'Игры: SSD от 1 ТБ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    all:
+    - fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+    - not:
+        fact: user.storage_gb
+        op: exists
+  then:
+  - action: assert
+    fact: req.storage_min_gb
+    value: 1000
+  explain: Современные игры занимают 100–150 ГБ каждая.
+- code: REQ-034
+  name: 'Монтаж: SSD от 2 ТБ'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.75
+  when:
+    all:
+    - fact: user.weight.video_editing
+      op: ge
+      value: 0.5
+    - not:
+        fact: user.storage_gb
+        op: exists
+  then:
+  - action: assert
+    fact: req.storage_min_gb
+    value: 2000
+  explain: Исходники видео занимают сотни гигабайт.
+- code: REQ-035
+  name: SSD по умолчанию
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.5
+  when:
+    not:
+      fact: user.storage_gb
+      op: exists
+  then:
+  - action: assert
+    fact: req.storage_min_gb
+    value: 500
+  explain: Для системы и программ нужно от 500 ГБ.
+- code: REQ-036
+  name: Быстрый NVMe
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    any:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: profile.creator
+      op: ge
+      value: 0.3
+  then:
+  - action: assert
+    fact: req.storage_nvme
+    value: true
+  explain: 'NVMe в разы быстрее SATA: игры и проекты загружаются быстрее.'
+- code: REQ-037
+  name: Качественный блок питания для мощных игр
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.45
+  when:
+    fact: profile.gaming_tier
+    op: in
+    value:
+    - high
+    - extreme
+  then:
+  - action: assert
+    fact: req.psu_quality
+    value: true
+  explain: Мощной игровой сборке желателен блок питания с сертификатом Gold и выше.
+- code: REQ-038
+  name: Качественный блок питания для рабочей станции
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: profile.workstation
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.psu_quality
+    value: true
+  explain: Рабочая станция часами работает под полной нагрузкой — нужен блок питания Gold и выше.
+- code: REQ-039
+  name: 'Запас мощности БП: задел на будущее'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    fact: user.future_proof
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.psu_headroom
+    value: 0.5
+  explain: Запас мощности 50% позволит поставить более мощную видеокарту позже.
+- code: REQ-040
+  name: Запас мощности БП по умолчанию
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.5
+  when:
+    expr: 'true'
+  then:
+  - action: assert
+    fact: req.psu_headroom
+    value: 0.3
+  explain: Блок питания работает тише и дольше с запасом мощности 30%.
+- code: REQ-041
+  name: 'Запас кулера: долгая нагрузка'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.7
+  when:
+    any:
+    - fact: profile.workstation
+      op: eq
+      value: true
+    - fact: profile.gaming_tier
+      op: eq
+      value: extreme
+  then:
+  - action: assert
+    fact: req.cooler_margin
+    value: 0.3
+  explain: При долгой нагрузке кулеру нужен запас 30% по рассеиваемой мощности.
+- code: REQ-042
+  name: Запас кулера по умолчанию
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.5
+  when:
+    expr: 'true'
+  then:
+  - action: assert
+    fact: req.cooler_margin
+    value: 0.1
+  explain: Кулер подбирается с небольшим запасом по TDP процессора.
+- code: REQ-043
+  name: 'Рабочая станция: плата с хорошим питанием'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.8
+  when:
+    fact: profile.workstation
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.vrm_min
+    value: mid
+  explain: Многоядерный процессор под долгой нагрузкой требует платы с хорошей подсистемой питания.
+- code: REQ-044
+  name: 'Премиальная станция: топовое питание платы'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.85
+  when:
+    all:
+    - fact: profile.workstation
+      op: eq
+      value: true
+    - fact: profile.budget_class
+      op: eq
+      value: premium
+  then:
+  - action: assert
+    fact: req.vrm_min
+    value: high
+  explain: Для флагманского процессора нужна плата с мощной подсистемой питания.
+- code: REQ-045
+  name: Wi-Fi на плате
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.wifi
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.wifi
+    value: true
+  explain: 'Вы указали, что нужен Wi-Fi: плата подбирается со встроенным модулем.'
+- code: REQ-046
+  name: Белая сборка
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.color
+    op: eq
+    value: white
+  then:
+  - action: assert
+    fact: req.color
+    value: white
+  explain: Вы выбрали белую сборку — корпус и вентиляторы подбираются белые.
+- code: REQ-047
+  name: Чёрная сборка
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.color
+    op: eq
+    value: black
+  then:
+  - action: assert
+    fact: req.color
+    value: black
+  explain: Вы выбрали чёрную сборку — корпус подбирается чёрный.
+- code: REQ-048
+  name: Стеклянная панель
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.glass
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: req.glass
+    value: true
+  explain: Вы хотите видеть комплектующие — корпус подбирается со стеклом.
+- code: REQ-049
+  name: Размер корпуса
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.case_size
+    op: in
+    value:
+    - mini
+    - mid
+    - full
+  then:
+  - action: assert
+    fact: req.case_size
+    expr: user.case_size
+  explain: Корпус подбирается выбранного размера.
+- code: REQ-050
+  name: Бренд процессора
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.cpu_brand
+    op: in
+    value:
+    - amd
+    - intel
+  then:
+  - action: assert
+    fact: req.cpu_brand
+    expr: user.cpu_brand
+  explain: Вы предпочитаете процессоры {user.cpu_brand}.
+- code: REQ-051
+  name: Бренд видеокарты
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.gpu_brand
+    op: in
+    value:
+    - nvidia
+    - amd
+  then:
+  - action: assert
+    fact: req.gpu_brand
+    expr: user.gpu_brand
+  explain: Вы предпочитаете видеокарты {user.gpu_brand}.
+- code: REQ-052
+  name: Тип оперативной памяти
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 1.0
+  when:
+    fact: user.mem_type
+    op: in
+    value:
+    - DDR4
+    - DDR5
+  then:
+  - action: assert
+    fact: req.mem_type
+    expr: user.mem_type
+  explain: Вы выбрали память {user.mem_type} — плата, процессор и комплект памяти подбираются под неё.
+- code: REQ-053
+  name: Видеокарта под игры клиента
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: need.gpu_raster
+      op: gt
+      value: 0
+  then:
+  - action: assert
+    fact: req.gpu_raster_min
+    expr: need.gpu_raster
+  explain: Чтобы {need.gpu_game} шла с комфортными {need.gpu_fps} кадрами/с на вашем мониторе, нужна видеокарта
+    с индексом от {need.gpu_raster} (RTX 4060 = 100).
+- code: REQ-054
+  name: Трассировка лучей под игры клиента
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: need.gpu_rt
+      op: gt
+      value: 0
+  then:
+  - action: assert
+    fact: req.gpu_rt_min
+    expr: need.gpu_rt
+  explain: '{need.rt_game} работает только с трассировкой лучей — нужна видеокарта с индексом трассировки
+    от {need.gpu_rt}.'
+- code: REQ-055
+  name: Процессор под игры клиента
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: need.cpu_single
+      op: ge
+      value: 85
+  then:
+  - action: assert
+    fact: req.cpu_single_min
+    expr: need.cpu_single
+  explain: Чтобы {need.cpu_game} выдавала {need.cpu_fps} кадров/с, нужен процессор с одноядерным индексом от
+    {need.cpu_single}.
+- code: REQ-056
+  name: 'Игры — дополнительная задача: видеокарта желательна'
+  kind: inference
+  group: requirements
+  priority: 600
+  cf: 0.4
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: profile.gaming
+      op: lt
+      value: 0.5
+    - fact: need.gpu_raster
+      op: gt
+      value: 0
+  then:
+  - action: assert
+    fact: req.gpu_raster_min
+    expr: need.gpu_raster
+  explain: Игры — не основная задача, поэтому видеокарта под {need.gpu_game} желательна, но не обязательна.

@@ -1,0 +1,1201 @@
+# СГЕНЕРИРОВАНО scripts/generate_rules.py из knowledge/tables/. НЕ ПРАВИТЬ РУКАМИ:
+# правьте справочник и запустите генератор заново.
+- code: GEN-APP-AFTER-EFFECTS-BASIC
+  name: 'Adobe After Effects: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#after_effects
+  goal:
+    predicate: runs_app
+    args:
+      app: after_effects
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: after_effects
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 4
+  explain: Для базовой работы в Adobe After Effects нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять
+    от 4 ГБ.
+- code: GEN-APP-AFTER-EFFECTS-PRO
+  name: 'Adobe After Effects: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#after_effects
+  goal:
+    predicate: runs_app
+    args:
+      app: after_effects
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: after_effects
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в Adobe After Effects нужно ОЗУ от 64 ГБ, процессор от 12 ядер,
+    видеопамять от 8 ГБ.
+- code: GEN-APP-AUTOCAD-BASIC
+  name: 'AutoCAD: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#autocad
+  goal:
+    predicate: runs_app
+    args:
+      app: autocad
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: autocad
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+    - fact: build.cpu.cores
+      op: ge
+      value: 4
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 2
+  explain: Для базовой работы в AutoCAD нужно ОЗУ от 8 ГБ, процессор от 4 ядер, видеопамять от 2 ГБ.
+- code: GEN-APP-AUTOCAD-PRO
+  name: 'AutoCAD: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#autocad
+  goal:
+    predicate: runs_app
+    args:
+      app: autocad
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: autocad
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 6
+  explain: Для профессиональной работы в AutoCAD нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять
+    от 6 ГБ.
+- code: GEN-APP-BLENDER-BASIC
+  name: 'Blender: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#blender
+  goal:
+    predicate: runs_app
+    args:
+      app: blender
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: blender
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для базовой работы в Blender нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять от 8 ГБ.
+- code: GEN-APP-BLENDER-PRO
+  name: 'Blender: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#blender
+  goal:
+    predicate: runs_app
+    args:
+      app: blender
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: blender
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+  explain: Для профессиональной работы в Blender нужно ОЗУ от 64 ГБ, процессор от 12 ядер, видеопамять
+    от 16 ГБ.
+- code: GEN-APP-CINEMA4D-BASIC
+  name: 'Cinema 4D (Redshift): базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#cinema4d
+  goal:
+    predicate: runs_app
+    args:
+      app: cinema4d
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: cinema4d
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для базовой работы в Cinema 4D (Redshift) нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять
+    от 8 ГБ.
+- code: GEN-APP-CINEMA4D-PRO
+  name: 'Cinema 4D (Redshift): профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#cinema4d
+  goal:
+    predicate: runs_app
+    args:
+      app: cinema4d
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: cinema4d
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+  explain: Для профессиональной работы в Cinema 4D (Redshift) нужно ОЗУ от 64 ГБ, процессор от 12 ядер,
+    видеопамять от 16 ГБ.
+- code: GEN-APP-DAVINCI-RESOLVE-BASIC
+  name: 'DaVinci Resolve: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#davinci_resolve
+  goal:
+    predicate: runs_app
+    args:
+      app: davinci_resolve
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: davinci_resolve
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для базовой работы в DaVinci Resolve нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять от
+    8 ГБ.
+- code: GEN-APP-DAVINCI-RESOLVE-PRO
+  name: 'DaVinci Resolve: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#davinci_resolve
+  goal:
+    predicate: runs_app
+    args:
+      app: davinci_resolve
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: davinci_resolve
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 12
+  explain: Для профессиональной работы в DaVinci Resolve нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять
+    от 12 ГБ.
+- code: GEN-APP-DOCKER-VM-BASIC
+  name: 'Docker и виртуальные машины: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#docker_vm
+  goal:
+    predicate: runs_app
+    args:
+      app: docker_vm
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: docker_vm
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+  explain: Для базовой работы в Docker и виртуальные машины нужно ОЗУ от 32 ГБ, процессор от 8 ядер.
+- code: GEN-APP-DOCKER-VM-PRO
+  name: 'Docker и виртуальные машины: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#docker_vm
+  goal:
+    predicate: runs_app
+    args:
+      app: docker_vm
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: docker_vm
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+  explain: Для профессиональной работы в Docker и виртуальные машины нужно ОЗУ от 64 ГБ, процессор от
+    12 ядер.
+- code: GEN-APP-INTELLIJ-BASIC
+  name: 'IntelliJ IDEA / Android Studio: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#intellij
+  goal:
+    predicate: runs_app
+    args:
+      app: intellij
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: intellij
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 4
+  explain: Для базовой работы в IntelliJ IDEA / Android Studio нужно ОЗУ от 16 ГБ, процессор от 4 ядер.
+- code: GEN-APP-INTELLIJ-PRO
+  name: 'IntelliJ IDEA / Android Studio: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#intellij
+  goal:
+    predicate: runs_app
+    args:
+      app: intellij
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: intellij
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в IntelliJ IDEA / Android Studio нужно ОЗУ от 32 ГБ, процессор
+    от 8 ядер.
+- code: GEN-APP-LIGHTROOM-BASIC
+  name: 'Adobe Lightroom Classic: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#lightroom
+  goal:
+    predicate: runs_app
+    args:
+      app: lightroom
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: lightroom
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 4
+  explain: Для базовой работы в Adobe Lightroom Classic нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять
+    от 4 ГБ.
+- code: GEN-APP-LIGHTROOM-PRO
+  name: 'Adobe Lightroom Classic: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#lightroom
+  goal:
+    predicate: runs_app
+    args:
+      app: lightroom
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: lightroom
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в Adobe Lightroom Classic нужно ОЗУ от 32 ГБ, процессор от 8 ядер,
+    видеопамять от 8 ГБ.
+- code: GEN-APP-LOCAL-LLM-BASIC
+  name: 'Локальные LLM (Ollama): базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#local_llm
+  goal:
+    predicate: runs_app
+    args:
+      app: local_llm
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: local_llm
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 12
+  explain: Для базовой работы в Локальные LLM (Ollama) нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять
+    от 12 ГБ.
+- code: GEN-APP-LOCAL-LLM-PRO
+  name: 'Локальные LLM (Ollama): профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#local_llm
+  goal:
+    predicate: runs_app
+    args:
+      app: local_llm
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: local_llm
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+  explain: Для профессиональной работы в Локальные LLM (Ollama) нужно ОЗУ от 64 ГБ, процессор от 8 ядер,
+    видеопамять от 16 ГБ.
+- code: GEN-APP-MAX-3DS-BASIC
+  name: '3ds Max (Corona/V-Ray): базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#max_3ds
+  goal:
+    predicate: runs_app
+    args:
+      app: max_3ds
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: max_3ds
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 6
+  explain: Для базовой работы в 3ds Max (Corona/V-Ray) нужно ОЗУ от 16 ГБ, процессор от 8 ядер, видеопамять
+    от 6 ГБ.
+- code: GEN-APP-MAX-3DS-PRO
+  name: '3ds Max (Corona/V-Ray): профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#max_3ds
+  goal:
+    predicate: runs_app
+    args:
+      app: max_3ds
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: max_3ds
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 16
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 12
+  explain: Для профессиональной работы в 3ds Max (Corona/V-Ray) нужно ОЗУ от 64 ГБ, процессор от 16 ядер,
+    видеопамять от 12 ГБ.
+- code: GEN-APP-OBS-BASIC
+  name: 'OBS Studio: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#obs
+  goal:
+    predicate: runs_app
+    args:
+      app: obs
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: obs
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 6
+  explain: Для базовой работы в OBS Studio нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять от 6 ГБ.
+- code: GEN-APP-OBS-PRO
+  name: 'OBS Studio: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#obs
+  goal:
+    predicate: runs_app
+    args:
+      app: obs
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: obs
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в OBS Studio нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять
+    от 8 ГБ.
+- code: GEN-APP-OFFICE-BASIC
+  name: 'Microsoft Office + браузер: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#office
+  goal:
+    predicate: runs_app
+    args:
+      app: office
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: office
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+    - fact: build.cpu.cores
+      op: ge
+      value: 4
+  explain: Для базовой работы в Microsoft Office + браузер нужно ОЗУ от 8 ГБ, процессор от 4 ядер.
+- code: GEN-APP-OFFICE-PRO
+  name: 'Microsoft Office + браузер: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#office
+  goal:
+    predicate: runs_app
+    args:
+      app: office
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: office
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+  explain: Для профессиональной работы в Microsoft Office + браузер нужно ОЗУ от 16 ГБ, процессор от 6
+    ядер.
+- code: GEN-APP-ONEC-BASIC
+  name: '1С:Предприятие: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#onec
+  goal:
+    predicate: runs_app
+    args:
+      app: onec
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: onec
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+    - fact: build.cpu.cores
+      op: ge
+      value: 4
+  explain: Для базовой работы в 1С:Предприятие нужно ОЗУ от 8 ГБ, процессор от 4 ядер.
+- code: GEN-APP-ONEC-PRO
+  name: '1С:Предприятие: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#onec
+  goal:
+    predicate: runs_app
+    args:
+      app: onec
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: onec
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+  explain: Для профессиональной работы в 1С:Предприятие нужно ОЗУ от 16 ГБ, процессор от 6 ядер.
+- code: GEN-APP-PHOTOSHOP-BASIC
+  name: 'Adobe Photoshop: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#photoshop
+  goal:
+    predicate: runs_app
+    args:
+      app: photoshop
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: photoshop
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 4
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 2
+  explain: Для базовой работы в Adobe Photoshop нужно ОЗУ от 16 ГБ, процессор от 4 ядер, видеопамять от
+    2 ГБ.
+- code: GEN-APP-PHOTOSHOP-PRO
+  name: 'Adobe Photoshop: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#photoshop
+  goal:
+    predicate: runs_app
+    args:
+      app: photoshop
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: photoshop
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в Adobe Photoshop нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять
+    от 8 ГБ.
+- code: GEN-APP-PREMIERE-PRO-BASIC
+  name: 'Adobe Premiere Pro: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#premiere_pro
+  goal:
+    predicate: runs_app
+    args:
+      app: premiere_pro
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: premiere_pro
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 4
+  explain: Для базовой работы в Adobe Premiere Pro нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять
+    от 4 ГБ.
+- code: GEN-APP-PREMIERE-PRO-PRO
+  name: 'Adobe Premiere Pro: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#premiere_pro
+  goal:
+    predicate: runs_app
+    args:
+      app: premiere_pro
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: premiere_pro
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в Adobe Premiere Pro нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять
+    от 8 ГБ.
+- code: GEN-APP-SOLIDWORKS-BASIC
+  name: 'SolidWorks: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#solidworks
+  goal:
+    predicate: runs_app
+    args:
+      app: solidworks
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: solidworks
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 4
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 4
+  explain: Для базовой работы в SolidWorks нужно ОЗУ от 16 ГБ, процессор от 4 ядер, видеопамять от 4 ГБ.
+- code: GEN-APP-SOLIDWORKS-PRO
+  name: 'SolidWorks: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#solidworks
+  goal:
+    predicate: runs_app
+    args:
+      app: solidworks
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: solidworks
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в SolidWorks нужно ОЗУ от 32 ГБ, процессор от 6 ядер, видеопамять
+    от 8 ГБ.
+- code: GEN-APP-STABLE-DIFFUSION-BASIC
+  name: 'Stable Diffusion (ComfyUI): базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#stable_diffusion
+  goal:
+    predicate: runs_app
+    args:
+      app: stable_diffusion
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: stable_diffusion
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для базовой работы в Stable Diffusion (ComfyUI) нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять
+    от 8 ГБ.
+- code: GEN-APP-STABLE-DIFFUSION-PRO
+  name: 'Stable Diffusion (ComfyUI): профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#stable_diffusion
+  goal:
+    predicate: runs_app
+    args:
+      app: stable_diffusion
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: stable_diffusion
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+  explain: Для профессиональной работы в Stable Diffusion (ComfyUI) нужно ОЗУ от 32 ГБ, процессор от 8
+    ядер, видеопамять от 16 ГБ.
+- code: GEN-APP-UNITY-BASIC
+  name: 'Unity: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#unity
+  goal:
+    predicate: runs_app
+    args:
+      app: unity
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: unity
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 4
+  explain: Для базовой работы в Unity нужно ОЗУ от 16 ГБ, процессор от 6 ядер, видеопамять от 4 ГБ.
+- code: GEN-APP-UNITY-PRO
+  name: 'Unity: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#unity
+  goal:
+    predicate: runs_app
+    args:
+      app: unity
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: unity
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для профессиональной работы в Unity нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять от
+    8 ГБ.
+- code: GEN-APP-UNREAL-ENGINE-5-BASIC
+  name: 'Unreal Engine 5: базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#unreal_engine_5
+  goal:
+    predicate: runs_app
+    args:
+      app: unreal_engine_5
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: unreal_engine_5
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 8
+  explain: Для базовой работы в Unreal Engine 5 нужно ОЗУ от 32 ГБ, процессор от 8 ядер, видеопамять от
+    8 ГБ.
+- code: GEN-APP-UNREAL-ENGINE-5-PRO
+  name: 'Unreal Engine 5: профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#unreal_engine_5
+  goal:
+    predicate: runs_app
+    args:
+      app: unreal_engine_5
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: unreal_engine_5
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+    - fact: build.cpu.cores
+      op: ge
+      value: 16
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+  explain: Для профессиональной работы в Unreal Engine 5 нужно ОЗУ от 64 ГБ, процессор от 16 ядер, видеопамять
+    от 16 ГБ.
+- code: GEN-APP-VISUAL-STUDIO-BASIC
+  name: 'Visual Studio (сборка C++): базовый уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#visual_studio
+  goal:
+    predicate: runs_app
+    args:
+      app: visual_studio
+      level: basic
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: visual_studio
+          level: basic
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.cpu.cores
+      op: ge
+      value: 6
+  explain: Для базовой работы в Visual Studio (сборка C++) нужно ОЗУ от 16 ГБ, процессор от 6 ядер.
+- code: GEN-APP-VISUAL-STUDIO-PRO
+  name: 'Visual Studio (сборка C++): профессиональный уровень'
+  kind: goal
+  group: gen_app
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/applications.yaml#visual_studio
+  goal:
+    predicate: runs_app
+    args:
+      app: visual_studio
+      level: pro
+  when:
+    all:
+    - goal:
+        predicate: bench_at_least
+        args:
+          app: visual_studio
+          level: pro
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+  explain: Для профессиональной работы в Visual Studio (сборка C++) нужно ОЗУ от 32 ГБ, процессор от 12
+    ядер.

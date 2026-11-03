@@ -1,0 +1,572 @@
+# BAL — баланс и узкие места: штрафы и бонусы (score) и предупреждения/советы (validate).
+- code: BAL-001
+  name: Процессор не раскрывает видеокарту
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - &id001
+      fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+    - fact: perf.gpu_utilization
+      op: lt
+      value: 0.85
+  then:
+  - action: prefer
+    weight: -8
+    message: Процессор раскрывает видеокарту на {round(perf.gpu_utilization * 100)}%
+  explain: В ваших играх процессор не успевает за видеокартой — часть денег за неё потрачена впустую.
+- code: BAL-002
+  name: Процессор сильно сдерживает видеокарту
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - *id001
+    - fact: perf.gpu_utilization
+      op: lt
+      value: 0.7
+  then:
+  - action: prefer
+    weight: -12
+    message: Процессор сильно сдерживает видеокарту
+  explain: При таком дисбалансе значительная часть мощности видеокарты не используется.
+- code: BAL-003
+  name: Переплата за процессор в играх
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - *id001
+    - fact: perf.bottleneck_ratio
+      op: gt
+      value: 2.0
+    - fact: user.resolution
+      op: ne
+      value: 2160p
+  then:
+  - action: prefer
+    weight: -4
+    message: Процессор намного мощнее, чем нужно видеокарте
+  explain: 'Упор в видеокарту: можно взять процессор попроще и вложить разницу в видеокарту.'
+- code: BAL-004
+  name: 'Киберспорт: быстрый процессор'
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.main
+      op: eq
+      value: esports
+    - fact: profile.high_refresh
+      op: eq
+      value: true
+    - fact: build.cpu.perf_single
+      op: lt
+      value: 100
+  then:
+  - action: prefer
+    weight: -8
+    message: Процессор не выдаст высокий FPS
+  explain: В киберспорте на высокой частоте всё решает процессор.
+- code: BAL-005
+  name: 'Рабочая станция: слабая многопоточность'
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.workstation
+      op: eq
+      value: true
+    - fact: build.cpu.perf_multi
+      op: lt
+      value: 120
+  then:
+  - action: prefer
+    weight: -10
+    message: Рендер будет идти медленно
+  explain: Рабочей станции нужен многоядерный процессор.
+- code: BAL-006
+  name: Переплата за видеокарту без игр
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - any:
+      - not:
+          fact: profile.gaming
+          op: exists
+      - fact: profile.gaming
+        op: lt
+        value: 0.3
+    - not:
+        fact: profile.gpu_compute
+        op: eq
+        value: true
+    - fact: build.gpu.perf_raster
+      op: gt
+      value: 150
+  then:
+  - action: prefer
+    weight: -5
+    message: Мощная видеокарта вам не нужна
+  explain: Без игр и GPU-рендера мощная видеокарта не окупится.
+- code: BAL-007
+  name: 'Рендер на GPU: мало видеопамяти'
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.gpu_compute
+      op: eq
+      value: true
+    - fact: build.gpu.vram_gb
+      op: lt
+      value: 12
+  then:
+  - action: prefer
+    weight: -8
+    message: Сцены не поместятся в видеопамять
+  explain: Для GPU-рендера сцена должна целиком помещаться в видеопамять.
+- code: BAL-008
+  name: Игры с 8 ГБ памяти
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - &id002
+      fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: build.ram.capacity_gb
+      op: le
+      value: 8
+  then:
+  - action: prefer
+    weight: -6
+    message: 8 ГБ мало для игр
+  explain: Современные игры при 8 ГБ памяти подтормаживают.
+- code: BAL-009
+  name: 'Творческие задачи: мало памяти'
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.creator
+      op: ge
+      value: 0.5
+    - fact: build.ram.capacity_gb
+      op: lt
+      value: 32
+  then:
+  - action: prefer
+    weight: -5
+    message: Для проектов мало памяти
+  explain: Монтаж и 3D комфортны от 32 ГБ памяти.
+- code: BAL-010
+  name: Одна планка памяти
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    fact: build.ram.modules
+    op: eq
+    value: 1
+  then:
+  - action: prefer
+    weight: -4
+    message: Одна планка — нет двухканального режима
+  explain: Двухканальный режим заметно ускоряет и игры, и встроенную графику.
+- code: BAL-011
+  name: SATA-накопитель в игровой сборке
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - *id002
+    - fact: build.ssd.interface
+      op: eq
+      value: sata
+  then:
+  - action: prefer
+    weight: -3
+    message: Загрузки будут дольше
+  explain: NVMe заметно сокращает загрузки в играх.
+- code: BAL-012
+  name: Слишком мощный блок питания
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    expr: build.psu.wattage > build.total.power_w * 3
+  then:
+  - action: prefer
+    weight: -3
+    message: Блок питания с большим избытком мощности
+  explain: Переплата за ненужную мощность блока питания.
+- code: BAL-013
+  name: Слишком мощный кулер
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    expr: build.cpu_cooler.tdp_capacity_w > build.cpu.tdp_w * 3
+  then:
+  - action: prefer
+    weight: -2
+    message: Кулер с большим избытком
+  explain: Переплата за ненужную мощность охлаждения.
+- code: BAL-014
+  name: Видеокарта съедает бюджет
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    expr: build.gpu.price_kop > build.total.price_rub * 100 * 0.6
+  then:
+  - action: prefer
+    weight: -4
+    message: На видеокарту уходит больше 60% бюджета
+  explain: Остальные детали становятся слишком слабыми.
+- code: BAL-015
+  name: Процессор дороже видеокарты в игровой сборке
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - *id002
+    - expr: build.cpu.price_kop > build.gpu.price_kop * 1.5
+  then:
+  - action: prefer
+    weight: -5
+    message: Процессор непропорционально дорогой
+  explain: В играх выгоднее вкладываться в видеокарту.
+- code: BAL-016
+  name: Дешёвая плата в дорогой сборке
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: build.total.price_rub
+      op: ge
+      value: 200000
+    - fact: build.motherboard.vrm_tier
+      op: eq
+      value: basic
+  then:
+  - action: prefer
+    weight: -4
+    message: Простая плата не соответствует уровню сборки
+  explain: В дорогой сборке простая плата ограничивает разгон памяти, число слотов и питание процессора.
+- code: BAL-017
+  name: Сбалансированная игровая сборка
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - *id002
+    - fact: perf.bottleneck_ratio
+      op: between
+      value:
+      - 0.85
+      - 2.0
+  then:
+  - action: prefer
+    weight: 6
+    message: Процессор и видеокарта сбалансированы
+  explain: В ваших играх процессор успевает за видеокартой, а умеренный упор в видеокарту для игр нормален.
+- code: BAL-018
+  name: Достаточно памяти для творчества
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.creator
+      op: ge
+      value: 0.5
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  then:
+  - action: prefer
+    weight: 4
+    message: Памяти хватит для проектов
+  explain: 32 ГБ и больше — комфорт для монтажа и 3D.
+- code: BAL-019
+  name: Быстрая DDR5 в игровой сборке
+  kind: score
+  group: balance
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - *id002
+    - fact: build.ram.mem_type
+      op: eq
+      value: DDR5
+    - fact: build.ram.speed_mts
+      op: ge
+      value: 6000
+    - fact: build.ram.modules
+      op: ge
+      value: 2
+  then:
+  - action: prefer
+    weight: 2
+    message: Быстрая двухканальная DDR5
+  explain: Частота 6000 МТ/с — оптимум для современных процессоров.
+- code: BAL-020
+  name: 'Предупреждение: процессор сдерживает видеокарту'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - *id002
+    - fact: perf.gpu_utilization
+      op: lt
+      value: 0.8
+  then:
+  - action: warn
+    message: 'Процессор раскроет видеокарту примерно на {round(perf.gpu_utilization * 100)}%: FPS будет
+      упираться в процессор'
+  explain: В ваших играх процессор не успевает за видеокартой.
+- code: BAL-021
+  name: 'Предупреждение: мало ядер для рабочей станции'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.workstation
+      op: eq
+      value: true
+    - fact: build.cpu.cores
+      op: lt
+      value: 8
+  then:
+  - action: warn
+    message: Для рендера и монтажа {build.cpu.cores} ядер мало — работа будет идти медленно
+  explain: Рабочей станции нужно от 8 ядер.
+- code: BAL-022
+  name: 'Предупреждение: кулер без запаса'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    expr: build.cpu.tdp_w * (1 + req.cooler_margin) > build.cpu_cooler.tdp_capacity_w
+  then:
+  - action: warn
+    message: 'Кулер работает почти на пределе: под долгой нагрузкой будет шумно'
+  explain: Кулеру нужен запас по рассеиваемой мощности.
+- code: BAL-023
+  name: 'Предупреждение: мало запаса БП'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    expr: build.psu.wattage < build.total.power_w * (1 + req.psu_headroom)
+  then:
+  - action: warn
+    message: 'Запас мощности блока питания меньше рекомендованного: {build.psu.wattage} Вт при потреблении
+      около {build.total.power_w} Вт'
+  explain: Блок питания с запасом работает тише и прослужит дольше.
+- code: BAL-024
+  name: Ваша видеокарта станет узким местом
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.gpu.owned
+      op: eq
+      value: true
+    - fact: perf.bottleneck_ratio
+      op: gt
+      value: 2.0
+  then:
+  - action: warn
+    message: 'Ваша видеокарта станет узким местом: новый процессор мог бы выдавать в {round(perf.bottleneck_ratio,
+      1)} раза больше кадров'
+  explain: Имеющаяся видеокарта не раскроет новый процессор.
+- code: BAL-025
+  name: 'Совет: заменить имеющуюся видеокарту'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.gpu.owned
+      op: eq
+      value: true
+    - *id002
+    - fact: perf.bottleneck_ratio
+      op: gt
+      value: 2.0
+  then:
+  - action: suggest
+    category: gpu
+    target: upgrade
+    message: Замена видеокарты даст заметный прирост FPS
+  explain: Подскажем, какую видеокарту взять на замену.
+- code: BAL-026
+  name: Ваш процессор станет узким местом
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.cpu.owned
+      op: eq
+      value: true
+    - fact: perf.gpu_utilization
+      op: lt
+      value: 0.7
+  then:
+  - action: warn
+    message: Ваш процессор раскроет новую видеокарту только на {round(perf.gpu_utilization * 100)}%
+  explain: Имеющийся процессор слабее новой видеокарты.
+- code: BAL-027
+  name: 'Совет: заменить имеющийся процессор'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.cpu.owned
+      op: eq
+      value: true
+    - *id002
+    - fact: perf.gpu_utilization
+      op: lt
+      value: 0.7
+  then:
+  - action: suggest
+    category: cpu
+    target: upgrade
+    message: Замена процессора раскроет видеокарту
+  explain: Подскажем, какой процессор взять на замену.
+- code: BAL-028
+  name: 'Совет: 32 ГБ для тяжёлых игр'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.gaming_tier
+      op: in
+      value:
+      - high
+      - extreme
+    - fact: build.ram.capacity_gb
+      op: lt
+      value: 32
+  then:
+  - action: suggest
+    category: ram
+    target: 32gb
+    message: Для новых игр на высоких настройках лучше 32 ГБ памяти
+  explain: Некоторым новым играм тесно в 16 ГБ.
+- code: BAL-029
+  name: 'Совет: видеокарта посильнее для трассировки'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.raytracing
+      op: eq
+      value: true
+    - fact: build.gpu.perf_rt
+      op: lt
+      value: 150
+  then:
+  - action: suggest
+    category: gpu
+    target: rt
+    message: Для трассировки лучей стоит взять видеокарту с более сильными RT-блоками
+  explain: Трассировка сильно нагружает видеокарту.
+- code: BAL-030
+  name: Встроенная графика и игры
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: req.need.gpu
+      op: eq
+      value: false
+    - fact: build.cpu.igpu
+      op: eq
+      value: true
+    - fact: profile.gaming
+      op: gt
+      value: 0
+  then:
+  - action: warn
+    message: Встроенная графика потянет только лёгкие игры на низких настройках
+  explain: Без видеокарты играть получится только в нетребовательные игры.
+- code: BAL-031
+  name: 'Совет: SSD побольше для игр'
+  kind: validate
+  group: balance
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.3
+    - fact: build.ssd.capacity_gb
+      op: lt
+      value: 1000
+  then:
+  - action: suggest
+    category: ssd
+    target: 1tb
+    message: Современные игры занимают по 100–150 ГБ — лучше SSD от 1 ТБ
+  explain: Небольшой SSD быстро заполнится играми.

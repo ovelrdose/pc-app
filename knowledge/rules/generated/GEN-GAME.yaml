@@ -1,0 +1,4968 @@
+# СГЕНЕРИРОВАНО scripts/generate_rules.py из knowledge/tables/. НЕ ПРАВИТЬ РУКАМИ:
+# правьте справочник и запустите генератор заново.
+- code: GEN-GAME-AC-SHADOWS-HIGH
+  name: 'Assassin''s Creed Shadows: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#ac_shadows
+  goal:
+    predicate: runs_game
+    args:
+      game: ac_shadows
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: ac_shadows
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: ac_shadows
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Assassin''s Creed Shadows на высоких настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 8 ГБ, 1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-AC-SHADOWS-MEDIUM
+  name: 'Assassin''s Creed Shadows: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#ac_shadows
+  goal:
+    predicate: runs_game
+    args:
+      game: ac_shadows
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: ac_shadows
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: ac_shadows
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Assassin''s Creed Shadows на средних настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 6,5 ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-AC-SHADOWS-ULTRA
+  name: 'Assassin''s Creed Shadows: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#ac_shadows
+  goal:
+    predicate: runs_game
+    args:
+      game: ac_shadows
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: ac_shadows
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: ac_shadows
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Assassin''s Creed Shadows на ультра настройках: FPS не ниже целевого, видеопамяти (1080p —
+    10 ГБ, 1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ALAN-WAKE-2-HIGH
+  name: 'Alan Wake 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#alan_wake_2
+  goal:
+    predicate: runs_game
+    args:
+      game: alan_wake_2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: alan_wake_2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: alan_wake_2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Alan Wake 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ, 1440p
+    — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ALAN-WAKE-2-MEDIUM
+  name: 'Alan Wake 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#alan_wake_2
+  goal:
+    predicate: runs_game
+    args:
+      game: alan_wake_2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: alan_wake_2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: alan_wake_2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Alan Wake 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5 ГБ, 1440p
+    — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ALAN-WAKE-2-ULTRA
+  name: 'Alan Wake 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#alan_wake_2
+  goal:
+    predicate: runs_game
+    args:
+      game: alan_wake_2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: alan_wake_2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: alan_wake_2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Alan Wake 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ, 1440p
+    — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-APEX-HIGH
+  name: 'Apex Legends: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#apex
+  goal:
+    predicate: runs_game
+    args:
+      game: apex
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: apex
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: apex
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Apex Legends на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p
+    — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-APEX-MEDIUM
+  name: 'Apex Legends: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#apex
+  goal:
+    predicate: runs_game
+    args:
+      game: apex
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: apex
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: apex
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Apex Legends на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p
+    — 3,5 ГБ, 2160p — 4,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-APEX-ULTRA
+  name: 'Apex Legends: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#apex
+  goal:
+    predicate: runs_game
+    args:
+      game: apex
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: apex
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: apex
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Apex Legends на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ATOMIC-HEART-HIGH
+  name: 'Atomic Heart: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#atomic_heart
+  goal:
+    predicate: runs_game
+    args:
+      game: atomic_heart
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: atomic_heart
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: atomic_heart
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Atomic Heart на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ATOMIC-HEART-MEDIUM
+  name: 'Atomic Heart: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#atomic_heart
+  goal:
+    predicate: runs_game
+    args:
+      game: atomic_heart
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: atomic_heart
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: atomic_heart
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Atomic Heart на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ATOMIC-HEART-ULTRA
+  name: 'Atomic Heart: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#atomic_heart
+  goal:
+    predicate: runs_game
+    args:
+      game: atomic_heart
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: atomic_heart
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: atomic_heart
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Atomic Heart на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ, 1440p
+    — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BALDURS-GATE-3-HIGH
+  name: 'Baldur''s Gate 3: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#baldurs_gate_3
+  goal:
+    predicate: runs_game
+    args:
+      game: baldurs_gate_3
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: baldurs_gate_3
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: baldurs_gate_3
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Baldur''s Gate 3 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BALDURS-GATE-3-MEDIUM
+  name: 'Baldur''s Gate 3: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#baldurs_gate_3
+  goal:
+    predicate: runs_game
+    args:
+      game: baldurs_gate_3
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: baldurs_gate_3
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: baldurs_gate_3
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Baldur''s Gate 3 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BALDURS-GATE-3-ULTRA
+  name: 'Baldur''s Gate 3: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#baldurs_gate_3
+  goal:
+    predicate: runs_game
+    args:
+      game: baldurs_gate_3
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: baldurs_gate_3
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: baldurs_gate_3
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Baldur''s Gate 3 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ,
+    1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BATTLEFIELD-6-HIGH
+  name: 'Battlefield 6: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#battlefield_6
+  goal:
+    predicate: runs_game
+    args:
+      game: battlefield_6
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: battlefield_6
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: battlefield_6
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Battlefield 6 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BATTLEFIELD-6-MEDIUM
+  name: 'Battlefield 6: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#battlefield_6
+  goal:
+    predicate: runs_game
+    args:
+      game: battlefield_6
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: battlefield_6
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: battlefield_6
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Battlefield 6 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BATTLEFIELD-6-ULTRA
+  name: 'Battlefield 6: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#battlefield_6
+  goal:
+    predicate: runs_game
+    args:
+      game: battlefield_6
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: battlefield_6
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: battlefield_6
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Battlefield 6 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ, 1440p
+    — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BLACK-MYTH-WUKONG-HIGH
+  name: 'Black Myth: Wukong: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#black_myth_wukong
+  goal:
+    predicate: runs_game
+    args:
+      game: black_myth_wukong
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: black_myth_wukong
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: black_myth_wukong
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Black Myth: Wukong на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 7 ГБ,
+    1440p — 8 ГБ, 2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BLACK-MYTH-WUKONG-MEDIUM
+  name: 'Black Myth: Wukong: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#black_myth_wukong
+  goal:
+    predicate: runs_game
+    args:
+      game: black_myth_wukong
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: black_myth_wukong
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: black_myth_wukong
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Black Myth: Wukong на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5,5 ГБ,
+    1440p — 6,5 ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-BLACK-MYTH-WUKONG-ULTRA
+  name: 'Black Myth: Wukong: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#black_myth_wukong
+  goal:
+    predicate: runs_game
+    args:
+      game: black_myth_wukong
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: black_myth_wukong
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: black_myth_wukong
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Black Myth: Wukong на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 9 ГБ,
+    1440p — 10 ГБ, 2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CIV7-HIGH
+  name: 'Civilization VII: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#civ7
+  goal:
+    predicate: runs_game
+    args:
+      game: civ7
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: civ7
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: civ7
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Civilization VII на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CIV7-MEDIUM
+  name: 'Civilization VII: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#civ7
+  goal:
+    predicate: runs_game
+    args:
+      game: civ7
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: civ7
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: civ7
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Civilization VII на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p
+    — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CIV7-ULTRA
+  name: 'Civilization VII: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#civ7
+  goal:
+    predicate: runs_game
+    args:
+      game: civ7
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: civ7
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: civ7
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Civilization VII на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CLAIR-OBSCUR-HIGH
+  name: 'Clair Obscur: Expedition 33: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#clair_obscur
+  goal:
+    predicate: runs_game
+    args:
+      game: clair_obscur
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: clair_obscur
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: clair_obscur
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Clair Obscur: Expedition 33 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 7 ГБ, 1440p — 8 ГБ, 2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CLAIR-OBSCUR-MEDIUM
+  name: 'Clair Obscur: Expedition 33: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#clair_obscur
+  goal:
+    predicate: runs_game
+    args:
+      game: clair_obscur
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: clair_obscur
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: clair_obscur
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Clair Obscur: Expedition 33 на средних настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 5,5 ГБ, 1440p — 6,5 ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CLAIR-OBSCUR-ULTRA
+  name: 'Clair Obscur: Expedition 33: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#clair_obscur
+  goal:
+    predicate: runs_game
+    args:
+      game: clair_obscur
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: clair_obscur
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: clair_obscur
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Clair Obscur: Expedition 33 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 9 ГБ, 1440p — 10 ГБ, 2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-COD-BO7-HIGH
+  name: 'Call of Duty: Black Ops 7: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cod_bo7
+  goal:
+    predicate: runs_game
+    args:
+      game: cod_bo7
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cod_bo7
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cod_bo7
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Call of Duty: Black Ops 7 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 6 ГБ, 1440p — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-COD-BO7-MEDIUM
+  name: 'Call of Duty: Black Ops 7: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cod_bo7
+  goal:
+    predicate: runs_game
+    args:
+      game: cod_bo7
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cod_bo7
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cod_bo7
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Call of Duty: Black Ops 7 на средних настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 5 ГБ, 1440p — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-COD-BO7-ULTRA
+  name: 'Call of Duty: Black Ops 7: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cod_bo7
+  goal:
+    predicate: runs_game
+    args:
+      game: cod_bo7
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cod_bo7
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cod_bo7
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Call of Duty: Black Ops 7 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p —
+    7,5 ГБ, 1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CS2-HIGH
+  name: 'Counter-Strike 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cs2
+  goal:
+    predicate: runs_game
+    args:
+      game: cs2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cs2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cs2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Counter-Strike 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p
+    — 3,5 ГБ, 2160p — 4 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-CS2-MEDIUM
+  name: 'Counter-Strike 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cs2
+  goal:
+    predicate: runs_game
+    args:
+      game: cs2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cs2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cs2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Counter-Strike 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 2,5 ГБ,
+    1440p — 3 ГБ, 2160p — 3,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-CS2-ULTRA
+  name: 'Counter-Strike 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cs2
+  goal:
+    predicate: runs_game
+    args:
+      game: cs2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cs2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cs2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Counter-Strike 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p
+    — 4,5 ГБ, 2160p — 5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-CYBERPUNK-2077-HIGH
+  name: 'Cyberpunk 2077: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cyberpunk_2077
+  goal:
+    predicate: runs_game
+    args:
+      game: cyberpunk_2077
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cyberpunk_2077
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cyberpunk_2077
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Cyberpunk 2077 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 7 ГБ, 1440p
+    — 8 ГБ, 2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CYBERPUNK-2077-MEDIUM
+  name: 'Cyberpunk 2077: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cyberpunk_2077
+  goal:
+    predicate: runs_game
+    args:
+      game: cyberpunk_2077
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cyberpunk_2077
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cyberpunk_2077
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Cyberpunk 2077 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5,5 ГБ, 1440p
+    — 6,5 ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-CYBERPUNK-2077-ULTRA
+  name: 'Cyberpunk 2077: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#cyberpunk_2077
+  goal:
+    predicate: runs_game
+    args:
+      game: cyberpunk_2077
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: cyberpunk_2077
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: cyberpunk_2077
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Cyberpunk 2077 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 9 ГБ, 1440p
+    — 10 ГБ, 2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-DOOM-DARK-AGES-HIGH
+  name: 'Doom: The Dark Ages: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#doom_dark_ages
+  goal:
+    predicate: runs_game
+    args:
+      game: doom_dark_ages
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: doom_dark_ages
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: doom_dark_ages
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_rt
+      op: exists
+  explain: 'Doom: The Dark Ages на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ,
+    1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ. Игре обязательно нужна видеокарта с трассировкой лучей.'
+- code: GEN-GAME-DOOM-DARK-AGES-MEDIUM
+  name: 'Doom: The Dark Ages: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#doom_dark_ages
+  goal:
+    predicate: runs_game
+    args:
+      game: doom_dark_ages
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: doom_dark_ages
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: doom_dark_ages
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_rt
+      op: exists
+  explain: 'Doom: The Dark Ages на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5
+    ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ. Игре обязательно нужна видеокарта с трассировкой
+    лучей.'
+- code: GEN-GAME-DOOM-DARK-AGES-ULTRA
+  name: 'Doom: The Dark Ages: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#doom_dark_ages
+  goal:
+    predicate: runs_game
+    args:
+      game: doom_dark_ages
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: doom_dark_ages
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: doom_dark_ages
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_rt
+      op: exists
+  explain: 'Doom: The Dark Ages на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ,
+    1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ. Игре обязательно нужна видеокарта с трассировкой лучей.'
+- code: GEN-GAME-DOTA2-HIGH
+  name: 'Dota 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#dota2
+  goal:
+    predicate: runs_game
+    args:
+      game: dota2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: dota2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: dota2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Dota 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p — 3,5
+    ГБ, 2160p — 4 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-DOTA2-MEDIUM
+  name: 'Dota 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#dota2
+  goal:
+    predicate: runs_game
+    args:
+      game: dota2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: dota2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: dota2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Dota 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 2,5 ГБ, 1440p — 3
+    ГБ, 2160p — 3,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-DOTA2-ULTRA
+  name: 'Dota 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#dota2
+  goal:
+    predicate: runs_game
+    args:
+      game: dota2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: dota2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: dota2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Dota 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p — 4,5
+    ГБ, 2160p — 5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-DRAGONS-DOGMA-2-HIGH
+  name: 'Dragon''s Dogma 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#dragons_dogma_2
+  goal:
+    predicate: runs_game
+    args:
+      game: dragons_dogma_2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: dragons_dogma_2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: dragons_dogma_2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Dragon''s Dogma 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 7 ГБ,
+    1440p — 8 ГБ, 2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-DRAGONS-DOGMA-2-MEDIUM
+  name: 'Dragon''s Dogma 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#dragons_dogma_2
+  goal:
+    predicate: runs_game
+    args:
+      game: dragons_dogma_2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: dragons_dogma_2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: dragons_dogma_2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Dragon''s Dogma 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5,5 ГБ,
+    1440p — 6,5 ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-DRAGONS-DOGMA-2-ULTRA
+  name: 'Dragon''s Dogma 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#dragons_dogma_2
+  goal:
+    predicate: runs_game
+    args:
+      game: dragons_dogma_2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: dragons_dogma_2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: dragons_dogma_2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Dragon''s Dogma 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 9 ГБ, 1440p
+    — 10 ГБ, 2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ELDEN-RING-HIGH
+  name: 'Elden Ring: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#elden_ring
+  goal:
+    predicate: runs_game
+    args:
+      game: elden_ring
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: elden_ring
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: elden_ring
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Elden Ring на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p —
+    6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ELDEN-RING-MEDIUM
+  name: 'Elden Ring: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#elden_ring
+  goal:
+    predicate: runs_game
+    args:
+      game: elden_ring
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: elden_ring
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: elden_ring
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Elden Ring на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p —
+    4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ELDEN-RING-ULTRA
+  name: 'Elden Ring: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#elden_ring
+  goal:
+    predicate: runs_game
+    args:
+      game: elden_ring
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: elden_ring
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: elden_ring
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Elden Ring на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p —
+    7 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-FORTNITE-HIGH
+  name: 'Fortnite: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#fortnite
+  goal:
+    predicate: runs_game
+    args:
+      game: fortnite
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: fortnite
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: fortnite
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Fortnite на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p — 4,5
+    ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-FORTNITE-MEDIUM
+  name: 'Fortnite: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#fortnite
+  goal:
+    predicate: runs_game
+    args:
+      game: fortnite
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: fortnite
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: fortnite
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Fortnite на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p — 3,5
+    ГБ, 2160p — 4,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-FORTNITE-ULTRA
+  name: 'Fortnite: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#fortnite
+  goal:
+    predicate: runs_game
+    args:
+      game: fortnite
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: fortnite
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: fortnite
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Fortnite на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p — 6
+    ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-FORZA-HORIZON-5-HIGH
+  name: 'Forza Horizon 5: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#forza_horizon_5
+  goal:
+    predicate: runs_game
+    args:
+      game: forza_horizon_5
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: forza_horizon_5
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: forza_horizon_5
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Forza Horizon 5 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-FORZA-HORIZON-5-MEDIUM
+  name: 'Forza Horizon 5: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#forza_horizon_5
+  goal:
+    predicate: runs_game
+    args:
+      game: forza_horizon_5
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: forza_horizon_5
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: forza_horizon_5
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Forza Horizon 5 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-FORZA-HORIZON-5-ULTRA
+  name: 'Forza Horizon 5: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#forza_horizon_5
+  goal:
+    predicate: runs_game
+    args:
+      game: forza_horizon_5
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: forza_horizon_5
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: forza_horizon_5
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Forza Horizon 5 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ, 1440p
+    — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GHOST-OF-TSUSHIMA-HIGH
+  name: 'Ghost of Tsushima: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#ghost_of_tsushima
+  goal:
+    predicate: runs_game
+    args:
+      game: ghost_of_tsushima
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: ghost_of_tsushima
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: ghost_of_tsushima
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Ghost of Tsushima на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ,
+    1440p — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GHOST-OF-TSUSHIMA-MEDIUM
+  name: 'Ghost of Tsushima: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#ghost_of_tsushima
+  goal:
+    predicate: runs_game
+    args:
+      game: ghost_of_tsushima
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: ghost_of_tsushima
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: ghost_of_tsushima
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Ghost of Tsushima на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ,
+    1440p — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GHOST-OF-TSUSHIMA-ULTRA
+  name: 'Ghost of Tsushima: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#ghost_of_tsushima
+  goal:
+    predicate: runs_game
+    args:
+      game: ghost_of_tsushima
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: ghost_of_tsushima
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: ghost_of_tsushima
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Ghost of Tsushima на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ,
+    1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GOW-RAGNAROK-HIGH
+  name: 'God of War Ragnarök: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#gow_ragnarok
+  goal:
+    predicate: runs_game
+    args:
+      game: gow_ragnarok
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: gow_ragnarok
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: gow_ragnarok
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'God of War Ragnarök на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 7 ГБ,
+    1440p — 8 ГБ, 2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GOW-RAGNAROK-MEDIUM
+  name: 'God of War Ragnarök: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#gow_ragnarok
+  goal:
+    predicate: runs_game
+    args:
+      game: gow_ragnarok
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: gow_ragnarok
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: gow_ragnarok
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'God of War Ragnarök на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5,5
+    ГБ, 1440p — 6,5 ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GOW-RAGNAROK-ULTRA
+  name: 'God of War Ragnarök: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#gow_ragnarok
+  goal:
+    predicate: runs_game
+    args:
+      game: gow_ragnarok
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: gow_ragnarok
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: gow_ragnarok
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'God of War Ragnarök на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 9 ГБ,
+    1440p — 10 ГБ, 2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GTA5-ENHANCED-HIGH
+  name: 'GTA V Enhanced: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#gta5_enhanced
+  goal:
+    predicate: runs_game
+    args:
+      game: gta5_enhanced
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: gta5_enhanced
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: gta5_enhanced
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'GTA V Enhanced на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GTA5-ENHANCED-MEDIUM
+  name: 'GTA V Enhanced: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#gta5_enhanced
+  goal:
+    predicate: runs_game
+    args:
+      game: gta5_enhanced
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: gta5_enhanced
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: gta5_enhanced
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'GTA V Enhanced на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p
+    — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-GTA5-ENHANCED-ULTRA
+  name: 'GTA V Enhanced: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#gta5_enhanced
+  goal:
+    predicate: runs_game
+    args:
+      game: gta5_enhanced
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: gta5_enhanced
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: gta5_enhanced
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'GTA V Enhanced на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-HOGWARTS-LEGACY-HIGH
+  name: 'Hogwarts Legacy: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#hogwarts_legacy
+  goal:
+    predicate: runs_game
+    args:
+      game: hogwarts_legacy
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: hogwarts_legacy
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: hogwarts_legacy
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Hogwarts Legacy на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ, 1440p
+    — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-HOGWARTS-LEGACY-MEDIUM
+  name: 'Hogwarts Legacy: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#hogwarts_legacy
+  goal:
+    predicate: runs_game
+    args:
+      game: hogwarts_legacy
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: hogwarts_legacy
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: hogwarts_legacy
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Hogwarts Legacy на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5 ГБ,
+    1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-HOGWARTS-LEGACY-ULTRA
+  name: 'Hogwarts Legacy: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#hogwarts_legacy
+  goal:
+    predicate: runs_game
+    args:
+      game: hogwarts_legacy
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: hogwarts_legacy
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: hogwarts_legacy
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Hogwarts Legacy на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ, 1440p
+    — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-HORIZON-FW-HIGH
+  name: 'Horizon Forbidden West: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#horizon_fw
+  goal:
+    predicate: runs_game
+    args:
+      game: horizon_fw
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: horizon_fw
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: horizon_fw
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Horizon Forbidden West на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 7
+    ГБ, 1440p — 8 ГБ, 2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-HORIZON-FW-MEDIUM
+  name: 'Horizon Forbidden West: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#horizon_fw
+  goal:
+    predicate: runs_game
+    args:
+      game: horizon_fw
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: horizon_fw
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: horizon_fw
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Horizon Forbidden West на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5,5
+    ГБ, 1440p — 6,5 ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-HORIZON-FW-ULTRA
+  name: 'Horizon Forbidden West: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#horizon_fw
+  goal:
+    predicate: runs_game
+    args:
+      game: horizon_fw
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: horizon_fw
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: horizon_fw
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Horizon Forbidden West на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 9
+    ГБ, 1440p — 10 ГБ, 2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-INDIANA-JONES-HIGH
+  name: 'Indiana Jones and the Great Circle: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#indiana_jones
+  goal:
+    predicate: runs_game
+    args:
+      game: indiana_jones
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: indiana_jones
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: indiana_jones
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_rt
+      op: exists
+  explain: 'Indiana Jones and the Great Circle на высоких настройках: FPS не ниже целевого, видеопамяти
+    (1080p — 8 ГБ, 1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ. Игре обязательно нужна видеокарта с трассировкой
+    лучей.'
+- code: GEN-GAME-INDIANA-JONES-MEDIUM
+  name: 'Indiana Jones and the Great Circle: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#indiana_jones
+  goal:
+    predicate: runs_game
+    args:
+      game: indiana_jones
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: indiana_jones
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: indiana_jones
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_rt
+      op: exists
+  explain: 'Indiana Jones and the Great Circle на средних настройках: FPS не ниже целевого, видеопамяти
+    (1080p — 6,5 ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ. Игре обязательно нужна видеокарта с
+    трассировкой лучей.'
+- code: GEN-GAME-INDIANA-JONES-ULTRA
+  name: 'Indiana Jones and the Great Circle: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#indiana_jones
+  goal:
+    predicate: runs_game
+    args:
+      game: indiana_jones
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: indiana_jones
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: indiana_jones
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_rt
+      op: exists
+  explain: 'Indiana Jones and the Great Circle на ультра настройках: FPS не ниже целевого, видеопамяти
+    (1080p — 10 ГБ, 1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ. Игре обязательно нужна видеокарта
+    с трассировкой лучей.'
+- code: GEN-GAME-KCD2-HIGH
+  name: 'Kingdom Come: Deliverance II: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#kcd2
+  goal:
+    predicate: runs_game
+    args:
+      game: kcd2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: kcd2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: kcd2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Kingdom Come: Deliverance II на высоких настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 6 ГБ, 1440p — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-KCD2-MEDIUM
+  name: 'Kingdom Come: Deliverance II: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#kcd2
+  goal:
+    predicate: runs_game
+    args:
+      game: kcd2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: kcd2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: kcd2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Kingdom Come: Deliverance II на средних настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 5 ГБ, 1440p — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-KCD2-ULTRA
+  name: 'Kingdom Come: Deliverance II: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#kcd2
+  goal:
+    predicate: runs_game
+    args:
+      game: kcd2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: kcd2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: kcd2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Kingdom Come: Deliverance II на ультра настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 7,5 ГБ, 1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-LOL-HIGH
+  name: 'League of Legends: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#lol
+  goal:
+    predicate: runs_game
+    args:
+      game: lol
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: lol
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: lol
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'League of Legends на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 2 ГБ,
+    1440p — 2,5 ГБ, 2160p — 3 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-LOL-MEDIUM
+  name: 'League of Legends: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#lol
+  goal:
+    predicate: runs_game
+    args:
+      game: lol
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: lol
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: lol
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'League of Legends на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 1,5 ГБ,
+    1440p — 2 ГБ, 2160p — 2 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-LOL-ULTRA
+  name: 'League of Legends: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#lol
+  goal:
+    predicate: runs_game
+    args:
+      game: lol
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: lol
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: lol
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'League of Legends на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 2,5 ГБ,
+    1440p — 3 ГБ, 2160p — 3,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-MARVEL-RIVALS-HIGH
+  name: 'Marvel Rivals: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#marvel_rivals
+  goal:
+    predicate: runs_game
+    args:
+      game: marvel_rivals
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: marvel_rivals
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: marvel_rivals
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Marvel Rivals на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MARVEL-RIVALS-MEDIUM
+  name: 'Marvel Rivals: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#marvel_rivals
+  goal:
+    predicate: runs_game
+    args:
+      game: marvel_rivals
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: marvel_rivals
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: marvel_rivals
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Marvel Rivals на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MARVEL-RIVALS-ULTRA
+  name: 'Marvel Rivals: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#marvel_rivals
+  goal:
+    predicate: runs_game
+    args:
+      game: marvel_rivals
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: marvel_rivals
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: marvel_rivals
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Marvel Rivals на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ, 1440p
+    — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MH-WILDS-HIGH
+  name: 'Monster Hunter Wilds: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#mh_wilds
+  goal:
+    predicate: runs_game
+    args:
+      game: mh_wilds
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: mh_wilds
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: mh_wilds
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Monster Hunter Wilds на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ,
+    1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MH-WILDS-MEDIUM
+  name: 'Monster Hunter Wilds: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#mh_wilds
+  goal:
+    predicate: runs_game
+    args:
+      game: mh_wilds
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: mh_wilds
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: mh_wilds
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Monster Hunter Wilds на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5
+    ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MH-WILDS-ULTRA
+  name: 'Monster Hunter Wilds: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#mh_wilds
+  goal:
+    predicate: runs_game
+    args:
+      game: mh_wilds
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: mh_wilds
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: mh_wilds
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Monster Hunter Wilds на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ,
+    1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MINECRAFT-SHADERS-HIGH
+  name: 'Minecraft (с шейдерами): высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#minecraft_shaders
+  goal:
+    predicate: runs_game
+    args:
+      game: minecraft_shaders
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: minecraft_shaders
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: minecraft_shaders
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Minecraft (с шейдерами) на высоких настройках: FPS не ниже целевого, видеопамяти (1080p —
+    4 ГБ, 1440p — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MINECRAFT-SHADERS-MEDIUM
+  name: 'Minecraft (с шейдерами): средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#minecraft_shaders
+  goal:
+    predicate: runs_game
+    args:
+      game: minecraft_shaders
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: minecraft_shaders
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: minecraft_shaders
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Minecraft (с шейдерами) на средних настройках: FPS не ниже целевого, видеопамяти (1080p —
+    3 ГБ, 1440p — 3,5 ГБ, 2160p — 4,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MINECRAFT-SHADERS-ULTRA
+  name: 'Minecraft (с шейдерами): ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#minecraft_shaders
+  goal:
+    predicate: runs_game
+    args:
+      game: minecraft_shaders
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: minecraft_shaders
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: minecraft_shaders
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Minecraft (с шейдерами) на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5
+    ГБ, 1440p — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-MIR-TANKOV-HIGH
+  name: 'Мир танков: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#mir_tankov
+  goal:
+    predicate: runs_game
+    args:
+      game: mir_tankov
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: mir_tankov
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: mir_tankov
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Мир танков на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p —
+    4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-MIR-TANKOV-MEDIUM
+  name: 'Мир танков: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#mir_tankov
+  goal:
+    predicate: runs_game
+    args:
+      game: mir_tankov
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: mir_tankov
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: mir_tankov
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Мир танков на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p —
+    3,5 ГБ, 2160p — 4,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-MIR-TANKOV-ULTRA
+  name: 'Мир танков: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#mir_tankov
+  goal:
+    predicate: runs_game
+    args:
+      game: mir_tankov
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: mir_tankov
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: mir_tankov
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Мир танков на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p —
+    6 ГБ, 2160p — 7 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-MSFS2024-HIGH
+  name: 'Microsoft Flight Simulator 2024: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#msfs2024
+  goal:
+    predicate: runs_game
+    args:
+      game: msfs2024
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: msfs2024
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: msfs2024
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: 'Microsoft Flight Simulator 2024 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 8 ГБ, 1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 32 ГБ.'
+- code: GEN-GAME-MSFS2024-MEDIUM
+  name: 'Microsoft Flight Simulator 2024: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#msfs2024
+  goal:
+    predicate: runs_game
+    args:
+      game: msfs2024
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: msfs2024
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: msfs2024
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: 'Microsoft Flight Simulator 2024 на средних настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 6,5 ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 32 ГБ.'
+- code: GEN-GAME-MSFS2024-ULTRA
+  name: 'Microsoft Flight Simulator 2024: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#msfs2024
+  goal:
+    predicate: runs_game
+    args:
+      game: msfs2024
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: msfs2024
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: msfs2024
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: 'Microsoft Flight Simulator 2024 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p
+    — 10 ГБ, 1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 32 ГБ.'
+- code: GEN-GAME-OVERWATCH2-HIGH
+  name: 'Overwatch 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#overwatch2
+  goal:
+    predicate: runs_game
+    args:
+      game: overwatch2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: overwatch2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: overwatch2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Overwatch 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p
+    — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-OVERWATCH2-MEDIUM
+  name: 'Overwatch 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#overwatch2
+  goal:
+    predicate: runs_game
+    args:
+      game: overwatch2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: overwatch2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: overwatch2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Overwatch 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p
+    — 3,5 ГБ, 2160p — 4,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-OVERWATCH2-ULTRA
+  name: 'Overwatch 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#overwatch2
+  goal:
+    predicate: runs_game
+    args:
+      game: overwatch2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: overwatch2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: overwatch2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Overwatch 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p —
+    6 ГБ, 2160p — 7 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-POE2-HIGH
+  name: 'Path of Exile 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#poe2
+  goal:
+    predicate: runs_game
+    args:
+      game: poe2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: poe2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: poe2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Path of Exile 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p
+    — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-POE2-MEDIUM
+  name: 'Path of Exile 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#poe2
+  goal:
+    predicate: runs_game
+    args:
+      game: poe2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: poe2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: poe2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Path of Exile 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p
+    — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-POE2-ULTRA
+  name: 'Path of Exile 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#poe2
+  goal:
+    predicate: runs_game
+    args:
+      game: poe2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: poe2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: poe2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Path of Exile 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p
+    — 7 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-PUBG-HIGH
+  name: 'PUBG: Battlegrounds: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#pubg
+  goal:
+    predicate: runs_game
+    args:
+      game: pubg
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: pubg
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: pubg
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'PUBG: Battlegrounds на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ,
+    1440p — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-PUBG-MEDIUM
+  name: 'PUBG: Battlegrounds: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#pubg
+  goal:
+    predicate: runs_game
+    args:
+      game: pubg
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: pubg
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: pubg
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'PUBG: Battlegrounds на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ,
+    1440p — 3,5 ГБ, 2160p — 4,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-PUBG-ULTRA
+  name: 'PUBG: Battlegrounds: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#pubg
+  goal:
+    predicate: runs_game
+    args:
+      game: pubg
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: pubg
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: pubg
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'PUBG: Battlegrounds на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ,
+    1440p — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-R6-SIEGE-X-HIGH
+  name: 'Rainbow Six Siege X: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#r6_siege_x
+  goal:
+    predicate: runs_game
+    args:
+      game: r6_siege_x
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: r6_siege_x
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: r6_siege_x
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Rainbow Six Siege X на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ,
+    1440p — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-R6-SIEGE-X-MEDIUM
+  name: 'Rainbow Six Siege X: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#r6_siege_x
+  goal:
+    predicate: runs_game
+    args:
+      game: r6_siege_x
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: r6_siege_x
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: r6_siege_x
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Rainbow Six Siege X на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ,
+    1440p — 3,5 ГБ, 2160p — 4,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-R6-SIEGE-X-ULTRA
+  name: 'Rainbow Six Siege X: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#r6_siege_x
+  goal:
+    predicate: runs_game
+    args:
+      game: r6_siege_x
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: r6_siege_x
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: r6_siege_x
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Rainbow Six Siege X на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ,
+    1440p — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-RDR2-HIGH
+  name: 'Red Dead Redemption 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#rdr2
+  goal:
+    predicate: runs_game
+    args:
+      game: rdr2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: rdr2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: rdr2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Red Dead Redemption 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6
+    ГБ, 1440p — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-RDR2-MEDIUM
+  name: 'Red Dead Redemption 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#rdr2
+  goal:
+    predicate: runs_game
+    args:
+      game: rdr2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: rdr2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: rdr2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Red Dead Redemption 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5
+    ГБ, 1440p — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-RDR2-ULTRA
+  name: 'Red Dead Redemption 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#rdr2
+  goal:
+    predicate: runs_game
+    args:
+      game: rdr2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: rdr2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: rdr2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Red Dead Redemption 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5
+    ГБ, 1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-RE4-HIGH
+  name: 'Resident Evil 4: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#re4
+  goal:
+    predicate: runs_game
+    args:
+      game: re4
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: re4
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: re4
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Resident Evil 4 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ, 1440p
+    — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-RE4-MEDIUM
+  name: 'Resident Evil 4: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#re4
+  goal:
+    predicate: runs_game
+    args:
+      game: re4
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: re4
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: re4
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Resident Evil 4 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5 ГБ,
+    1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-RE4-ULTRA
+  name: 'Resident Evil 4: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#re4
+  goal:
+    predicate: runs_game
+    args:
+      game: re4
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: re4
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: re4
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Resident Evil 4 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ, 1440p
+    — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-ROCKET-LEAGUE-HIGH
+  name: 'Rocket League: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#rocket_league
+  goal:
+    predicate: runs_game
+    args:
+      game: rocket_league
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: rocket_league
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: rocket_league
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Rocket League на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 2 ГБ, 1440p
+    — 2,5 ГБ, 2160p — 3 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-ROCKET-LEAGUE-MEDIUM
+  name: 'Rocket League: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#rocket_league
+  goal:
+    predicate: runs_game
+    args:
+      game: rocket_league
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: rocket_league
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: rocket_league
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Rocket League на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 1,5 ГБ, 1440p
+    — 2 ГБ, 2160p — 2 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-ROCKET-LEAGUE-ULTRA
+  name: 'Rocket League: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#rocket_league
+  goal:
+    predicate: runs_game
+    args:
+      game: rocket_league
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: rocket_league
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: rocket_league
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Rocket League на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 2,5 ГБ, 1440p
+    — 3 ГБ, 2160p — 3,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-SILENT-HILL-2-HIGH
+  name: 'Silent Hill 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#silent_hill_2
+  goal:
+    predicate: runs_game
+    args:
+      game: silent_hill_2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: silent_hill_2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: silent_hill_2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Silent Hill 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ, 1440p
+    — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SILENT-HILL-2-MEDIUM
+  name: 'Silent Hill 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#silent_hill_2
+  goal:
+    predicate: runs_game
+    args:
+      game: silent_hill_2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: silent_hill_2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: silent_hill_2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Silent Hill 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5 ГБ, 1440p
+    — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SILENT-HILL-2-ULTRA
+  name: 'Silent Hill 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#silent_hill_2
+  goal:
+    predicate: runs_game
+    args:
+      game: silent_hill_2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: silent_hill_2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: silent_hill_2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Silent Hill 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ, 1440p
+    — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SMUTA-HIGH
+  name: 'Смута: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#smuta
+  goal:
+    predicate: runs_game
+    args:
+      game: smuta
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: smuta
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: smuta
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Смута на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 7 ГБ, 1440p — 8 ГБ,
+    2160p — 10 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SMUTA-MEDIUM
+  name: 'Смута: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#smuta
+  goal:
+    predicate: runs_game
+    args:
+      game: smuta
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: smuta
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: smuta
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Смута на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5,5 ГБ, 1440p — 6,5
+    ГБ, 2160p — 8 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SMUTA-ULTRA
+  name: 'Смута: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#smuta
+  goal:
+    predicate: runs_game
+    args:
+      game: smuta
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: smuta
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: smuta
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Смута на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 9 ГБ, 1440p — 10 ГБ,
+    2160p — 12 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SPIDER-MAN-2-HIGH
+  name: 'Marvel''s Spider-Man 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#spider_man_2
+  goal:
+    predicate: runs_game
+    args:
+      game: spider_man_2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: spider_man_2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: spider_man_2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Marvel''s Spider-Man 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8
+    ГБ, 1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SPIDER-MAN-2-MEDIUM
+  name: 'Marvel''s Spider-Man 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#spider_man_2
+  goal:
+    predicate: runs_game
+    args:
+      game: spider_man_2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: spider_man_2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: spider_man_2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Marvel''s Spider-Man 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5
+    ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-SPIDER-MAN-2-ULTRA
+  name: 'Marvel''s Spider-Man 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#spider_man_2
+  goal:
+    predicate: runs_game
+    args:
+      game: spider_man_2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: spider_man_2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: spider_man_2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Marvel''s Spider-Man 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10
+    ГБ, 1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STALKER2-HIGH
+  name: 'S.T.A.L.K.E.R. 2: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#stalker2
+  goal:
+    predicate: runs_game
+    args:
+      game: stalker2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: stalker2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: stalker2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'S.T.A.L.K.E.R. 2 на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ, 1440p
+    — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STALKER2-MEDIUM
+  name: 'S.T.A.L.K.E.R. 2: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#stalker2
+  goal:
+    predicate: runs_game
+    args:
+      game: stalker2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: stalker2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: stalker2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'S.T.A.L.K.E.R. 2 на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5 ГБ,
+    1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STALKER2-ULTRA
+  name: 'S.T.A.L.K.E.R. 2: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#stalker2
+  goal:
+    predicate: runs_game
+    args:
+      game: stalker2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: stalker2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: stalker2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'S.T.A.L.K.E.R. 2 на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ, 1440p
+    — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STAR-WARS-OUTLAWS-HIGH
+  name: 'Star Wars Outlaws: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#star_wars_outlaws
+  goal:
+    predicate: runs_game
+    args:
+      game: star_wars_outlaws
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: star_wars_outlaws
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: star_wars_outlaws
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Star Wars Outlaws на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8 ГБ,
+    1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STAR-WARS-OUTLAWS-MEDIUM
+  name: 'Star Wars Outlaws: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#star_wars_outlaws
+  goal:
+    predicate: runs_game
+    args:
+      game: star_wars_outlaws
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: star_wars_outlaws
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: star_wars_outlaws
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Star Wars Outlaws на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5 ГБ,
+    1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STAR-WARS-OUTLAWS-ULTRA
+  name: 'Star Wars Outlaws: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#star_wars_outlaws
+  goal:
+    predicate: runs_game
+    args:
+      game: star_wars_outlaws
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: star_wars_outlaws
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: star_wars_outlaws
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Star Wars Outlaws на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10 ГБ,
+    1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STARFIELD-HIGH
+  name: 'Starfield: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#starfield
+  goal:
+    predicate: runs_game
+    args:
+      game: starfield
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: starfield
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: starfield
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Starfield на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ, 1440p —
+    7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STARFIELD-MEDIUM
+  name: 'Starfield: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#starfield
+  goal:
+    predicate: runs_game
+    args:
+      game: starfield
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: starfield
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: starfield
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Starfield на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p —
+    5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-STARFIELD-ULTRA
+  name: 'Starfield: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#starfield
+  goal:
+    predicate: runs_game
+    args:
+      game: starfield
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: starfield
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: starfield
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Starfield на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ, 1440p —
+    8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-TARKOV-HIGH
+  name: 'Escape from Tarkov: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tarkov
+  goal:
+    predicate: runs_game
+    args:
+      game: tarkov
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tarkov
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tarkov
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: 'Escape from Tarkov на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 6 ГБ,
+    1440p — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 32 ГБ.'
+- code: GEN-GAME-TARKOV-MEDIUM
+  name: 'Escape from Tarkov: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tarkov
+  goal:
+    predicate: runs_game
+    args:
+      game: tarkov
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tarkov
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tarkov
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: 'Escape from Tarkov на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ,
+    1440p — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 32 ГБ.'
+- code: GEN-GAME-TARKOV-ULTRA
+  name: 'Escape from Tarkov: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tarkov
+  goal:
+    predicate: runs_game
+    args:
+      game: tarkov
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tarkov
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tarkov
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: 'Escape from Tarkov на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 7,5 ГБ,
+    1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 32 ГБ.'
+- code: GEN-GAME-TLOU2-HIGH
+  name: 'The Last of Us Part II: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tlou2
+  goal:
+    predicate: runs_game
+    args:
+      game: tlou2
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tlou2
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tlou2
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'The Last of Us Part II на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 8
+    ГБ, 1440p — 9 ГБ, 2160p — 11 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-TLOU2-MEDIUM
+  name: 'The Last of Us Part II: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tlou2
+  goal:
+    predicate: runs_game
+    args:
+      game: tlou2
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tlou2
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tlou2
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'The Last of Us Part II на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 6,5
+    ГБ, 1440p — 7,5 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-TLOU2-ULTRA
+  name: 'The Last of Us Part II: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tlou2
+  goal:
+    predicate: runs_game
+    args:
+      game: tlou2
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tlou2
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tlou2
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'The Last of Us Part II на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 10
+    ГБ, 1440p — 11,5 ГБ, 2160p — 14 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-TW-WARHAMMER3-HIGH
+  name: 'Total War: Warhammer III: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tw_warhammer3
+  goal:
+    predicate: runs_game
+    args:
+      game: tw_warhammer3
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tw_warhammer3
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tw_warhammer3
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Total War: Warhammer III на высоких настройках: FPS не ниже целевого, видеопамяти (1080p —
+    6 ГБ, 1440p — 7 ГБ, 2160p — 8,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-TW-WARHAMMER3-MEDIUM
+  name: 'Total War: Warhammer III: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tw_warhammer3
+  goal:
+    predicate: runs_game
+    args:
+      game: tw_warhammer3
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tw_warhammer3
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tw_warhammer3
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Total War: Warhammer III на средних настройках: FPS не ниже целевого, видеопамяти (1080p —
+    5 ГБ, 1440p — 5,5 ГБ, 2160p — 6,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-TW-WARHAMMER3-ULTRA
+  name: 'Total War: Warhammer III: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#tw_warhammer3
+  goal:
+    predicate: runs_game
+    args:
+      game: tw_warhammer3
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: tw_warhammer3
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: tw_warhammer3
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'Total War: Warhammer III на ультра настройках: FPS не ниже целевого, видеопамяти (1080p —
+    7,5 ГБ, 1440p — 8,5 ГБ, 2160p — 10,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-VALORANT-HIGH
+  name: 'Valorant: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#valorant
+  goal:
+    predicate: runs_game
+    args:
+      game: valorant
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: valorant
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: valorant
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Valorant на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 2 ГБ, 1440p — 2,5
+    ГБ, 2160p — 3 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-VALORANT-MEDIUM
+  name: 'Valorant: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#valorant
+  goal:
+    predicate: runs_game
+    args:
+      game: valorant
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: valorant
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: valorant
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Valorant на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 1,5 ГБ, 1440p —
+    2 ГБ, 2160p — 2 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-VALORANT-ULTRA
+  name: 'Valorant: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#valorant
+  goal:
+    predicate: runs_game
+    args:
+      game: valorant
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: valorant
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: valorant
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Valorant на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 2,5 ГБ, 1440p —
+    3 ГБ, 2160p — 3,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-WARFRAME-HIGH
+  name: 'Warframe: высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#warframe
+  goal:
+    predicate: runs_game
+    args:
+      game: warframe
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: warframe
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: warframe
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Warframe на высоких настройках: FPS не ниже целевого, видеопамяти (1080p — 4 ГБ, 1440p — 4,5
+    ГБ, 2160p — 5,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-WARFRAME-MEDIUM
+  name: 'Warframe: средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#warframe
+  goal:
+    predicate: runs_game
+    args:
+      game: warframe
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: warframe
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: warframe
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Warframe на средних настройках: FPS не ниже целевого, видеопамяти (1080p — 3 ГБ, 1440p — 3,5
+    ГБ, 2160p — 4,5 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-WARFRAME-ULTRA
+  name: 'Warframe: ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#warframe
+  goal:
+    predicate: runs_game
+    args:
+      game: warframe
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: warframe
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: warframe
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+  explain: 'Warframe на ультра настройках: FPS не ниже целевого, видеопамяти (1080p — 5 ГБ, 1440p — 6
+    ГБ, 2160p — 7 ГБ) и ОЗУ от 8 ГБ.'
+- code: GEN-GAME-WITCHER3-NG-HIGH
+  name: 'The Witcher 3 (Next-Gen): высоких настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#witcher3_ng
+  goal:
+    predicate: runs_game
+    args:
+      game: witcher3_ng
+      preset: high
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: witcher3_ng
+          preset: high
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: witcher3_ng
+          preset: high
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'The Witcher 3 (Next-Gen) на высоких настройках: FPS не ниже целевого, видеопамяти (1080p —
+    5 ГБ, 1440p — 6 ГБ, 2160p — 7 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-WITCHER3-NG-MEDIUM
+  name: 'The Witcher 3 (Next-Gen): средних настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#witcher3_ng
+  goal:
+    predicate: runs_game
+    args:
+      game: witcher3_ng
+      preset: medium
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: witcher3_ng
+          preset: medium
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: witcher3_ng
+          preset: medium
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'The Witcher 3 (Next-Gen) на средних настройках: FPS не ниже целевого, видеопамяти (1080p —
+    4 ГБ, 1440p — 4,5 ГБ, 2160p — 5,5 ГБ) и ОЗУ от 16 ГБ.'
+- code: GEN-GAME-WITCHER3-NG-ULTRA
+  name: 'The Witcher 3 (Next-Gen): ультра настройки'
+  kind: goal
+  group: gen_game
+  priority: 100
+  cf: 1.0
+  origin: generated
+  source: tables/games.yaml#witcher3_ng
+  goal:
+    predicate: runs_game
+    args:
+      game: witcher3_ng
+      preset: ultra
+  when:
+    all:
+    - goal:
+        predicate: fps_at_least
+        args:
+          game: witcher3_ng
+          preset: ultra
+          resolution: $resolution
+          fps: $target_fps
+    - goal:
+        predicate: vram_enough
+        args:
+          game: witcher3_ng
+          preset: ultra
+          resolution: $resolution
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: 'The Witcher 3 (Next-Gen) на ультра настройках: FPS не ниже целевого, видеопамяти (1080p —
+    6 ГБ, 1440p — 7 ГБ, 2160p — 9 ГБ) и ОЗУ от 16 ГБ.'

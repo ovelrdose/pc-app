@@ -1,0 +1,7 @@
+# Сокеты процессоров. Чипсеты сокета перечислены в chipsets.yaml (поле socket).
+# perspective — платформа ещё получит новые процессоры (задел на будущее).
+sockets:
+  - { id: AM4, vendor: amd, mem_types: [DDR4], perspective: false, release_year: 2017 }
+  - { id: AM5, vendor: amd, mem_types: [DDR5], perspective: true, release_year: 2022 }
+  - { id: LGA1700, vendor: intel, mem_types: [DDR4, DDR5], perspective: false, release_year: 2021 }
+  - { id: LGA1851, vendor: intel, mem_types: [DDR5], perspective: false, release_year: 2024 }

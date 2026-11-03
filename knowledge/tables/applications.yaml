@@ -1,0 +1,165 @@
+# Программы и требования по уровням работы: basic — освоение и небольшие проекты, pro — работа
+# профессионально. vram_min_gb = 0 — хватит встроенной графики.
+# task / ref_minutes — типовая операция и её время на эталонной системе (Ryzen 5 7600 + RTX 4060);
+# min_index — минимальный индекс нагрузки программы (см. workload) для уровня, эталон = 100.
+applications:
+  - id: blender
+    title: "Blender"
+    scenario: render_3d
+    workload: gpu
+    task: "Рендер сцены Classroom (Cycles)"
+    ref_minutes: 4.0
+    basic: { ram_min_gb: 16, vram_min_gb: 8, cpu_cores_min: 6, min_index: 70 }
+    pro: { ram_min_gb: 64, vram_min_gb: 16, cpu_cores_min: 12, min_index: 130 }
+  - id: davinci_resolve
+    title: "DaVinci Resolve"
+    scenario: video_editing
+    workload: gpu
+    task: "Экспорт 10-минутного 4K-ролика"
+    ref_minutes: 9.0
+    basic: { ram_min_gb: 16, vram_min_gb: 8, cpu_cores_min: 6, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 12, cpu_cores_min: 8, min_index: 110 }
+  - id: premiere_pro
+    title: "Adobe Premiere Pro"
+    scenario: video_editing
+    workload: mixed
+    task: "Экспорт 10-минутного 4K-ролика"
+    ref_minutes: 11.0
+    basic: { ram_min_gb: 16, vram_min_gb: 4, cpu_cores_min: 6, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 8, min_index: 110 }
+  - id: after_effects
+    title: "Adobe After Effects"
+    scenario: video_editing
+    workload: cpu_multi
+    task: "Рендер минутной композиции с эффектами"
+    ref_minutes: 14.0
+    basic: { ram_min_gb: 16, vram_min_gb: 4, cpu_cores_min: 6, min_index: 70 }
+    pro: { ram_min_gb: 64, vram_min_gb: 8, cpu_cores_min: 12, min_index: 130 }
+  - id: photoshop
+    title: "Adobe Photoshop"
+    scenario: photo_cad
+    workload: cpu_single
+    task: "Пакет из 50 фильтров на большом снимке"
+    ref_minutes: 3.0
+    basic: { ram_min_gb: 16, vram_min_gb: 2, cpu_cores_min: 4, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 8, min_index: 100 }
+  - id: lightroom
+    title: "Adobe Lightroom Classic"
+    scenario: photo_cad
+    workload: mixed
+    task: "Экспорт 500 RAW-снимков"
+    ref_minutes: 8.0
+    basic: { ram_min_gb: 16, vram_min_gb: 4, cpu_cores_min: 6, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 8, min_index: 100 }
+  - id: autocad
+    title: "AutoCAD"
+    scenario: photo_cad
+    workload: cpu_single
+    task: "Регенерация большого чертежа"
+    ref_minutes: 1.5
+    basic: { ram_min_gb: 8, vram_min_gb: 2, cpu_cores_min: 4, min_index: 60 }
+    pro: { ram_min_gb: 16, vram_min_gb: 6, cpu_cores_min: 6, min_index: 100 }
+  - id: solidworks
+    title: "SolidWorks"
+    scenario: photo_cad
+    workload: cpu_single
+    task: "Перестроение сборки из 500 деталей"
+    ref_minutes: 2.5
+    basic: { ram_min_gb: 16, vram_min_gb: 4, cpu_cores_min: 4, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 6, min_index: 100 }
+  - id: max_3ds
+    title: "3ds Max (Corona/V-Ray)"
+    scenario: render_3d
+    workload: cpu_multi
+    task: "Рендер интерьера (Corona)"
+    ref_minutes: 20.0
+    basic: { ram_min_gb: 16, vram_min_gb: 6, cpu_cores_min: 8, min_index: 70 }
+    pro: { ram_min_gb: 64, vram_min_gb: 12, cpu_cores_min: 16, min_index: 130 }
+  - id: cinema4d
+    title: "Cinema 4D (Redshift)"
+    scenario: render_3d
+    workload: gpu
+    task: "Рендер сцены (Redshift)"
+    ref_minutes: 6.0
+    basic: { ram_min_gb: 16, vram_min_gb: 8, cpu_cores_min: 6, min_index: 70 }
+    pro: { ram_min_gb: 64, vram_min_gb: 16, cpu_cores_min: 12, min_index: 130 }
+  - id: unreal_engine_5
+    title: "Unreal Engine 5"
+    scenario: render_3d
+    workload: mixed
+    task: "Компиляция шейдеров проекта"
+    ref_minutes: 15.0
+    basic: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 8, min_index: 70 }
+    pro: { ram_min_gb: 64, vram_min_gb: 16, cpu_cores_min: 16, min_index: 130 }
+  - id: unity
+    title: "Unity"
+    scenario: programming
+    workload: mixed
+    task: "Сборка проекта"
+    ref_minutes: 6.0
+    basic: { ram_min_gb: 16, vram_min_gb: 4, cpu_cores_min: 6, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 8, min_index: 100 }
+  - id: visual_studio
+    title: "Visual Studio (сборка C++)"
+    scenario: programming
+    workload: cpu_multi
+    task: "Сборка большого C++ проекта"
+    ref_minutes: 12.0
+    basic: { ram_min_gb: 16, vram_min_gb: 0, cpu_cores_min: 6, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 0, cpu_cores_min: 12, min_index: 110 }
+  - id: intellij
+    title: "IntelliJ IDEA / Android Studio"
+    scenario: programming
+    workload: mixed
+    task: "Сборка Gradle-проекта"
+    ref_minutes: 4.0
+    basic: { ram_min_gb: 16, vram_min_gb: 0, cpu_cores_min: 4, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 0, cpu_cores_min: 8, min_index: 100 }
+  - id: docker_vm
+    title: "Docker и виртуальные машины"
+    scenario: programming
+    workload: cpu_multi
+    task: "Сборка образа и запуск четырёх ВМ"
+    ref_minutes: 5.0
+    basic: { ram_min_gb: 32, vram_min_gb: 0, cpu_cores_min: 8, min_index: 60 }
+    pro: { ram_min_gb: 64, vram_min_gb: 0, cpu_cores_min: 12, min_index: 110 }
+  - id: obs
+    title: "OBS Studio"
+    scenario: streaming
+    workload: gpu
+    task: "Кодирование 10 минут видео 1080p60"
+    ref_minutes: 6.0
+    basic: { ram_min_gb: 16, vram_min_gb: 6, cpu_cores_min: 6, min_index: 60 }
+    pro: { ram_min_gb: 32, vram_min_gb: 8, cpu_cores_min: 8, min_index: 100 }
+  - id: office
+    title: "Microsoft Office + браузер"
+    scenario: office
+    workload: cpu_single
+    task: "Пересчёт большой таблицы Excel"
+    ref_minutes: 0.5
+    basic: { ram_min_gb: 8, vram_min_gb: 0, cpu_cores_min: 4, min_index: 50 }
+    pro: { ram_min_gb: 16, vram_min_gb: 0, cpu_cores_min: 6, min_index: 80 }
+  - id: onec
+    title: "1С:Предприятие"
+    scenario: office
+    workload: cpu_single
+    task: "Закрытие месяца в типовой базе"
+    ref_minutes: 6.0
+    basic: { ram_min_gb: 8, vram_min_gb: 0, cpu_cores_min: 4, min_index: 50 }
+    pro: { ram_min_gb: 16, vram_min_gb: 0, cpu_cores_min: 6, min_index: 90 }
+  - id: stable_diffusion
+    title: "Stable Diffusion (ComfyUI)"
+    scenario: render_3d
+    workload: gpu
+    task: "Генерация 20 изображений 1024×1024"
+    ref_minutes: 4.0
+    basic: { ram_min_gb: 16, vram_min_gb: 8, cpu_cores_min: 6, min_index: 70 }
+    pro: { ram_min_gb: 32, vram_min_gb: 16, cpu_cores_min: 8, min_index: 130 }
+  - id: local_llm
+    title: "Локальные LLM (Ollama)"
+    scenario: programming
+    workload: gpu
+    task: "Ответ на 1000 токенов (модель 8B)"
+    ref_minutes: 0.5
+    basic: { ram_min_gb: 32, vram_min_gb: 12, cpu_cores_min: 8, min_index: 70 }
+    pro: { ram_min_gb: 64, vram_min_gb: 16, cpu_cores_min: 8, min_index: 130 }

@@ -1,0 +1,3216 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Сборщик — подбор комплектующих для ПК",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/healthz": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Процесс жив",
+        "operationId": "healthz_api_v1_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/readyz": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Приложение готово: БД доступна",
+        "operationId": "readyz_api_v1_readyz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/components": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Каталог комплектующих с фильтрами",
+        "operationId": "list_components_api_v1_components_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Category"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Brand"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Поиск по названию и SKU",
+              "title": "Q"
+            },
+            "description": "Поиск по названию и SKU"
+          },
+          {
+            "name": "in_stock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "In Stock"
+            }
+          },
+          {
+            "name": "min_price_kop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Min Price Kop"
+            }
+          },
+          {
+            "name": "max_price_kop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Max Price Kop"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/components/{component_id}": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Карточка компонента",
+        "operationId": "get_component_api_v1_components__component_id__get",
+        "parameters": [
+          {
+            "name": "component_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Component Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/frames": {
+      "get": {
+        "tags": [
+          "catalog"
+        ],
+        "summary": "Схемы фреймов категорий",
+        "operationId": "get_frames_api_v1_frames_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FrameOut"
+                  },
+                  "type": "array",
+                  "title": "Response Get Frames Api V1 Frames Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/questionnaire": {
+      "get": {
+        "tags": [
+          "consultations"
+        ],
+        "summary": "Вопросы визарда",
+        "operationId": "get_questionnaire_api_v1_questionnaire_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionnaireOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/goals": {
+      "get": {
+        "tags": [
+          "consultations"
+        ],
+        "summary": "Гипотезы, которые можно проверить («потянет ли»)",
+        "operationId": "get_goals_api_v1_goals_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GoalOut"
+                  },
+                  "type": "array",
+                  "title": "Response Get Goals Api V1 Goals Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consultations": {
+      "post": {
+        "tags": [
+          "consultations"
+        ],
+        "summary": "Создать консультацию",
+        "operationId": "create_consultation_api_v1_consultations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsultationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consultations/{consultation_id}": {
+      "get": {
+        "tags": [
+          "consultations"
+        ],
+        "summary": "Консультация и её сборки",
+        "operationId": "get_consultation_api_v1_consultations__consultation_id__get",
+        "parameters": [
+          {
+            "name": "consultation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Consultation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consultations/{consultation_id}/builds": {
+      "post": {
+        "tags": [
+          "consultations"
+        ],
+        "summary": "Запустить подбор: три варианта",
+        "operationId": "run_consultation_api_v1_consultations__consultation_id__builds_post",
+        "parameters": [
+          {
+            "name": "consultation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Consultation Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsultationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consultations/{consultation_id}/infeasible": {
+      "get": {
+        "tags": [
+          "consultations"
+        ],
+        "summary": "Почему ничего не подобралось: что мешает, как ослабить, что можно собрать",
+        "operationId": "get_infeasible_api_v1_consultations__consultation_id__infeasible_get",
+        "parameters": [
+          {
+            "name": "consultation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Consultation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InfeasibleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}": {
+      "get": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Сборка, прогноз и замечания",
+        "operationId": "get_build_api_v1_builds__build_id__get",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Сохранить или переименовать сборку",
+        "operationId": "patch_build_api_v1_builds__build_id__patch",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuildPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}/explanation": {
+      "get": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Почему эта сборка: рассуждение и полезность",
+        "operationId": "get_explanation_api_v1_builds__build_id__explanation_get",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplanationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}/why-not": {
+      "get": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Почему не этот товар",
+        "operationId": "get_why_not_api_v1_builds__build_id__why_not_get",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          },
+          {
+            "name": "component_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Component Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhyNotOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}/alternatives": {
+      "get": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Совместимые замены детали",
+        "operationId": "get_alternatives_api_v1_builds__build_id__alternatives_get",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Category"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlternativeOut"
+                  },
+                  "title": "Response Get Alternatives Api V1 Builds  Build Id  Alternatives Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}/hypotheses": {
+      "post": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Потянет ли: обратный вывод",
+        "operationId": "post_hypothesis_api_v1_builds__build_id__hypotheses_post",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HypothesisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HypothesisOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}/modifications": {
+      "post": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Правка: новая сборка и разница",
+        "operationId": "post_modification_api_v1_builds__build_id__modifications_post",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModificationOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/compare": {
+      "post": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "Сравнение 2–3 сборок",
+        "operationId": "post_compare_api_v1_builds_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompareOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/builds/{build_id}/pdf": {
+      "get": {
+        "tags": [
+          "builds"
+        ],
+        "summary": "PDF: спецификация, обоснование, прогноз",
+        "operationId": "get_pdf_api_v1_builds__build_id__pdf_get",
+        "parameters": [
+          {
+            "name": "build_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Build Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/pdf": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlternativeOut": {
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Component Id"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/WhyNotVerdict"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/ReasonOut"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "can_replace": {
+            "type": "boolean",
+            "title": "Can Replace"
+          },
+          "price_delta_kop": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Delta Kop"
+          },
+          "utility_delta_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utility Delta Pct"
+          },
+          "fps_delta_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fps Delta Pct"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "price_kop": {
+            "type": "integer",
+            "title": "Price Kop"
+          }
+        },
+        "type": "object",
+        "required": [
+          "component_id",
+          "sku",
+          "verdict",
+          "reasons",
+          "can_replace",
+          "price_delta_kop",
+          "utility_delta_pct",
+          "fps_delta_pct",
+          "name",
+          "price_kop"
+        ],
+        "title": "AlternativeOut",
+        "description": "Совместимая замена детали."
+      },
+      "AppOut": {
+        "properties": {
+          "app": {
+            "type": "string",
+            "title": "App"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "task": {
+            "type": "string",
+            "title": "Task"
+          },
+          "minutes": {
+            "type": "number",
+            "title": "Minutes"
+          },
+          "reference_minutes": {
+            "type": "number",
+            "title": "Reference Minutes"
+          },
+          "basic_ok": {
+            "type": "boolean",
+            "title": "Basic Ok"
+          },
+          "pro_ok": {
+            "type": "boolean",
+            "title": "Pro Ok"
+          }
+        },
+        "type": "object",
+        "required": [
+          "app",
+          "title",
+          "task",
+          "minutes",
+          "reference_minutes",
+          "basic_ok",
+          "pro_ok"
+        ],
+        "title": "AppOut",
+        "description": "Прогноз для программы."
+      },
+      "BenchmarkOut": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "estimated": {
+            "type": "boolean",
+            "title": "Estimated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "estimated"
+        ],
+        "title": "BenchmarkOut",
+        "description": "Бенчмарк: значение из карточки или оценка."
+      },
+      "BestEffortOut": {
+        "properties": {
+          "total_price_kop": {
+            "type": "integer",
+            "title": "Total Price Kop"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BuildItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "unmet": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unmet"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_price_kop",
+          "items",
+          "unmet"
+        ],
+        "title": "BestEffortOut",
+        "description": "Лучшая сборка в бюджете без обязательных требований (не сохраняется)."
+      },
+      "BlockingOut": {
+        "properties": {
+          "fact": {
+            "type": "string",
+            "title": "Fact"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/JsonScalar"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/JsonScalar"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Value"
+          },
+          "rules": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rules"
+          },
+          "min_budget_without_rub": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Budget Without Rub"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact",
+          "title",
+          "value",
+          "rules",
+          "min_budget_without_rub"
+        ],
+        "title": "BlockingOut",
+        "description": "Требование, которое делает сборку дороже бюджета."
+      },
+      "BuildDetail": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "tier": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "parent_build_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Build Id"
+          },
+          "total_price_kop": {
+            "type": "integer",
+            "title": "Total Price Kop"
+          },
+          "utility": {
+            "type": "number",
+            "title": "Utility"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BuildItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "is_saved": {
+            "type": "boolean",
+            "title": "Is Saved"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "consultation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Consultation Id"
+          },
+          "kb_version": {
+            "type": "string",
+            "title": "Kb Version"
+          },
+          "catalog_revision": {
+            "type": "integer",
+            "title": "Catalog Revision"
+          },
+          "performance": {
+            "$ref": "#/components/schemas/PerformanceOut"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/IssueOut"
+            },
+            "type": "array",
+            "title": "Issues"
+          },
+          "preferences": {
+            "items": {
+              "$ref": "#/components/schemas/PreferenceOut"
+            },
+            "type": "array",
+            "title": "Preferences"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "tier",
+          "parent_build_id",
+          "total_price_kop",
+          "utility",
+          "items",
+          "title",
+          "is_saved",
+          "created_at",
+          "consultation_id",
+          "kb_version",
+          "catalog_revision",
+          "performance",
+          "issues",
+          "preferences"
+        ],
+        "title": "BuildDetail",
+        "description": "Полная карточка сборки."
+      },
+      "BuildItemOut": {
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "component_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Component Id"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "brand": {
+            "type": "string",
+            "title": "Brand"
+          },
+          "price_kop": {
+            "type": "integer",
+            "title": "Price Kop"
+          },
+          "locked": {
+            "type": "boolean",
+            "title": "Locked"
+          },
+          "owned": {
+            "type": "boolean",
+            "title": "Owned"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "component_id",
+          "sku",
+          "name",
+          "brand",
+          "price_kop",
+          "locked",
+          "owned"
+        ],
+        "title": "BuildItemOut",
+        "description": "Деталь сборки."
+      },
+      "BuildPatch": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "is_saved": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Saved"
+          }
+        },
+        "type": "object",
+        "title": "BuildPatch",
+        "description": "Сохранить или переименовать сборку."
+      },
+      "BuildSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "tier": {
+            "$ref": "#/components/schemas/Tier"
+          },
+          "parent_build_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Build Id"
+          },
+          "total_price_kop": {
+            "type": "integer",
+            "title": "Total Price Kop"
+          },
+          "utility": {
+            "type": "number",
+            "title": "Utility"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BuildItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "is_saved": {
+            "type": "boolean",
+            "title": "Is Saved"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "tier",
+          "parent_build_id",
+          "total_price_kop",
+          "utility",
+          "items",
+          "title",
+          "is_saved",
+          "created_at"
+        ],
+        "title": "BuildSummary",
+        "description": "Краткая карточка сборки."
+      },
+      "Category": {
+        "type": "string",
+        "enum": [
+          "cpu",
+          "motherboard",
+          "ram",
+          "gpu",
+          "ssd",
+          "hdd",
+          "psu",
+          "case",
+          "cpu_cooler",
+          "case_fan"
+        ],
+        "title": "Category",
+        "description": "Категория комплектующего; определяет фрейм."
+      },
+      "CompareOut": {
+        "properties": {
+          "builds": {
+            "items": {
+              "$ref": "#/components/schemas/BuildSummary"
+            },
+            "type": "array",
+            "title": "Builds"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/CompareRowOut"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "games": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/FpsOut"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Games"
+          },
+          "balance": {
+            "items": {
+              "additionalProperties": {
+                "$ref": "#/components/schemas/JsonScalar"
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Balance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "builds",
+          "rows",
+          "games",
+          "balance"
+        ],
+        "title": "CompareOut",
+        "description": "Сравнение сборок."
+      },
+      "CompareRequest": {
+        "properties": {
+          "build_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 2,
+            "title": "Build Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "build_ids"
+        ],
+        "title": "CompareRequest",
+        "description": "Сборки для сравнения."
+      },
+      "CompareRowOut": {
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "items": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/BuildItemOut"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "items"
+        ],
+        "title": "CompareRowOut",
+        "description": "Строка таблицы сравнения: категория и детали каждой сборки."
+      },
+      "ComponentOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "brand": {
+            "type": "string",
+            "title": "Brand"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "price_kop": {
+            "type": "integer",
+            "title": "Price Kop"
+          },
+          "price_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Checked At"
+          },
+          "price_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Note"
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "In Stock"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ComponentStatus"
+          },
+          "status_issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Status Issues"
+          },
+          "specs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Specs"
+          },
+          "perf": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Perf"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "sku",
+          "category",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "price_checked_at",
+          "price_note",
+          "in_stock",
+          "status",
+          "status_issues",
+          "specs",
+          "perf"
+        ],
+        "title": "ComponentOut",
+        "description": "Позиция каталога. `specs` и `perf` описаны схемой фрейма категории (`GET /frames`)."
+      },
+      "ComponentPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ComponentOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "ComponentPage",
+        "description": "Страница списка компонентов."
+      },
+      "ComponentStatus": {
+        "type": "string",
+        "enum": [
+          "active",
+          "incomplete",
+          "needs_kb",
+          "inactive"
+        ],
+        "title": "ComponentStatus",
+        "description": "Статус компонента в каталоге."
+      },
+      "CompromiseOut": {
+        "properties": {
+          "concessions": {
+            "items": {
+              "$ref": "#/components/schemas/ConcessionOut"
+            },
+            "type": "array",
+            "title": "Concessions"
+          },
+          "answers": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Answers",
+            "description": "все изменённые ответы"
+          },
+          "waived": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Waived",
+            "description": "все снятые требования"
+          },
+          "total_price_kop": {
+            "type": "integer",
+            "title": "Total Price Kop"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/BuildItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "concessions",
+          "answers",
+          "waived",
+          "total_price_kop",
+          "items"
+        ],
+        "title": "CompromiseOut",
+        "description": "Сборка в бюджете ценой уступок (не сохраняется: принять — новая консультация)."
+      },
+      "ConcessionOut": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "answers": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Answers",
+            "description": "изменённые ответы"
+          },
+          "waived": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Waived",
+            "description": "снятые требования"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "answers",
+          "waived"
+        ],
+        "title": "ConcessionOut",
+        "description": "Одна уступка компромиссной сборки."
+      },
+      "ConsultationCreate": {
+        "properties": {
+          "answers": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Answers",
+            "description": "id вопроса → ответ (см. GET /questionnaire)"
+          },
+          "owned_component_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Owned Component Ids"
+          },
+          "waived_requirements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Waived Requirements",
+            "description": "требования, от которых клиент отказался (уступки компромиссной сборки)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answers"
+        ],
+        "title": "ConsultationCreate",
+        "description": "Ответы визарда и имеющиеся у клиента детали."
+      },
+      "ConsultationOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "completed",
+              "infeasible"
+            ],
+            "title": "Status"
+          },
+          "answers": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Answers"
+          },
+          "owned": {
+            "items": {
+              "$ref": "#/components/schemas/OwnedComponentOut"
+            },
+            "type": "array",
+            "title": "Owned",
+            "description": "детали, которые уже есть у клиента"
+          },
+          "waived": {
+            "items": {
+              "$ref": "#/components/schemas/WaivedOut"
+            },
+            "type": "array",
+            "title": "Waived",
+            "description": "требования, от которых клиент отказался"
+          },
+          "profile": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/JsonScalar"
+                },
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/JsonScalar"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Profile",
+            "description": "ключевые выводы профилирования (profile.*, req.*)"
+          },
+          "kb_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kb Version"
+          },
+          "catalog_revision": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Catalog Revision"
+          },
+          "builds": {
+            "items": {
+              "$ref": "#/components/schemas/BuildSummary"
+            },
+            "type": "array",
+            "title": "Builds"
+          },
+          "infeasibility": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InfeasibleBrief"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "answers",
+          "owned",
+          "waived",
+          "profile",
+          "kb_version",
+          "catalog_revision",
+          "builds",
+          "infeasibility",
+          "created_at"
+        ],
+        "title": "ConsultationOut",
+        "description": "Консультация и её сборки."
+      },
+      "EditKind": {
+        "type": "string",
+        "enum": [
+          "replace",
+          "cheaper",
+          "pricier",
+          "lock",
+          "unlock",
+          "shift_budget",
+          "exclude_sku",
+          "exclude_brand"
+        ],
+        "title": "EditKind",
+        "description": "Команда правки."
+      },
+      "EffectOut": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path"
+          },
+          "outcome": {
+            "type": "string",
+            "title": "Outcome"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/JsonScalar"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/JsonScalar"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Value"
+          },
+          "cf": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cf"
+          }
+        },
+        "type": "object",
+        "required": [
+          "path",
+          "outcome",
+          "value",
+          "cf"
+        ],
+        "title": "EffectOut",
+        "description": "Что правило сделало с фактом."
+      },
+      "ExplanationOut": {
+        "properties": {
+          "reasoning": {
+            "items": {
+              "$ref": "#/components/schemas/ReasoningStepOut"
+            },
+            "type": "array",
+            "title": "Reasoning"
+          },
+          "utility": {
+            "type": "number",
+            "title": "Utility"
+          },
+          "scenario_contributions": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Scenario Contributions"
+          },
+          "preferences": {
+            "items": {
+              "$ref": "#/components/schemas/PreferenceOut"
+            },
+            "type": "array",
+            "title": "Preferences"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/IssueOut"
+            },
+            "type": "array",
+            "title": "Issues"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reasoning",
+          "utility",
+          "scenario_contributions",
+          "preferences",
+          "issues"
+        ],
+        "title": "ExplanationOut",
+        "description": "«Почему эта сборка»: рассуждение, вклад сценариев, баллы и замечания."
+      },
+      "FpsOut": {
+        "properties": {
+          "game": {
+            "type": "string",
+            "title": "Game"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "resolution": {
+            "type": "string",
+            "title": "Resolution"
+          },
+          "preset": {
+            "type": "string",
+            "title": "Preset"
+          },
+          "fps": {
+            "type": "number",
+            "title": "Fps"
+          },
+          "low": {
+            "type": "number",
+            "title": "Low"
+          },
+          "high": {
+            "type": "number",
+            "title": "High"
+          },
+          "limited_by": {
+            "type": "string",
+            "title": "Limited By"
+          },
+          "bottleneck_ratio": {
+            "type": "number",
+            "title": "Bottleneck Ratio"
+          },
+          "vram_ok": {
+            "type": "boolean",
+            "title": "Vram Ok"
+          }
+        },
+        "type": "object",
+        "required": [
+          "game",
+          "title",
+          "resolution",
+          "preset",
+          "fps",
+          "low",
+          "high",
+          "limited_by",
+          "bottleneck_ratio",
+          "vram_ok"
+        ],
+        "title": "FpsOut",
+        "description": "Прогноз FPS в игре."
+      },
+      "FrameOut": {
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "json_schema": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Json Schema",
+            "description": "JSON Schema фрейма; `unit` — единицы слота"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "title",
+          "json_schema"
+        ],
+        "title": "FrameOut",
+        "description": "Фрейм категории: название и JSON Schema слотов (типы, единицы, ограничения)."
+      },
+      "GoalOut": {
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "title": "Predicate"
+          },
+          "args": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Args"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "needs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Needs",
+            "description": "переменные, которые понадобятся: resolution, target_fps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "predicate",
+          "args",
+          "title",
+          "needs"
+        ],
+        "title": "GoalOut",
+        "description": "Гипотеза, которую можно проверить («потянет ли»)."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthStatus": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "HealthStatus",
+        "description": "Ответ `/healthz` и `/readyz`."
+      },
+      "HypothesisOut": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ProofStatus"
+          },
+          "tree": {
+            "$ref": "#/components/schemas/ProofNodeOut"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/NeedInputOut"
+            },
+            "type": "array",
+            "title": "Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "tree",
+          "questions"
+        ],
+        "title": "HypothesisOut",
+        "description": "Результат проверки гипотезы."
+      },
+      "HypothesisRequest": {
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "title": "Predicate"
+          },
+          "args": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Args"
+          },
+          "bindings": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Bindings",
+            "description": "ответы на вопросы: target_fps, resolution"
+          }
+        },
+        "type": "object",
+        "required": [
+          "predicate"
+        ],
+        "title": "HypothesisRequest",
+        "description": "Гипотеза: цель и аргументы, ответы на вопросы системы."
+      },
+      "InfeasibleBrief": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "min_budget_rub": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Budget Rub"
+          },
+          "empty_categories": {
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "type": "array",
+            "title": "Empty Categories"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason",
+          "min_budget_rub",
+          "empty_categories"
+        ],
+        "title": "InfeasibleBrief",
+        "description": "Почему подбор не дал результата (кратко; подробно — GET …/infeasible)."
+      },
+      "InfeasibleOut": {
+        "properties": {
+          "budget_rub": {
+            "type": "integer",
+            "title": "Budget Rub"
+          },
+          "min_budget_rub": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Budget Rub"
+          },
+          "blocking": {
+            "items": {
+              "$ref": "#/components/schemas/BlockingOut"
+            },
+            "type": "array",
+            "title": "Blocking"
+          },
+          "relaxations": {
+            "items": {
+              "$ref": "#/components/schemas/RelaxationOut"
+            },
+            "type": "array",
+            "title": "Relaxations"
+          },
+          "compromise": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompromiseOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "best_effort": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BestEffortOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "budget_rub",
+          "min_budget_rub",
+          "blocking",
+          "relaxations",
+          "compromise",
+          "best_effort"
+        ],
+        "title": "InfeasibleOut",
+        "description": "Разбор невыполнимого запроса."
+      },
+      "IssueOut": {
+        "properties": {
+          "rule_code": {
+            "type": "string",
+            "title": "Rule Code"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule_code",
+          "action",
+          "message"
+        ],
+        "title": "IssueOut",
+        "description": "Предупреждение, совет или ошибка проверки."
+      },
+      "ItemChangeOut": {
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BuildItemOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "after": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BuildItemOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "delta_kop": {
+            "type": "integer",
+            "title": "Delta Kop"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "before",
+          "after",
+          "delta_kop"
+        ],
+        "title": "ItemChangeOut",
+        "description": "Изменение категории."
+      },
+      "JsonScalar": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "ModificationOut": {
+        "properties": {
+          "build": {
+            "$ref": "#/components/schemas/BuildDetail"
+          },
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/ItemChangeOut"
+            },
+            "type": "array",
+            "title": "Changes"
+          },
+          "price_delta_kop": {
+            "type": "integer",
+            "title": "Price Delta Kop"
+          },
+          "fps_avg_before": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fps Avg Before"
+          },
+          "fps_avg_after": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fps Avg After"
+          }
+        },
+        "type": "object",
+        "required": [
+          "build",
+          "changes",
+          "price_delta_kop",
+          "fps_avg_before",
+          "fps_avg_after"
+        ],
+        "title": "ModificationOut",
+        "description": "Новая сборка после правки и разница с прежней."
+      },
+      "ModificationRequest": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/EditKind"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Category"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "component_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Component Id"
+          },
+          "brand": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand"
+          },
+          "to_category": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Category"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "shift_budget: куда вложить сэкономленное на `category`"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "ModificationRequest",
+        "description": "Правка сборки."
+      },
+      "NeedInputOut": {
+        "properties": {
+          "variable": {
+            "type": "string",
+            "title": "Variable"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "options": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "variable",
+          "question",
+          "options"
+        ],
+        "title": "NeedInputOut",
+        "description": "Вопрос клиенту."
+      },
+      "NodeKind": {
+        "type": "string",
+        "enum": [
+          "goal",
+          "rule",
+          "all",
+          "any",
+          "not",
+          "fact",
+          "expr",
+          "builtin"
+        ],
+        "title": "NodeKind",
+        "description": "Вид узла дерева доказательства."
+      },
+      "OptionOut": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Value"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "label"
+        ],
+        "title": "OptionOut",
+        "description": "Вариант ответа."
+      },
+      "OwnedComponentOut": {
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Component Id"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "brand": {
+            "type": "string",
+            "title": "Brand"
+          },
+          "price_kop": {
+            "type": "integer",
+            "title": "Price Kop"
+          }
+        },
+        "type": "object",
+        "required": [
+          "component_id",
+          "category",
+          "sku",
+          "name",
+          "brand",
+          "price_kop"
+        ],
+        "title": "OwnedComponentOut",
+        "description": "Деталь, которая уже есть у клиента."
+      },
+      "PerformanceOut": {
+        "properties": {
+          "games": {
+            "items": {
+              "$ref": "#/components/schemas/FpsOut"
+            },
+            "type": "array",
+            "title": "Games"
+          },
+          "apps": {
+            "items": {
+              "$ref": "#/components/schemas/AppOut"
+            },
+            "type": "array",
+            "title": "Apps"
+          },
+          "benchmarks": {
+            "items": {
+              "$ref": "#/components/schemas/BenchmarkOut"
+            },
+            "type": "array",
+            "title": "Benchmarks"
+          },
+          "balance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonScalar"
+            },
+            "type": "object",
+            "title": "Balance"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "games",
+          "apps",
+          "benchmarks",
+          "balance",
+          "disclaimer"
+        ],
+        "title": "PerformanceOut",
+        "description": "Прогноз производительности сборки (оценка по референсным тестам, ±15%)."
+      },
+      "PreferenceOut": {
+        "properties": {
+          "rule_code": {
+            "type": "string",
+            "title": "Rule Code"
+          },
+          "delta": {
+            "type": "number",
+            "title": "Delta"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule_code",
+          "delta",
+          "message"
+        ],
+        "title": "PreferenceOut",
+        "description": "Баллы score-правила."
+      },
+      "ProofNodeOut": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/NodeKind"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProofStatus"
+          },
+          "cf": {
+            "type": "number",
+            "title": "Cf"
+          },
+          "rule_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Code"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/JsonScalar"
+              },
+              {
+                "items": {
+                  "$ref": "#/components/schemas/JsonScalar"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Value"
+          },
+          "children": {
+            "items": {
+              "$ref": "#/components/schemas/ProofNodeOut"
+            },
+            "type": "array",
+            "title": "Children"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "label",
+          "status",
+          "cf",
+          "rule_code",
+          "detail",
+          "value",
+          "children"
+        ],
+        "title": "ProofNodeOut",
+        "description": "Узел дерева доказательства."
+      },
+      "ProofStatus": {
+        "type": "string",
+        "enum": [
+          "proved",
+          "failed",
+          "unknown"
+        ],
+        "title": "ProofStatus",
+        "description": "Исход узла доказательства."
+      },
+      "QuestionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/OptionOut"
+            },
+            "type": "array",
+            "title": "Options"
+          },
+          "allow_unknown": {
+            "type": "boolean",
+            "title": "Allow Unknown"
+          },
+          "min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Step"
+          },
+          "extra_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extra Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "title",
+          "options",
+          "allow_unknown"
+        ],
+        "title": "QuestionOut",
+        "description": "Вопрос визарда (варианты из справочников уже подставлены)."
+      },
+      "QuestionnaireOut": {
+        "properties": {
+          "kb_version": {
+            "type": "string",
+            "title": "Kb Version"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/StepOut"
+            },
+            "type": "array",
+            "title": "Steps"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kb_version",
+          "steps"
+        ],
+        "title": "QuestionnaireOut",
+        "description": "Анкета визарда из опубликованной базы знаний."
+      },
+      "ReasonOut": {
+        "properties": {
+          "rule_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule_code",
+          "message"
+        ],
+        "title": "ReasonOut",
+        "description": "Причина в ответе «почему не»."
+      },
+      "ReasoningStepOut": {
+        "properties": {
+          "step": {
+            "type": "integer",
+            "title": "Step"
+          },
+          "rule_code": {
+            "type": "string",
+            "title": "Rule Code"
+          },
+          "rule_name": {
+            "type": "string",
+            "title": "Rule Name"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "rule_cf": {
+            "type": "number",
+            "title": "Rule Cf"
+          },
+          "premise_cf": {
+            "type": "number",
+            "title": "Premise Cf"
+          },
+          "matched": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Matched"
+          },
+          "effects": {
+            "items": {
+              "$ref": "#/components/schemas/EffectOut"
+            },
+            "type": "array",
+            "title": "Effects"
+          }
+        },
+        "type": "object",
+        "required": [
+          "step",
+          "rule_code",
+          "rule_name",
+          "explanation",
+          "rule_cf",
+          "premise_cf",
+          "matched",
+          "effects"
+        ],
+        "title": "ReasoningStepOut",
+        "description": "Шаг профилирования."
+      },
+      "RelaxationOut": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "answers": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Answers"
+          },
+          "min_budget_rub": {
+            "type": "integer",
+            "title": "Min Budget Rub"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "answers",
+          "min_budget_rub"
+        ],
+        "title": "RelaxationOut",
+        "description": "Вариант ослабить ответы."
+      },
+      "StepOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionOut"
+            },
+            "type": "array",
+            "title": "Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "questions"
+        ],
+        "title": "StepOut",
+        "description": "Шаг визарда."
+      },
+      "Tier": {
+        "type": "string",
+        "enum": [
+          "economy",
+          "optimum",
+          "maximum"
+        ],
+        "title": "Tier",
+        "description": "Вариант сборки."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WaivedOut": {
+        "properties": {
+          "fact": {
+            "type": "string",
+            "title": "Fact"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fact",
+          "title"
+        ],
+        "title": "WaivedOut",
+        "description": "Требование, от которого клиент отказался."
+      },
+      "WhyNotOut": {
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Component Id"
+          },
+          "sku": {
+            "type": "string",
+            "title": "Sku"
+          },
+          "verdict": {
+            "$ref": "#/components/schemas/WhyNotVerdict"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/ReasonOut"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "can_replace": {
+            "type": "boolean",
+            "title": "Can Replace"
+          },
+          "price_delta_kop": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Delta Kop"
+          },
+          "utility_delta_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utility Delta Pct"
+          },
+          "fps_delta_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fps Delta Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "component_id",
+          "sku",
+          "verdict",
+          "reasons",
+          "can_replace",
+          "price_delta_kop",
+          "utility_delta_pct",
+          "fps_delta_pct"
+        ],
+        "title": "WhyNotOut",
+        "description": "Ответ на «почему не этот товар»."
+      },
+      "WhyNotVerdict": {
+        "type": "string",
+        "enum": [
+          "not_found",
+          "in_build",
+          "not_needed",
+          "owned",
+          "unavailable",
+          "filtered",
+          "incompatible",
+          "over_budget",
+          "worse",
+          "better"
+        ],
+        "title": "WhyNotVerdict",
+        "description": "Почему деталь не в сборке."
+      }
+    }
+  }
+}

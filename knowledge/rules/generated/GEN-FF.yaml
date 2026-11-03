@@ -1,0 +1,168 @@
+# СГЕНЕРИРОВАНО scripts/generate_rules.py из knowledge/tables/. НЕ ПРАВИТЬ РУКАМИ:
+# правьте справочник и запустите генератор заново.
+- code: GEN-FF-ATX-CASE
+  name: Плата ATX должна поддерживаться корпусом
+  kind: compat
+  group: gen_form_factor
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#motherboard.ATX
+  when:
+    expr: build.motherboard.form_factor == 'ATX' and not contains(build.case.form_factors, 'ATX')
+  then:
+  - action: reject
+    message: Корпус не рассчитан на плату ATX
+  explain: Плата ATX (305×244 мм) крепится только в корпус с соответствующими стойками.
+- code: GEN-FF-E-ATX-CASE
+  name: Плата E-ATX должна поддерживаться корпусом
+  kind: compat
+  group: gen_form_factor
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#motherboard.E-ATX
+  when:
+    expr: build.motherboard.form_factor == 'E-ATX' and not contains(build.case.form_factors, 'E-ATX')
+  then:
+  - action: reject
+    message: Корпус не рассчитан на плату E-ATX
+  explain: Плата E-ATX (305×330 мм) крепится только в корпус с соответствующими стойками.
+- code: GEN-FF-MICRO-ATX-CASE
+  name: Плата Micro-ATX должна поддерживаться корпусом
+  kind: compat
+  group: gen_form_factor
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#motherboard.Micro-ATX
+  when:
+    expr: build.motherboard.form_factor == 'Micro-ATX' and not contains(build.case.form_factors, 'Micro-ATX')
+  then:
+  - action: reject
+    message: Корпус не рассчитан на плату Micro-ATX
+  explain: Плата Micro-ATX (244×244 мм) крепится только в корпус с соответствующими стойками.
+- code: GEN-FF-MICRO-ATX-COMPACT
+  name: 'Компактная сборка: плата Micro-ATX'
+  kind: score
+  group: gen_form_factor
+  priority: 300
+  cf: 0.8
+  origin: generated
+  source: tables/form_factors.yaml#motherboard.Micro-ATX
+  when:
+    all:
+    - fact: profile.compact
+      op: eq
+      value: true
+    - fact: build.motherboard.form_factor
+      op: eq
+      value: Micro-ATX
+  then:
+  - action: prefer
+    weight: 2.0
+    message: Плата Micro-ATX подходит для компактной сборки
+  explain: Плата Micro-ATX позволяет собрать компактный компьютер.
+- code: GEN-FF-MINI-ITX-CASE
+  name: Плата Mini-ITX должна поддерживаться корпусом
+  kind: compat
+  group: gen_form_factor
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#motherboard.Mini-ITX
+  when:
+    expr: build.motherboard.form_factor == 'Mini-ITX' and not contains(build.case.form_factors, 'Mini-ITX')
+  then:
+  - action: reject
+    message: Корпус не рассчитан на плату Mini-ITX
+  explain: Плата Mini-ITX (170×170 мм) крепится только в корпус с соответствующими стойками.
+- code: GEN-FF-MINI-ITX-COMPACT
+  name: 'Компактная сборка: плата Mini-ITX'
+  kind: score
+  group: gen_form_factor
+  priority: 300
+  cf: 0.8
+  origin: generated
+  source: tables/form_factors.yaml#motherboard.Mini-ITX
+  when:
+    all:
+    - fact: profile.compact
+      op: eq
+      value: true
+    - fact: build.motherboard.form_factor
+      op: eq
+      value: Mini-ITX
+  then:
+  - action: prefer
+    weight: 4.0
+    message: Плата Mini-ITX подходит для компактной сборки
+  explain: Плата Mini-ITX позволяет собрать компактный компьютер.
+- code: GEN-FF-PSU-ATX
+  name: Блок питания ATX должен встать в отсек корпуса
+  kind: compat
+  group: gen_form_factor
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#psu.ATX
+  when:
+    all:
+    - fact: build.psu.form_factor
+      op: eq
+      value: ATX
+    - fact: build.case.psu_ff
+      op: not_in
+      value:
+      - ATX
+  then:
+  - action: reject
+    message: Блок питания ATX не встанет в отсек {build.case.psu_ff}
+  explain: 'Блок питания ATX ставится в отсеки: ATX.'
+- code: GEN-FF-PSU-SFX
+  name: Блок питания SFX должен встать в отсек корпуса
+  kind: compat
+  group: gen_form_factor
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#psu.SFX
+  when:
+    all:
+    - fact: build.psu.form_factor
+      op: eq
+      value: SFX
+    - fact: build.case.psu_ff
+      op: not_in
+      value:
+      - SFX
+      - ATX
+  then:
+  - action: reject
+    message: Блок питания SFX не встанет в отсек {build.case.psu_ff}
+  explain: 'Блок питания SFX ставится в отсеки: SFX, ATX.'
+- code: GEN-FF-SIZE-MINI
+  name: 'Корпус «mini»: только платы до нужного размера'
+  kind: filter
+  group: gen_form_factor
+  priority: 800
+  cf: 1.0
+  origin: generated
+  source: tables/form_factors.yaml#case_sizes.mini
+  when:
+    all:
+    - fact: req.case_size
+      op: eq
+      value: mini
+    - fact: cand.category
+      op: eq
+      value: motherboard
+    - fact: cand.form_factor
+      op: in
+      value:
+      - ATX
+      - E-ATX
+  then:
+  - action: reject
+    message: Плата {cand.form_factor} крупнее выбранного размера корпуса
+  explain: В корпус размера «mini» не поместятся платы ATX, E-ATX.

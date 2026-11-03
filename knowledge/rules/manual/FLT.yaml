@@ -1,0 +1,512 @@
+# FLT — фильтры кандидатов: каждый товар подставляется как cand.* и проверяется.
+# Фильтры видят только обязательные требования (req.* с CF ≥ 0.5).
+- code: FLT-001
+  name: Нет в наличии
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    fact: cand.in_stock
+    op: eq
+    value: false
+  then:
+  - action: reject
+    message: Сейчас нет в наличии
+  explain: Товары, которых нет в наличии, в подбор не попадают.
+- code: FLT-002
+  name: Мало видеопамяти
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: gpu
+    - fact: cand.vram_gb
+      op: lt
+      ref: req.gpu_vram_min_gb
+  then:
+  - action: reject
+    message: Видеопамяти {cand.vram_gb} ГБ, а нужно от {req.gpu_vram_min_gb} ГБ
+  explain: Видеокарты с недостаточной видеопамятью отсеиваются.
+- code: FLT-003
+  name: Слабая видеокарта
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: gpu
+    - fact: cand.perf_raster
+      op: lt
+      ref: req.gpu_raster_min
+  then:
+  - action: reject
+    message: 'Видеокарта слабее нужного: индекс {cand.perf_raster}, нужно от {req.gpu_raster_min}'
+  explain: Видеокарта должна обеспечивать нужный FPS на вашем мониторе.
+- code: FLT-004
+  name: Слабая трассировка лучей
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: gpu
+    - fact: cand.perf_rt
+      op: lt
+      ref: req.gpu_rt_min
+  then:
+  - action: reject
+    message: 'Трассировка лучей слабее нужного: индекс {cand.perf_rt}, нужно от {req.gpu_rt_min}'
+  explain: Для игр с трассировкой нужны видеокарты с сильными RT-блоками.
+- code: FLT-005
+  name: Медленное ядро процессора
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: cpu
+    - fact: cand.perf_single
+      op: lt
+      ref: req.cpu_single_min
+  then:
+  - action: reject
+    message: Одноядерная производительность {cand.perf_single}, нужно от {req.cpu_single_min}
+  explain: Процессор должен держать нужный FPS и отзывчивость программ.
+- code: FLT-006
+  name: Слабая многопоточность
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: cpu
+    - fact: cand.perf_multi
+      op: lt
+      ref: req.cpu_multi_min
+  then:
+  - action: reject
+    message: Многоядерная производительность {cand.perf_multi}, нужно от {req.cpu_multi_min}
+  explain: Для рендера и сборки проектов нужна высокая многоядерная производительность.
+- code: FLT-007
+  name: Мало ядер
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: cpu
+    - fact: cand.cores
+      op: lt
+      ref: req.cpu_cores_min
+  then:
+  - action: reject
+    message: Ядер {cand.cores}, нужно от {req.cpu_cores_min}
+  explain: Процессоров с недостаточным числом ядер не предлагаем.
+- code: FLT-008
+  name: Нет встроенной графики
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: cpu
+    - fact: req.cpu_igpu
+      op: eq
+      value: true
+    - fact: cand.igpu
+      op: eq
+      value: false
+  then:
+  - action: reject
+    message: Без видеокарты нужен процессор со встроенной графикой
+  explain: Если видеокарты нет, изображение выводит процессор — нужна встроенная графика.
+- code: FLT-009
+  name: Мало памяти
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: ram
+    - fact: cand.capacity_gb
+      op: lt
+      ref: req.ram_min_gb
+  then:
+  - action: reject
+    message: Памяти {cand.capacity_gb} ГБ, нужно от {req.ram_min_gb} ГБ
+  explain: Комплект памяти должен покрывать ваши задачи.
+- code: FLT-010
+  name: Одна планка памяти
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: ram
+    - fact: req.ram_dual_channel
+      op: eq
+      value: true
+    - fact: cand.modules
+      op: lt
+      value: 2
+  then:
+  - action: reject
+    message: Одна планка — нет двухканального режима
+  explain: Для игр и творческих задач нужны две планки памяти.
+- code: FLT-011
+  name: Маленький SSD
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: ssd
+    - fact: cand.capacity_gb
+      op: lt
+      ref: req.storage_min_gb
+  then:
+  - action: reject
+    message: SSD {cand.capacity_gb} ГБ, нужно от {req.storage_min_gb} ГБ
+  explain: Накопитель должен вмещать ваши игры и проекты.
+- code: FLT-012
+  name: SSD без NVMe
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: ssd
+    - fact: req.storage_nvme
+      op: eq
+      value: true
+    - fact: cand.interface
+      op: eq
+      value: sata
+  then:
+  - action: reject
+    message: SATA-накопитель медленнее нужного
+  explain: Для игр и проектов нужен быстрый NVMe-накопитель.
+- code: FLT-013
+  name: Маленький HDD
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: hdd
+    - fact: cand.capacity_gb
+      op: lt
+      ref: req.hdd_min_gb
+  then:
+  - action: reject
+    message: HDD {cand.capacity_gb} ГБ, нужно от {req.hdd_min_gb} ГБ
+  explain: Жёсткий диск для архива должен быть достаточного объёма.
+- code: FLT-014
+  name: Блок питания без Gold
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: psu
+    - fact: req.psu_quality
+      op: eq
+      value: true
+    - fact: cand.efficiency
+      op: in
+      value:
+      - 80plus
+      - bronze
+  then:
+  - action: reject
+    message: Сертификат {cand.efficiency} — для этой сборки нужен Gold и выше
+  explain: Мощной сборке нужен блок питания с высоким КПД и качественными компонентами.
+- code: FLT-015
+  name: Плата без Wi-Fi
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: motherboard
+    - fact: req.wifi
+      op: eq
+      value: true
+    - fact: cand.wifi
+      op: eq
+      value: false
+  then:
+  - action: reject
+    message: Нет встроенного Wi-Fi
+  explain: Вы указали, что нужен Wi-Fi.
+- code: FLT-016
+  name: Цвет корпуса
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: case
+    - fact: cand.color
+      op: ne
+      ref: req.color
+  then:
+  - action: reject
+    message: Корпус цвета {cand.color}, а нужен {req.color}
+  explain: Корпус должен быть выбранного цвета.
+- code: FLT-017
+  name: Корпус без стекла
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: case
+    - fact: req.glass
+      op: eq
+      value: true
+    - fact: cand.glass
+      op: eq
+      value: false
+  then:
+  - action: reject
+    message: Нет стеклянной панели
+  explain: Вы хотите корпус со стеклянной панелью.
+- code: FLT-018
+  name: Размер корпуса
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: case
+    - fact: cand.size
+      op: ne
+      ref: req.case_size
+  then:
+  - action: reject
+    message: Корпус размера {cand.size}, а нужен {req.case_size}
+  explain: Корпус должен быть выбранного размера.
+- code: FLT-019
+  name: Процессор не AMD
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    expr: cand.category == 'cpu' and req.cpu_brand == 'amd' and cand.brand != 'AMD'
+  then:
+  - action: reject
+    message: Вы предпочитаете процессоры AMD
+  explain: Учитывается предпочтение по бренду процессора.
+- code: FLT-020
+  name: Процессор не Intel
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    expr: cand.category == 'cpu' and req.cpu_brand == 'intel' and cand.brand != 'Intel'
+  then:
+  - action: reject
+    message: Вы предпочитаете процессоры Intel
+  explain: Учитывается предпочтение по бренду процессора.
+- code: FLT-021
+  name: Видеокарта не NVIDIA
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    expr: cand.category == 'gpu' and req.gpu_brand == 'nvidia' and not contains(cand.chip, 'GeForce')
+  then:
+  - action: reject
+    message: Вы предпочитаете видеокарты NVIDIA
+  explain: Учитывается предпочтение по производителю графического чипа.
+- code: FLT-022
+  name: Видеокарта не AMD
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    expr: cand.category == 'gpu' and req.gpu_brand == 'amd' and not contains(cand.chip, 'Radeon')
+  then:
+  - action: reject
+    message: Вы предпочитаете видеокарты AMD
+  explain: Учитывается предпочтение по производителю графического чипа.
+- code: FLT-023
+  name: Вентиляторы без подсветки
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: case_fan
+    - fact: req.rgb
+      op: eq
+      value: true
+    - fact: cand.rgb
+      op: eq
+      value: false
+  then:
+  - action: reject
+    message: Без подсветки
+  explain: Вентиляторы докупаются ради подсветки — нужны RGB.
+- code: FLT-024
+  name: Вентиляторы не в цвет
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: case_fan
+    - fact: req.color
+      op: eq
+      value: white
+    - fact: cand.color
+      op: ne
+      value: white
+  then:
+  - action: reject
+    message: Вентиляторы не белые
+  explain: В белой сборке вентиляторы тоже белые.
+- code: FLT-025
+  name: Плата со слабым питанием
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: motherboard
+    - fact: req.vrm_min
+      op: eq
+      value: mid
+    - fact: cand.vrm_tier
+      op: eq
+      value: basic
+  then:
+  - action: reject
+    message: Подсистема питания платы слабовата для долгой нагрузки
+  explain: Под долгой нагрузкой многоядерному процессору нужна плата с хорошим питанием.
+- code: FLT-026
+  name: Плата без топового питания
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: motherboard
+    - fact: req.vrm_min
+      op: eq
+      value: high
+    - fact: cand.vrm_tier
+      op: ne
+      value: high
+  then:
+  - action: reject
+    message: Для флагманского процессора нужна плата с мощным питанием
+  explain: Флагманские процессоры под нагрузкой требуют топовой подсистемы питания.
+- code: FLT-027
+  name: Память или плата другого типа
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: in
+      value:
+      - ram
+      - motherboard
+    - fact: cand.mem_type
+      op: ne
+      ref: req.mem_type
+  then:
+  - action: reject
+    message: Память {cand.mem_type}, а вы выбрали {req.mem_type}
+  explain: Учитывается выбранный тип оперативной памяти.
+- code: FLT-028
+  name: Процессор без поддержки выбранной памяти
+  kind: filter
+  group: filter
+  priority: 800
+  cf: 1.0
+  when:
+    all:
+    - fact: cand.category
+      op: eq
+      value: cpu
+    - fact: req.mem_type
+      op: exists
+    - expr: not contains(cand.mem_types, req.mem_type)
+  then:
+  - action: reject
+    message: Процессор не работает с памятью {req.mem_type}
+  explain: Учитывается выбранный тип оперативной памяти.

@@ -1,0 +1,36 @@
+sku,brand,model,release_year,socket,chipset,form_factor,mem_type,mem_slots,max_mem_gb,m2_slots,sata_ports,pcie_gen,wifi,vrm_tier,price_rub,price_checked_at,price_note
+MB-MSI-B550M-PRO-VDH-WIFI,MSI,B550M PRO-VDH WIFI,2021,AM4,B550,Micro-ATX,DDR4,4,128,2,4,4,true,basic,8810,2026-10-29,сверено с рынком РФ: цена магазина
+MB-MSI-B760M-P-DDR4,MSI,PRO B760M-P DDR4,2023,LGA1700,B760,Micro-ATX,DDR4,4,128,2,4,4,false,basic,8340,2026-10-29,сверено с рынком РФ: цена магазина
+MB-MSI-B760M-P,MSI,PRO B760M-P,2023,LGA1700,B760,Micro-ATX,DDR5,4,192,2,4,4,false,basic,7910,2026-10-29,сверено с рынком РФ: цена магазина
+MB-GIGABYTE-A620M-S2H,Gigabyte,A620M S2H,2023,AM5,A620,Micro-ATX,DDR5,2,96,1,4,4,false,basic,8500,2026-10-29,ориентир; на price.ru только Ti-store (цены завышены)
+MB-MSI-B650M-P,MSI,PRO B650M-P,2023,AM5,B650,Micro-ATX,DDR5,4,192,2,4,4,false,basic,10380,2026-10-29,сверено с рынком РФ: цена магазина
+MB-ASUS-TUF-B650-PLUS-WIFI,ASUS,TUF GAMING B650-PLUS WIFI,2022,AM5,B650,ATX,DDR5,4,192,3,4,4,true,mid,23970,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store)
+MB-GIGABYTE-B650I-AORUS-ULTRA,Gigabyte,B650I AORUS ULTRA,2022,AM5,B650,Mini-ITX,DDR5,2,96,3,2,4,true,mid,21990,2026-10-29,ориентир; на price.ru не найден
+MB-MSI-B850-TOMAHAWK-WIFI,MSI,MAG B850 TOMAHAWK WIFI,2025,AM5,B850,ATX,DDR5,4,256,4,4,5,true,high,24580,2026-10-29,сверено с рынком РФ: цена магазина
+MB-ASUS-STRIX-X870E-E,ASUS,ROG STRIX X870E-E GAMING WIFI,2024,AM5,X870E,ATX,DDR5,4,256,5,4,5,true,high,54310,2026-10-29,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASROCK-B860M-PRO-RS,ASRock,B860M Pro RS,2025,LGA1851,B860,Micro-ATX,DDR5,4,256,3,4,5,false,mid,12990,2026-10-29,ориентир; на price.ru только Ti-store (цены завышены)
+MB-MSI-Z890-TOMAHAWK-WIFI,MSI,MAG Z890 TOMAHAWK WIFI,2024,LGA1851,Z890,ATX,DDR5,4,256,4,4,5,true,high,27400,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store)
+MB-ASUS-PRIME-A520M-K,ASUS,PRIME A520M-K,2020,AM4,A520,Micro-ATX,DDR4,2,64,1,4,3,false,basic,5580,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-GIGABYTE-B550M-K,Gigabyte,B550M K,2023,AM4,B550,Micro-ATX,DDR4,4,128,2,4,4,false,basic,7700,2026-10-30,price.ru: медиана 9 предл. магазинов Москвы (без Ti-store)
+MB-MSI-B550-A-PRO,MSI,B550-A PRO,2020,AM4,B550,ATX,DDR4,4,128,2,6,4,false,mid,9780,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+MB-GIGABYTE-B550-AORUS-ELITE-V2,Gigabyte,B550 AORUS ELITE V2,2021,AM4,B550,ATX,DDR4,4,128,2,4,4,false,mid,12400,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+MB-MSI-MAG-B550-TOMAHAWK,MSI,MAG B550 TOMAHAWK,2020,AM4,B550,ATX,DDR4,4,128,2,6,4,false,high,18050,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+MB-ASUS-TUF-A620-PRO-WIFI,ASUS,TUF GAMING A620-PRO WIFI,2023,AM5,A620,ATX,DDR5,4,192,2,4,4,true,mid,16480,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-PRIME-B840M-A-WIFI,ASUS,PRIME B840M-A WIFI,2025,AM5,B840,Micro-ATX,DDR5,4,192,3,4,4,true,basic,19010,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+MB-GIGABYTE-B650-EAGLE-AX,Gigabyte,B650 EAGLE AX,2022,AM5,B650,ATX,DDR5,4,192,3,4,4,true,mid,11000,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+MB-MSI-PRO-B650-P-WIFI,MSI,PRO B650-P WIFI,2023,AM5,B650,ATX,DDR5,4,192,2,4,4,true,mid,13200,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+MB-MSI-MAG-B650-TOMAHAWK-WIFI,MSI,MAG B650 TOMAHAWK WIFI,2022,AM5,B650,ATX,DDR5,4,192,3,6,4,true,high,29057,2026-10-30,"price.ru: последняя цена, сейчас нет предложений"
+MB-ASUS-PRIME-B850M-K,ASUS,PRIME B850M-K,2025,AM5,B850,Micro-ATX,DDR5,2,128,2,4,4,false,basic,10780,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-GIGABYTE-B850M-AORUS-ELITE-ICE,Gigabyte,B850M AORUS ELITE WIFI6E ICE,2025,AM5,B850,Micro-ATX,DDR5,4,256,2,4,5,true,mid,19480,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-ROG-STRIX-B850-I,ASUS,ROG STRIX B850-I GAMING WIFI,2025,AM5,B850,Mini-ITX,DDR5,2,128,2,2,5,true,high,31310,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+MB-GIGABYTE-X870M-AORUS-ELITE-WIFI7,Gigabyte,X870M AORUS ELITE WIFI7,2025,AM5,X870,Micro-ATX,DDR5,4,256,3,4,5,true,high,26980,2026-10-30,price.ru: медиана 6 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-X870-MAX-GAMING-WIFI7,ASUS,X870 MAX GAMING WIFI7,2025,AM5,X870,ATX,DDR5,4,256,3,4,5,true,mid,31720,2026-10-30,price.ru: медиана 6 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-TUF-X870E-PLUS-WIFI7,ASUS,TUF GAMING X870E-PLUS WIFI7,2025,AM5,X870E,ATX,DDR5,4,256,4,4,5,true,high,39280,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-MSI-PRO-H610M-E-DDR4,MSI,PRO H610M-E DDR4,2022,LGA1700,H610,Micro-ATX,DDR4,2,64,1,4,4,false,basic,5680,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASROCK-B760M-HDV-M2-D4,ASRock,B760M-HDV/M.2 D4,2023,LGA1700,B760,Micro-ATX,DDR4,2,64,2,4,4,false,basic,7680,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-PRIME-Z790-P-WIFI,ASUS,PRIME Z790-P WIFI,2022,LGA1700,Z790,ATX,DDR5,4,192,3,4,5,true,mid,17340,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+MB-GIGABYTE-B860M-GAMING-X-WIFI6E,Gigabyte,B860M GAMING X WIFI6E,2025,LGA1851,B860,Micro-ATX,DDR5,4,256,2,4,5,true,mid,18050,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-PRIME-B860M-A-WIFI,ASUS,PRIME B860M-A WIFI,2025,LGA1851,B860,Micro-ATX,DDR5,4,256,2,4,5,true,mid,18680,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-TUF-B860-PLUS-WIFI,ASUS,TUF GAMING B860-PLUS WIFI,2025,LGA1851,B860,ATX,DDR5,4,256,3,4,5,true,mid,23780,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-MSI-PRO-Z890-P-WIFI,MSI,PRO Z890-P WIFI,2024,LGA1851,Z890,ATX,DDR5,4,256,4,4,5,true,mid,24910,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+MB-ASUS-TUF-Z890-PRO-WIFI,ASUS,TUF GAMING Z890-PRO WIFI,2024,LGA1851,Z890,ATX,DDR5,4,256,4,4,5,true,high,31010,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)

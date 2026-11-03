@@ -1,0 +1,40 @@
+import type { components } from './generated/schema';
+
+/** Псевдонимы сгенерированных типов API (сами типы правятся только генератором). */
+type Schemas = components['schemas'];
+
+export type AlternativeOut = Schemas['AlternativeOut'];
+export type BuildDetail = Schemas['BuildDetail'];
+export type BuildItemOut = Schemas['BuildItemOut'];
+export type BuildSummary = Schemas['BuildSummary'];
+export type Category = Schemas['Category'];
+export type CompareOut = Schemas['CompareOut'];
+export type CompromiseOut = Schemas['CompromiseOut'];
+export type ComponentOut = Schemas['ComponentOut'];
+export type ConsultationOut = Schemas['ConsultationOut'];
+export type EditKind = Schemas['EditKind'];
+export type ExplanationOut = Schemas['ExplanationOut'];
+export type FpsOut = Schemas['FpsOut'];
+export type GoalOut = Schemas['GoalOut'];
+export type HypothesisOut = Schemas['HypothesisOut'];
+export type HypothesisRequest = Schemas['HypothesisRequest'];
+export type InfeasibleOut = Schemas['InfeasibleOut'];
+export type IssueOut = Schemas['IssueOut'];
+export type ItemChangeOut = Schemas['ItemChangeOut'];
+export type ModificationOut = Schemas['ModificationOut'];
+export type ModificationRequest = Schemas['ModificationRequest'];
+export type NeedInputOut = Schemas['NeedInputOut'];
+export type PerformanceOut = Schemas['PerformanceOut'];
+export type ProofNodeOut = Schemas['ProofNodeOut'];
+export type QuestionOut = Schemas['QuestionOut'];
+export type QuestionnaireOut = Schemas['QuestionnaireOut'];
+export type Tier = Schemas['Tier'];
+export type WhyNotOut = Schemas['WhyNotOut'];
+export type AppOut = Schemas['AppOut'];
+export type BenchmarkOut = Schemas['BenchmarkOut'];
+export type OptionOut = Schemas['OptionOut'];
+export type PreferenceOut = Schemas['PreferenceOut'];
+export type ReasoningStepOut = Schemas['ReasoningStepOut'];
+export type RelaxationOut = Schemas['RelaxationOut'];
+export type StepOut = Schemas['StepOut'];
+export type OwnedComponentOut = Schemas['OwnedComponentOut'];

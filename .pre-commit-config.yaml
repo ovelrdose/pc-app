@@ -1,0 +1,46 @@
+# Установка (после `git init`): cd backend && uv run pre-commit install --config ../.pre-commit-config.yaml
+# Хуки локальные: используют версии инструментов из backend/.venv и frontend/node_modules.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: ^frontend/src/api/generated/
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: check-added-large-files
+      - id: detect-private-key
+
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: bash -c 'cd backend && uv run ruff check .'
+        language: system
+        files: ^backend/.*\.py$
+        pass_filenames: false
+      - id: ruff-format
+        name: ruff format
+        entry: bash -c 'cd backend && uv run ruff format --check .'
+        language: system
+        files: ^backend/.*\.py$
+        pass_filenames: false
+      - id: mypy
+        name: mypy
+        entry: bash -c 'cd backend && uv run mypy app tests'
+        language: system
+        files: ^backend/.*\.py$
+        pass_filenames: false
+      - id: eslint-prettier
+        name: eslint + prettier
+        entry: bash -c 'cd frontend && npm run lint'
+        language: system
+        files: ^frontend/
+        pass_filenames: false
+      - id: tsc
+        name: tsc
+        entry: bash -c 'cd frontend && npm run typecheck'
+        language: system
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false

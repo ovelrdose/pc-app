@@ -1,0 +1,36 @@
+# Чипсеты материнских плат.
+# cpu_overclock — разгон процессора по множителю; gpu_pcie_gen / m2_pcie_gen — поколение PCIe
+# слота видеокарты и основного M.2; max_cpu_tdp_w — типичный предел плат на чипсете по TDP
+# процессора (упрощённая замена классу VRM конкретной платы).
+chipsets:
+  # AM4
+  - { id: A320, socket: AM4, tier: entry, cpu_overclock: false, gpu_pcie_gen: 3, m2_pcie_gen: 3, max_cpu_tdp_w: 95 }
+  - { id: A520, socket: AM4, tier: entry, cpu_overclock: false, gpu_pcie_gen: 3, m2_pcie_gen: 3, max_cpu_tdp_w: 105 }
+  - { id: B350, socket: AM4, tier: mainstream, cpu_overclock: true, gpu_pcie_gen: 3, m2_pcie_gen: 3, max_cpu_tdp_w: 105 }
+  - { id: B450, socket: AM4, tier: mainstream, cpu_overclock: true, gpu_pcie_gen: 3, m2_pcie_gen: 3, max_cpu_tdp_w: 105 }
+  - { id: B550, socket: AM4, tier: mainstream, cpu_overclock: true, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 142 }
+  - { id: X370, socket: AM4, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 3, m2_pcie_gen: 3, max_cpu_tdp_w: 142 }
+  - { id: X470, socket: AM4, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 3, m2_pcie_gen: 3, max_cpu_tdp_w: 142 }
+  - { id: X570, socket: AM4, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 142 }
+  # AM5
+  - { id: A620, socket: AM5, tier: entry, cpu_overclock: false, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 120 }
+  - { id: B840, socket: AM5, tier: entry, cpu_overclock: false, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 120 }
+  - { id: B650, socket: AM5, tier: mainstream, cpu_overclock: true, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 170 }
+  - { id: B650E, socket: AM5, tier: mainstream, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 5, max_cpu_tdp_w: 230 }
+  - { id: B850, socket: AM5, tier: mainstream, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 5, max_cpu_tdp_w: 230 }
+  - { id: X670, socket: AM5, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 4, m2_pcie_gen: 5, max_cpu_tdp_w: 230 }
+  - { id: X670E, socket: AM5, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 5, max_cpu_tdp_w: 230 }
+  - { id: X870, socket: AM5, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 5, max_cpu_tdp_w: 230 }
+  - { id: X870E, socket: AM5, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 5, max_cpu_tdp_w: 230 }
+  # LGA1700
+  - { id: H610, socket: LGA1700, tier: entry, cpu_overclock: false, gpu_pcie_gen: 4, m2_pcie_gen: 3, max_cpu_tdp_w: 65 }
+  - { id: B660, socket: LGA1700, tier: mainstream, cpu_overclock: false, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 125 }
+  - { id: H670, socket: LGA1700, tier: mainstream, cpu_overclock: false, gpu_pcie_gen: 5, m2_pcie_gen: 4, max_cpu_tdp_w: 125 }
+  - { id: B760, socket: LGA1700, tier: mainstream, cpu_overclock: false, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 125 }
+  - { id: H770, socket: LGA1700, tier: mainstream, cpu_overclock: false, gpu_pcie_gen: 5, m2_pcie_gen: 4, max_cpu_tdp_w: 125 }
+  - { id: Z690, socket: LGA1700, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 4, max_cpu_tdp_w: 253 }
+  - { id: Z790, socket: LGA1700, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 4, max_cpu_tdp_w: 253 }
+  # LGA1851
+  - { id: H810, socket: LGA1851, tier: entry, cpu_overclock: false, gpu_pcie_gen: 4, m2_pcie_gen: 4, max_cpu_tdp_w: 65 }
+  - { id: B860, socket: LGA1851, tier: mainstream, cpu_overclock: false, gpu_pcie_gen: 5, m2_pcie_gen: 4, max_cpu_tdp_w: 125 }
+  - { id: Z890, socket: LGA1851, tier: enthusiast, cpu_overclock: true, gpu_pcie_gen: 5, m2_pcie_gen: 5, max_cpu_tdp_w: 250 }

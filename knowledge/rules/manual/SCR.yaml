@@ -1,0 +1,506 @@
+# SCR — мягкие предпочтения: баллы к полезности сборки.
+- code: SCR-001
+  name: Подсветка корпуса
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.rgb
+      op: eq
+      value: true
+    - fact: build.case.rgb
+      op: eq
+      value: true
+  then:
+  - action: prefer
+    weight: 3
+    message: Корпус с подсветкой
+  explain: Вы хотели RGB-подсветку.
+- code: SCR-002
+  name: Подсветка памяти
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.rgb
+      op: eq
+      value: true
+    - fact: build.ram.rgb
+      op: eq
+      value: true
+  then:
+  - action: prefer
+    weight: 2
+    message: Память с подсветкой
+  explain: Вы хотели RGB-подсветку.
+- code: SCR-003
+  name: Подсветка кулера
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.rgb
+      op: eq
+      value: true
+    - fact: build.cpu_cooler.rgb
+      op: eq
+      value: true
+  then:
+  - action: prefer
+    weight: 2
+    message: Кулер с подсветкой
+  explain: Вы хотели RGB-подсветку.
+- code: SCR-004
+  name: Подсветка вентиляторов
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.rgb
+      op: eq
+      value: true
+    - fact: build.case_fan.rgb
+      op: eq
+      value: true
+  then:
+  - action: prefer
+    weight: 2
+    message: Вентиляторы с подсветкой
+  explain: Вы хотели RGB-подсветку.
+- code: SCR-005
+  name: Белая память
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.color
+      op: eq
+      value: white
+    - fact: build.ram.color
+      op: eq
+      value: white
+  then:
+  - action: prefer
+    weight: 2
+    message: Белая память в белой сборке
+  explain: Детали в цвет сборки.
+- code: SCR-006
+  name: Белый кулер
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.color
+      op: eq
+      value: white
+    - fact: build.cpu_cooler.color
+      op: eq
+      value: white
+  then:
+  - action: prefer
+    weight: 2
+    message: Белый кулер в белой сборке
+  explain: Детали в цвет сборки.
+- code: SCR-007
+  name: Белые вентиляторы
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.color
+      op: eq
+      value: white
+    - fact: build.case_fan.color
+      op: eq
+      value: white
+  then:
+  - action: prefer
+    weight: 2
+    message: Белые вентиляторы
+  explain: Детали в цвет сборки.
+- code: SCR-008
+  name: Стеклянная панель
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.glass
+      op: eq
+      value: true
+    - fact: build.case.glass
+      op: eq
+      value: true
+  then:
+  - action: prefer
+    weight: 3
+    message: Корпус со стеклом
+  explain: Вы хотели видеть комплектующие.
+- code: SCR-009
+  name: 'Задел: DDR5'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.ram.mem_type
+      op: eq
+      value: DDR5
+  then:
+  - action: prefer
+    weight: 3
+    message: Современная память DDR5
+  explain: DDR5 — стандарт для новых платформ.
+- code: SCR-010
+  name: 'Задел: запас БП'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - expr: build.psu.wattage >= build.total.power_w * 1.6
+  then:
+  - action: prefer
+    weight: 3
+    message: Блок питания с запасом под апгрейд
+  explain: Можно будет поставить видеокарту мощнее без замены БП.
+- code: SCR-011
+  name: 'Задел: слоты M.2'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.m2_slots
+      op: ge
+      value: 3
+  then:
+  - action: prefer
+    weight: 2
+    message: Много слотов M.2
+  explain: Можно будет добавить накопители.
+- code: SCR-012
+  name: 'Задел: свободные слоты памяти'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - expr: build.ram.modules < build.motherboard.mem_slots
+  then:
+  - action: prefer
+    weight: 2
+    message: Свободные слоты памяти
+  explain: Память можно будет нарастить, не выбрасывая старую.
+- code: SCR-013
+  name: Wi-Fi на плате
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - not:
+        fact: user.wifi
+        op: exists
+    - fact: build.motherboard.wifi
+      op: eq
+      value: true
+  then:
+  - action: prefer
+    weight: 1
+    message: Встроенный Wi-Fi
+  explain: Wi-Fi на плате избавит от лишнего адаптера.
+- code: SCR-014
+  name: Блок питания Gold и выше
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: req.psu_quality
+      op: eq
+      value: true
+    - fact: build.psu.efficiency
+      op: in
+      value:
+      - gold
+      - platinum
+      - titanium
+  then:
+  - action: prefer
+    weight: 2
+    message: Качественный блок питания
+  explain: Высокий КПД — меньше нагрева и шума.
+- code: SCR-015
+  name: Модульный БП в красивой сборке
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.aesthetic
+      op: eq
+      value: true
+    - fact: build.psu.modular
+      op: eq
+      value: full
+  then:
+  - action: prefer
+    weight: 1
+    message: Модульные кабели — аккуратная сборка
+  explain: Лишние кабели не видны через стекло.
+- code: SCR-016
+  name: Тихий кулер для рабочей станции
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.workstation
+      op: eq
+      value: true
+    - fact: build.cpu_cooler.noise_db
+      op: le
+      value: 26
+  then:
+  - action: prefer
+    weight: 1
+    message: Тихий кулер
+  explain: Долгий рендер не будет мешать шумом.
+- code: SCR-017
+  name: Быстрый NVMe для игр
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: build.ssd.interface
+      op: in
+      value:
+      - nvme_pcie4
+      - nvme_pcie5
+  then:
+  - action: prefer
+    weight: 2
+    message: Быстрый NVMe PCIe 4.0+
+  explain: Быстрые загрузки в играх.
+- code: SCR-018
+  name: Выносливый SSD для монтажа
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.video_editing
+      op: ge
+      value: 0.5
+    - fact: build.ssd.tbw
+      op: ge
+      value: 600
+  then:
+  - action: prefer
+    weight: 2
+    message: SSD с большим ресурсом записи
+  explain: Монтаж постоянно пишет кэш на диск.
+- code: SCR-019
+  name: Видеопамять с запасом
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+    - fact: profile.gaming_tier
+      op: in
+      value:
+      - high
+      - extreme
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+  then:
+  - action: prefer
+    weight: 4
+    message: 16 ГБ видеопамяти — запас на годы
+  explain: Новым играм нужно всё больше видеопамяти.
+- code: SCR-020
+  name: 'Киберспорт: очень быстрое ядро'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.main
+      op: eq
+      value: esports
+    - fact: build.cpu.perf_single
+      op: ge
+      value: 115
+  then:
+  - action: prefer
+    weight: 3
+    message: Процессор для максимального FPS
+  explain: В киберспорте каждый кадр на счету.
+- code: SCR-021
+  name: 'Фото и CAD: быстрое ядро'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.photo_cad
+      op: ge
+      value: 0.5
+    - fact: build.cpu.perf_single
+      op: ge
+      value: 110
+  then:
+  - action: prefer
+    weight: 3
+    message: Быстрое ядро для графических программ
+  explain: Photoshop и CAD отзывчивее на быстром ядре.
+- code: SCR-022
+  name: 'Разработка: много ядер'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.programming
+      op: ge
+      value: 0.5
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+  then:
+  - action: prefer
+    weight: 3
+    message: Много ядер для сборки проектов
+  explain: Компиляция идёт параллельно.
+- code: SCR-023
+  name: 'Стриминг: ядра на кодирование'
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.streaming
+      op: ge
+      value: 0.3
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+  then:
+  - action: prefer
+    weight: 3
+    message: Ядер хватит и на игру, и на стрим
+  explain: Стрим и игра не мешают друг другу.
+- code: SCR-024
+  name: Офис на встроенной графике
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: req.need.gpu
+      op: eq
+      value: false
+    - fact: build.cpu.igpu
+      op: eq
+      value: true
+    - fact: build.cpu.perf_single
+      op: ge
+      value: 85
+  then:
+  - action: prefer
+    weight: 2
+    message: Хорошая встроенная графика
+  explain: Для офиса хватает встроенной графики.
+- code: SCR-025
+  name: Тихий и экономичный компьютер для офиса
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.main
+      op: eq
+      value: office
+    - fact: build.cpu.tdp_w
+      op: le
+      value: 65
+  then:
+  - action: prefer
+    weight: 1
+    message: Экономичный процессор
+  explain: Процессор с TDP до 65 Вт тихий и не греется.
+- code: SCR-026
+  name: 32 ГБ для второго сценария — монтажа
+  kind: score
+  group: score
+  priority: 300
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.secondary
+      op: in
+      value:
+      - video_editing
+      - render_3d
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  then:
+  - action: prefer
+    weight: 3
+    message: 32 ГБ пригодятся для монтажа
+  explain: 'Монтаж у вас вторичен: 32 ГБ желательны, и сборка с ними получает баллы.'

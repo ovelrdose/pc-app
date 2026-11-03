@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Сборка {{ build.title or build.id }}</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; @bottom-right { content: "стр. " counter(page); font-size: 9pt; color: #777; } }
+  body { font-family: "DejaVu Sans", sans-serif; font-size: 10pt; color: #1d1d1f; }
+  header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #4c5fd5; padding-bottom: 6px; }
+  header h1 { margin: 0; font-size: 20pt; color: #4c5fd5; }
+  header .meta { font-size: 8.5pt; color: #666; text-align: right; }
+  h2 { font-size: 13pt; margin: 16px 0 6px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { border-bottom: 1px solid #ddd; padding: 4px 6px; text-align: left; vertical-align: top; }
+  th { background: #f2f3fb; font-weight: bold; }
+  td.num, th.num { text-align: right; white-space: nowrap; }
+  tr.total td { font-weight: bold; border-top: 2px solid #1d1d1f; }
+  .tag { font-size: 8pt; color: #4c5fd5; }
+  ul { margin: 4px 0; padding-left: 18px; }
+  .note { font-size: 8.5pt; color: #666; margin-top: 4px; }
+  .warn { color: #a15c00; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Сборщик</h1>
+  <div class="meta">
+    {{ build.title or ("Вариант «" ~ tier_title ~ "»") }}<br>
+    Рассчитано: {{ build.created_at.strftime("%d.%m.%Y %H:%M") }} · база знаний {{ build.kb_version }} · каталог, ревизия {{ build.catalog_revision }}
+  </div>
+</header>
+
+<h2>Состав</h2>
+<table>
+  <tr><th>Категория</th><th>Деталь</th><th class="num">Цена</th></tr>
+  {% for item in build.items %}
+  <tr>
+    <td>{{ categories[item.category] }}</td>
+    <td>{{ item.name }}{% if item.owned %} <span class="tag">у вас уже есть</span>{% endif %}{% if item.locked and not item.owned %} <span class="tag">зафиксировано</span>{% endif %}</td>
+    <td class="num">{{ rub(item.price_kop) }}</td>
+  </tr>
+  {% endfor %}
+  <tr class="total"><td colspan="2">Итого</td><td class="num">{{ rub(build.total_price_kop) }}</td></tr>
+</table>
+<p class="note">Цены зафиксированы на момент расчёта.</p>
+
+{% if reasoning %}
+<h2>Почему так</h2>
+<ul>
+  {% for text in reasoning %}<li>{{ text }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+{% if build.performance.games %}
+<h2>Прогноз в играх</h2>
+<table>
+  <tr><th>Игра</th><th>Разрешение</th><th>Настройки</th><th class="num">FPS</th><th>Ограничивает</th></tr>
+  {% for g in build.performance.games %}
+  <tr>
+    <td>{{ g.title }}</td><td>{{ g.resolution }}</td><td>{{ presets[g.preset] }}</td>
+    <td class="num">≈ {{ g.fps|round|int }} ({{ g.low|round|int }}–{{ g.high|round|int }})</td>
+    <td>{{ "процессор" if g.limited_by == "cpu" else "видеокарта" }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+{% if build.performance.apps %}
+<h2>Прогноз в программах</h2>
+<table>
+  <tr><th>Программа</th><th>Операция</th><th class="num">Время</th><th class="num">Эталон</th></tr>
+  {% for a in build.performance.apps %}
+  <tr><td>{{ a.title }}</td><td>{{ a.task }}</td><td class="num">≈ {{ "%.1f"|format(a.minutes) }} мин</td><td class="num">{{ a.reference_minutes }} мин</td></tr>
+  {% endfor %}
+</table>
+{% endif %}
+<p class="note">{{ build.performance.disclaimer }}</p>
+
+{% if build.issues %}
+<h2>Предупреждения и советы</h2>
+<ul>
+  {% for i in build.issues %}<li class="{{ 'warn' if i.action == 'warn' else '' }}">{{ i.message }}</li>{% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>

@@ -1,0 +1,760 @@
+# Игры: нагрузка и требования. Эталон: RTX 4060 (base_fps) и Ryzen 5 7600 (cpu_fps_cap).
+# base_fps — средний FPS на эталонной видеокарте; vram_need — сколько видеопамяти нужно, ГБ.
+# Значения — оценки по открытым обзорам; уточняются на этапе 5 (модель FPS).
+# target_fps — комфортный FPS (ADR 0008). Требование к железу считается так, чтобы игра выдавала
+# min(target_fps, частота монитора) на выбранном разрешении: соревновательные (kind: esports) —
+# на средних настройках, остальные — на высоких. Ориентиры: соревновательные шутеры — 240
+# (упирается в монитор), онлайн-игры и MOBA — 100, одиночные — 60, стратегии и симуляторы — 45.
+games:
+  - id: cs2
+    title: "Counter-Strike 2"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 338, high: 260, ultra: 203 }
+      1440p: { medium: 254, high: 195, ultra: 152 }
+      2160p: { medium: 169, high: 130, ultra: 101 }
+    cpu_fps_cap: 450
+    vram_need:
+      1080p: { medium: 2.5, high: 3.0, ultra: 4.0 }
+      1440p: { medium: 3.0, high: 3.5, ultra: 4.5 }
+      2160p: { medium: 3.5, high: 4.0, ultra: 5.0 }
+    ram_min_gb: 8
+    target_fps: 240
+  - id: dota2
+    title: "Dota 2"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 260, high: 200, ultra: 156 }
+      1440p: { medium: 195, high: 150, ultra: 117 }
+      2160p: { medium: 130, high: 100, ultra: 78 }
+    cpu_fps_cap: 300
+    vram_need:
+      1080p: { medium: 2.5, high: 3.0, ultra: 4.0 }
+      1440p: { medium: 3.0, high: 3.5, ultra: 4.5 }
+      2160p: { medium: 3.5, high: 4.0, ultra: 5.0 }
+    ram_min_gb: 8
+    target_fps: 100
+  - id: valorant
+    title: "Valorant"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 520, high: 400, ultra: 312 }
+      1440p: { medium: 390, high: 300, ultra: 234 }
+      2160p: { medium: 260, high: 200, ultra: 156 }
+    cpu_fps_cap: 600
+    vram_need:
+      1080p: { medium: 1.5, high: 2.0, ultra: 2.5 }
+      1440p: { medium: 2.0, high: 2.5, ultra: 3.0 }
+      2160p: { medium: 2.0, high: 3.0, ultra: 3.5 }
+    ram_min_gb: 8
+    target_fps: 240
+  - id: lol
+    title: "League of Legends"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 455, high: 350, ultra: 273 }
+      1440p: { medium: 341, high: 262, ultra: 205 }
+      2160p: { medium: 228, high: 175, ultra: 136 }
+    cpu_fps_cap: 500
+    vram_need:
+      1080p: { medium: 1.5, high: 2.0, ultra: 2.5 }
+      1440p: { medium: 2.0, high: 2.5, ultra: 3.0 }
+      2160p: { medium: 2.0, high: 3.0, ultra: 3.5 }
+    ram_min_gb: 8
+    target_fps: 100
+  - id: fortnite
+    title: "Fortnite"
+    kind: esports
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 182, high: 140, ultra: 109 }
+      1440p: { medium: 136, high: 105, ultra: 82 }
+      2160p: { medium: 91, high: 70, ultra: 55 }
+    cpu_fps_cap: 300
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 16
+    target_fps: 240
+  - id: apex
+    title: "Apex Legends"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 208, high: 160, ultra: 125 }
+      1440p: { medium: 156, high: 120, ultra: 94 }
+      2160p: { medium: 104, high: 80, ultra: 62 }
+    cpu_fps_cap: 300
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 16
+    target_fps: 240
+  - id: pubg
+    title: "PUBG: Battlegrounds"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 195, high: 150, ultra: 117 }
+      1440p: { medium: 146, high: 112, ultra: 88 }
+      2160p: { medium: 98, high: 75, ultra: 58 }
+    cpu_fps_cap: 250
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 16
+    target_fps: 240
+  - id: overwatch2
+    title: "Overwatch 2"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 286, high: 220, ultra: 172 }
+      1440p: { medium: 214, high: 165, ultra: 129 }
+      2160p: { medium: 143, high: 110, ultra: 86 }
+    cpu_fps_cap: 400
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 8
+    target_fps: 240
+  - id: r6_siege_x
+    title: "Rainbow Six Siege X"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 325, high: 250, ultra: 195 }
+      1440p: { medium: 244, high: 188, ultra: 146 }
+      2160p: { medium: 162, high: 125, ultra: 98 }
+    cpu_fps_cap: 450
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 8
+    target_fps: 240
+  - id: rocket_league
+    title: "Rocket League"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 390, high: 300, ultra: 234 }
+      1440p: { medium: 292, high: 225, ultra: 176 }
+      2160p: { medium: 195, high: 150, ultra: 117 }
+    cpu_fps_cap: 450
+    vram_need:
+      1080p: { medium: 1.5, high: 2.0, ultra: 2.5 }
+      1440p: { medium: 2.0, high: 2.5, ultra: 3.0 }
+      2160p: { medium: 2.0, high: 3.0, ultra: 3.5 }
+    ram_min_gb: 8
+    target_fps: 144
+  - id: marvel_rivals
+    title: "Marvel Rivals"
+    kind: esports
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 124, high: 95, ultra: 74 }
+      1440p: { medium: 93, high: 71, ultra: 56 }
+      2160p: { medium: 62, high: 48, ultra: 37 }
+    cpu_fps_cap: 200
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 240
+  - id: mir_tankov
+    title: "Мир танков"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 208, high: 160, ultra: 125 }
+      1440p: { medium: 156, high: 120, ultra: 94 }
+      2160p: { medium: 104, high: 80, ultra: 62 }
+    cpu_fps_cap: 250
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 8
+    target_fps: 100
+  - id: warframe
+    title: "Warframe"
+    kind: esports
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 260, high: 200, ultra: 156 }
+      1440p: { medium: 195, high: 150, ultra: 117 }
+      2160p: { medium: 130, high: 100, ultra: 78 }
+    cpu_fps_cap: 350
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 8
+    target_fps: 100
+  - id: cyberpunk_2077
+    title: "Cyberpunk 2077"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 91, high: 70, ultra: 55 }
+      1440p: { medium: 64, high: 49, ultra: 38 }
+      2160p: { medium: 36, high: 28, ultra: 22 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: alan_wake_2
+    title: "Alan Wake 2"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 130
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: black_myth_wukong
+    title: "Black Myth: Wukong"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 72, high: 55, ultra: 43 }
+      1440p: { medium: 50, high: 38, ultra: 30 }
+      2160p: { medium: 29, high: 22, ultra: 17 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: elden_ring
+    title: "Elden Ring"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 78, high: 60, ultra: 47 }
+      1440p: { medium: 55, high: 42, ultra: 33 }
+      2160p: { medium: 31, high: 24, ultra: 19 }
+    cpu_fps_cap: 60
+    vram_need:
+      1080p: { medium: 4.0, high: 5.0, ultra: 6.0 }
+      1440p: { medium: 4.5, high: 6.0, ultra: 7.0 }
+      2160p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: baldurs_gate_3
+    title: "Baldur's Gate 3"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 110, high: 85, ultra: 66 }
+      1440p: { medium: 77, high: 59, ultra: 46 }
+      2160p: { medium: 44, high: 34, ultra: 27 }
+    cpu_fps_cap: 110
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: rdr2
+    title: "Red Dead Redemption 2"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 98, high: 75, ultra: 58 }
+      1440p: { medium: 68, high: 52, ultra: 41 }
+      2160p: { medium: 39, high: 30, ultra: 23 }
+    cpu_fps_cap: 150
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: hogwarts_legacy
+    title: "Hogwarts Legacy"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 78, high: 60, ultra: 47 }
+      1440p: { medium: 55, high: 42, ultra: 33 }
+      2160p: { medium: 31, high: 24, ultra: 19 }
+    cpu_fps_cap: 110
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: starfield
+    title: "Starfield"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 90
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: indiana_jones
+    title: "Indiana Jones and the Great Circle"
+    kind: aaa
+    rt_supported: true
+    rt_required: true
+    base_fps:
+      1080p: { medium: 78, high: 60, ultra: 47 }
+      1440p: { medium: 55, high: 42, ultra: 33 }
+      2160p: { medium: 31, high: 24, ultra: 19 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: kcd2
+    title: "Kingdom Come: Deliverance II"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 91, high: 70, ultra: 55 }
+      1440p: { medium: 64, high: 49, ultra: 38 }
+      2160p: { medium: 36, high: 28, ultra: 22 }
+    cpu_fps_cap: 120
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: mh_wilds
+    title: "Monster Hunter Wilds"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 90
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: ac_shadows
+    title: "Assassin's Creed Shadows"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 100
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: doom_dark_ages
+    title: "Doom: The Dark Ages"
+    kind: aaa
+    rt_supported: true
+    rt_required: true
+    base_fps:
+      1080p: { medium: 110, high: 85, ultra: 66 }
+      1440p: { medium: 77, high: 59, ultra: 46 }
+      2160p: { medium: 44, high: 34, ultra: 27 }
+    cpu_fps_cap: 200
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 90
+  - id: battlefield_6
+    title: "Battlefield 6"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 117, high: 90, ultra: 70 }
+      1440p: { medium: 82, high: 63, ultra: 49 }
+      2160p: { medium: 47, high: 36, ultra: 28 }
+    cpu_fps_cap: 180
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 100
+  - id: cod_bo7
+    title: "Call of Duty: Black Ops 7"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 130, high: 100, ultra: 78 }
+      1440p: { medium: 91, high: 70, ultra: 55 }
+      2160p: { medium: 52, high: 40, ultra: 31 }
+    cpu_fps_cap: 200
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 100
+  - id: gta5_enhanced
+    title: "GTA V Enhanced"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 143, high: 110, ultra: 86 }
+      1440p: { medium: 100, high: 77, ultra: 60 }
+      2160p: { medium: 57, high: 44, ultra: 34 }
+    cpu_fps_cap: 160
+    vram_need:
+      1080p: { medium: 4.0, high: 5.0, ultra: 6.0 }
+      1440p: { medium: 4.5, high: 6.0, ultra: 7.0 }
+      2160p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: witcher3_ng
+    title: "The Witcher 3 (Next-Gen)"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 110, high: 85, ultra: 66 }
+      1440p: { medium: 77, high: 59, ultra: 46 }
+      2160p: { medium: 44, high: 34, ultra: 27 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 4.0, high: 5.0, ultra: 6.0 }
+      1440p: { medium: 4.5, high: 6.0, ultra: 7.0 }
+      2160p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: stalker2
+    title: "S.T.A.L.K.E.R. 2"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 85
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: msfs2024
+    title: "Microsoft Flight Simulator 2024"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 58, high: 45, ultra: 35 }
+      1440p: { medium: 41, high: 31, ultra: 25 }
+      2160p: { medium: 23, high: 18, ultra: 14 }
+    cpu_fps_cap: 60
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 32
+    target_fps: 45
+  - id: forza_horizon_5
+    title: "Forza Horizon 5"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 130, high: 100, ultra: 78 }
+      1440p: { medium: 91, high: 70, ultra: 55 }
+      2160p: { medium: 52, high: 40, ultra: 31 }
+    cpu_fps_cap: 180
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: ghost_of_tsushima
+    title: "Ghost of Tsushima"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 98, high: 75, ultra: 58 }
+      1440p: { medium: 68, high: 52, ultra: 41 }
+      2160p: { medium: 39, high: 30, ultra: 23 }
+    cpu_fps_cap: 150
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: spider_man_2
+    title: "Marvel's Spider-Man 2"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 84, high: 65, ultra: 51 }
+      1440p: { medium: 59, high: 46, ultra: 35 }
+      2160p: { medium: 34, high: 26, ultra: 20 }
+    cpu_fps_cap: 120
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: tlou2
+    title: "The Last of Us Part II"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 91, high: 70, ultra: 55 }
+      1440p: { medium: 64, high: 49, ultra: 38 }
+      2160p: { medium: 36, high: 28, ultra: 22 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: horizon_fw
+    title: "Horizon Forbidden West"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 91, high: 70, ultra: 55 }
+      1440p: { medium: 64, high: 49, ultra: 38 }
+      2160p: { medium: 36, high: 28, ultra: 22 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: gow_ragnarok
+    title: "God of War Ragnarök"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 98, high: 75, ultra: 58 }
+      1440p: { medium: 68, high: 52, ultra: 41 }
+      2160p: { medium: 39, high: 30, ultra: 23 }
+    cpu_fps_cap: 150
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: silent_hill_2
+    title: "Silent Hill 2"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 100
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: re4
+    title: "Resident Evil 4"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 117, high: 90, ultra: 70 }
+      1440p: { medium: 82, high: 63, ultra: 49 }
+      2160p: { medium: 47, high: 36, ultra: 28 }
+    cpu_fps_cap: 180
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: dragons_dogma_2
+    title: "Dragon's Dogma 2"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 72, high: 55, ultra: 43 }
+      1440p: { medium: 50, high: 38, ultra: 30 }
+      2160p: { medium: 29, high: 22, ultra: 17 }
+    cpu_fps_cap: 75
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: star_wars_outlaws
+    title: "Star Wars Outlaws"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 65, high: 50, ultra: 39 }
+      1440p: { medium: 46, high: 35, ultra: 27 }
+      2160p: { medium: 26, high: 20, ultra: 16 }
+    cpu_fps_cap: 110
+    vram_need:
+      1080p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      1440p: { medium: 7.5, high: 9.0, ultra: 11.5 }
+      2160p: { medium: 9.0, high: 11.0, ultra: 14.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: clair_obscur
+    title: "Clair Obscur: Expedition 33"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 78, high: 60, ultra: 47 }
+      1440p: { medium: 55, high: 42, ultra: 33 }
+      2160p: { medium: 31, high: 24, ultra: 19 }
+    cpu_fps_cap: 140
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: tarkov
+    title: "Escape from Tarkov"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 98, high: 75, ultra: 58 }
+      1440p: { medium: 68, high: 52, ultra: 41 }
+      2160p: { medium: 39, high: 30, ultra: 23 }
+    cpu_fps_cap: 110
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 32
+    target_fps: 100
+  - id: poe2
+    title: "Path of Exile 2"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 117, high: 90, ultra: 70 }
+      1440p: { medium: 82, high: 63, ultra: 49 }
+      2160p: { medium: 47, high: 36, ultra: 28 }
+    cpu_fps_cap: 160
+    vram_need:
+      1080p: { medium: 4.0, high: 5.0, ultra: 6.0 }
+      1440p: { medium: 4.5, high: 6.0, ultra: 7.0 }
+      2160p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+    ram_min_gb: 16
+    target_fps: 100
+  - id: civ7
+    title: "Civilization VII"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 117, high: 90, ultra: 70 }
+      1440p: { medium: 82, high: 63, ultra: 49 }
+      2160p: { medium: 47, high: 36, ultra: 28 }
+    cpu_fps_cap: 120
+    vram_need:
+      1080p: { medium: 4.0, high: 5.0, ultra: 6.0 }
+      1440p: { medium: 4.5, high: 6.0, ultra: 7.0 }
+      2160p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+    ram_min_gb: 16
+    target_fps: 45
+  - id: tw_warhammer3
+    title: "Total War: Warhammer III"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 78, high: 60, ultra: 47 }
+      1440p: { medium: 55, high: 42, ultra: 33 }
+      2160p: { medium: 31, high: 24, ultra: 19 }
+    cpu_fps_cap: 90
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 45
+  - id: minecraft_shaders
+    title: "Minecraft (с шейдерами)"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 117, high: 90, ultra: 70 }
+      1440p: { medium: 82, high: 63, ultra: 49 }
+      2160p: { medium: 47, high: 36, ultra: 28 }
+    cpu_fps_cap: 160
+    vram_need:
+      1080p: { medium: 3.0, high: 4.0, ultra: 5.0 }
+      1440p: { medium: 3.5, high: 4.5, ultra: 6.0 }
+      2160p: { medium: 4.5, high: 5.5, ultra: 7.0 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: atomic_heart
+    title: "Atomic Heart"
+    kind: aaa
+    rt_supported: true
+    base_fps:
+      1080p: { medium: 130, high: 100, ultra: 78 }
+      1440p: { medium: 91, high: 70, ultra: 55 }
+      2160p: { medium: 52, high: 40, ultra: 31 }
+    cpu_fps_cap: 180
+    vram_need:
+      1080p: { medium: 5.0, high: 6.0, ultra: 7.5 }
+      1440p: { medium: 5.5, high: 7.0, ultra: 8.5 }
+      2160p: { medium: 6.5, high: 8.5, ultra: 10.5 }
+    ram_min_gb: 16
+    target_fps: 60
+  - id: smuta
+    title: "Смута"
+    kind: aaa
+    rt_supported: false
+    base_fps:
+      1080p: { medium: 72, high: 55, ultra: 43 }
+      1440p: { medium: 50, high: 38, ultra: 30 }
+      2160p: { medium: 29, high: 22, ultra: 17 }
+    cpu_fps_cap: 120
+    vram_need:
+      1080p: { medium: 5.5, high: 7.0, ultra: 9.0 }
+      1440p: { medium: 6.5, high: 8.0, ultra: 10.0 }
+      2160p: { medium: 8.0, high: 10.0, ultra: 12.0 }
+    ram_min_gb: 16
+    target_fps: 60

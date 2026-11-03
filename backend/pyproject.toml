@@ -1,0 +1,101 @@
+[project]
+name = "pcapp-backend"
+version = "0.1.0"
+description = "Экспертная система «Подбор комплектующих для ПК» магазина «Сборщик»"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.13",
+    "asyncpg>=0.29",
+    "fastapi>=0.115",
+    "jinja2>=3.1.6",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    "pyyaml>=6.0.3",
+    "sqlalchemy[asyncio]>=2.0.30",
+    "structlog>=24.4",
+    "uvicorn[standard]>=0.30",
+    "weasyprint>=70.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27",
+    "mypy>=1.11",
+    "pre-commit>=3.8",
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "pytest-cov>=5.0",
+    "python-dotenv>=1.2.4",
+    "ruff>=0.6",
+    "types-pyyaml>=6.0.12.20260906",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "N", "SIM", "RUF", "ASYNC", "S", "PT", "ANN"]
+ignore = [
+    "RUF001", # кириллица в строках — норма для проекта
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.isort]
+# Папка миграций alembic/ не должна делать пакет alembic «своим».
+known-third-party = ["alembic"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "ANN"]
+"alembic/**" = ["ANN"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = "app.expert.*"
+strict = true
+
+[[tool.mypy.overrides]]
+module = "weasyprint"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# В тестах обращение к Optional без проверки — нормально: None и так уронит тест.
+module = "tests.*"
+disable_error_code = ["union-attr"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+addopts = "-ra --strict-markers"
+markers = [
+    "integration: тесты с базой pcapp_test (нужен TEST_DATABASE_URL)",
+]
+
+[tool.coverage.run]
+source = ["app"]
+branch = true
+# SQLAlchemy async выполняет код в greenlet: без этого строки после await не засчитываются.
+concurrency = ["greenlet", "thread"]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true

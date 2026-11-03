@@ -1,0 +1,30 @@
+sku,brand,model,release_year,in_stock,socket,cores,threads,base_ghz,boost_ghz,tdp_w,igpu,unlocked,cooler_included,mem_types,perf_single,perf_multi,price_rub,price_checked_at,price_note
+CPU-AMD-R5-5600,AMD,Ryzen 5 5600,2022,true,AM4,6,12,3.5,4.4,65,false,true,false,DDR4,75,84,11590,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R5-5600G,AMD,Ryzen 5 5600G,2021,false,AM4,6,12,3.9,4.4,65,true,true,false,DDR4,68,80,22220,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-INTEL-I3-14100,Intel,Core i3-14100,2024,true,LGA1700,4,8,3.5,4.7,60,true,false,false,DDR4|DDR5,78,59,12060,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-INTEL-I5-12400F,Intel,Core i5-12400F,2022,true,LGA1700,6,12,2.5,4.4,65,false,false,false,DDR4|DDR5,85,80,12290,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-INTEL-I5-14400F,Intel,Core i5-14400F,2024,true,LGA1700,10,16,2.5,4.7,65,false,false,false,DDR4|DDR5,95,104,14590,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R5-7500F,AMD,Ryzen 5 7500F,2023,true,AM5,6,12,3.7,5.0,65,false,true,false,DDR5,97,97,13000,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R5-8600G,AMD,Ryzen 5 8600G,2024,true,AM5,6,12,4.3,5.0,65,true,true,false,DDR5,88,93,15200,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R5-9600X,AMD,Ryzen 5 9600X,2024,true,AM5,6,12,3.9,5.4,65,true,true,false,DDR5,108,111,17620,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R7-9700X,AMD,Ryzen 7 9700X,2024,true,AM5,8,16,3.8,5.5,65,true,true,false,DDR5,110,125,23970,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R7-9800X3D,AMD,Ryzen 7 9800X3D,2024,true,AM5,8,16,4.7,5.2,120,true,true,false,DDR5,140,141,40390,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R9-9950X,AMD,Ryzen 9 9950X,2024,true,AM5,16,32,4.3,5.7,170,true,true,false,DDR5,115,238,44110,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-INTEL-U5-245K,Intel,Core Ultra 5 245K,2024,true,LGA1851,14,14,4.2,5.2,125,true,true,false,DDR5,100,153,19260,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-INTEL-U7-265K,Intel,Core Ultra 7 265K,2024,true,LGA1851,20,20,3.9,5.5,125,true,true,false,DDR5,108,212,29990,2026-10-29,"сверено с рынком РФ: price.ru, медиана по магазинам Москвы"
+CPU-AMD-R5-5500,AMD,Ryzen 5 5500,2022,true,AM4,6,12,3.6,4.2,65,false,true,false,DDR4,68,78,9490,2026-10-30,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R7-5700X,AMD,Ryzen 7 5700X,2022,true,AM4,8,16,3.4,4.6,65,false,true,false,DDR4,78,108,13030,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R5-7600,AMD,Ryzen 5 7600,2023,true,AM5,6,12,3.8,5.1,65,true,true,false,DDR5,100,100,16990,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R7-7700,AMD,Ryzen 7 7700,2023,true,AM5,8,16,3.8,5.3,65,true,true,false,DDR5,104,128,16070,2026-10-30,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R7-7800X3D,AMD,Ryzen 7 7800X3D,2023,true,AM5,8,16,4.2,5.0,120,true,true,false,DDR5,128,124,26560,2026-10-30,price.ru: медиана 7 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R9-7900,AMD,Ryzen 9 7900,2023,true,AM5,12,24,3.7,5.4,65,true,true,false,DDR5,103,175,33340,2026-10-30,"price.ru: последняя цена, сейчас нет предложений"
+CPU-AMD-R9-9900X,AMD,Ryzen 9 9900X,2024,true,AM5,12,24,4.4,5.6,120,true,true,false,DDR5,113,185,37910,2026-10-30,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R9-9950X3D,AMD,Ryzen 9 9950X3D,2025,true,AM5,16,32,4.3,5.7,170,true,true,false,DDR5,140,242,58990,2026-10-30,price.ru: медиана 6 предл. магазинов Москвы (без Ti-store)
+CPU-AMD-R5-8500G,AMD,Ryzen 5 8500G,2024,true,AM5,6,12,3.5,5.0,65,true,true,false,DDR5,80,80,10910,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+CPU-INTEL-I3-12100F,Intel,Core i3-12100F,2022,true,LGA1700,4,8,3.3,4.3,58,false,false,false,DDR4|DDR5,76,57,8700,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+CPU-INTEL-I5-13400F,Intel,Core i5-13400F,2023,true,LGA1700,10,16,2.5,4.6,65,false,false,false,DDR4|DDR5,91,99,12970,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+CPU-INTEL-I5-14600KF,Intel,Core i5-14600KF,2023,true,LGA1700,14,20,3.5,5.3,125,false,true,false,DDR4|DDR5,108,150,22350,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+CPU-INTEL-I7-14700KF,Intel,Core i7-14700KF,2023,true,LGA1700,20,28,3.4,5.6,125,false,true,false,DDR4|DDR5,114,200,31630,2026-10-30,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+CPU-INTEL-I9-14900K,Intel,Core i9-14900K,2023,true,LGA1700,24,32,3.2,6.0,125,true,true,false,DDR4|DDR5,118,225,46390,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+CPU-INTEL-U5-225F,Intel,Core Ultra 5 225F,2025,true,LGA1851,10,10,3.3,4.9,65,false,false,false,DDR5,90,115,11900,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+CPU-INTEL-U9-285K,Intel,Core Ultra 9 285K,2024,true,LGA1851,24,24,3.7,5.7,125,true,true,false,DDR5,112,245,51490,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)

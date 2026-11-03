@@ -1,0 +1,313 @@
+# Golden cases — эталонные консультации (архитектура §6.3). Прогоняются в tests/kb и перед
+# публикацией базы знаний. perf — прогноз модели производительности:
+#   fps.<игра>.<разрешение>.<пресет>, ratio.<…> (CPU/GPU), app.<программа>.minutes|basic|pro, perf.<факт>.
+#
+# answers — ответы визарда (knowledge/questionnaire.yaml); owned — артикулы имеющихся деталей.
+# expect.facts / build — литерал (равенство) или {ge, le, gt, lt, eq, ne, in, contains}.
+
+- id: G-001
+  title: Современные игры 2K/144–180 Гц, 150 000 ₽, RGB и задел на будущее
+  answers: { tasks: { main: aaa_gaming }, budget: 150000, monitor: qhd_144, rgb: "yes", future_proof: "yes" }
+  expect:
+    facts: { profile.main: aaa_gaming, profile.gaming_tier: high, req.gpu_vram_min_gb: 8, req.need.case_fan: true }
+    fired: [PRF-003, PRF-011, PRF-054, REQ-003, REQ-008, REQ-053, BUD-001, BUD-010]
+    rejected: { GPU-PALIT-RTX5060-DUAL: FLT-003, CPU-AMD-R5-5600G: FLT-001 }
+    trace_rules: [CMP-001]
+    all_tiers:
+      max_total_rub: 150000
+      build: { build.gpu.vram_gb: { ge: 8 }, build.gpu.perf_raster: { ge: 135 }, build.ram.modules: 2, build.case_fan.rgb: true }
+      issues: [BAL-028, VAL-023]
+      preferences: [SCR-004]
+      perf: { fps.cyberpunk_2077.1440p.high: { ge: 60 }, perf.gpu_utilization: { ge: 0.85 } }
+    economy:
+      build: { build.gpu.vram_gb: 8 }
+      issues: [VAL-010, VAL-022]
+      preferences: [GEN-SKT-LGA1700-FUTURE]
+    maximum:
+      build: { build.gpu.vram_gb: { ge: 12 }, build.cpu.socket: AM5 }
+      preferences: [GEN-SKT-AM5-FUTURE]
+      perf: { fps.cyberpunk_2077.1440p.high: { ge: 65 } }
+
+- id: G-002
+  title: Офис за 50 000 ₽ — без видеокарты
+  answers: { tasks: { main: office }, budget: 50000 }
+  expect:
+    facts: { profile.main: office, profile.no_dgpu: true, req.need.gpu: false, req.cpu_igpu: true }
+    fired: [PRF-049, PRF-050, REQ-001, BUD-003, BUD-020]
+    rejected: { CPU-INTEL-I5-12400F: FLT-008 }
+    all_tiers:
+      max_total_rub: 50000
+      absent: [gpu]
+      build: { build.cpu.igpu: true, build.ram.capacity_gb: { ge: 8 } }
+      issues: [VAL-001]
+      preferences: [SCR-025]
+      perf: { app.office.basic: true, fps.cs2.1080p.medium: { lt: 60 } }
+      hypotheses:
+        - { predicate: office_ready, status: proved }
+        - { predicate: runs_app, args: { app: office, level: basic }, status: proved }
+        - { predicate: runs_game, args: { game: cs2, preset: high }, bindings: { resolution: "1080p", target_fps: 60 }, status: failed }
+
+- id: G-003
+  title: Офис за 35 000 ₽ — нижняя граница бюджета невыполнима на ценах 2026 года
+  answers: { tasks: { main: office }, budget: 35000 }
+  expect:
+    feasible: false
+    min_budget_rub: { ge: 40000, le: 50000 }
+    infeasible: { best_effort: false }
+
+- id: G-004
+  title: Киберспорт 1080p/240 Гц, 130 000 ₽
+  answers: { tasks: { main: esports }, budget: 130000, monitor: fhd_240 }
+  expect:
+    facts: { profile.main: esports, profile.gaming_tier: light, need.gpu_game: Counter-Strike 2, need.gpu_fps: 240, req.gpu_raster_min: 71 }
+    fired: [PRF-052, REQ-053, BUD-002, BUD-011]
+    not_fired: [REQ-055]
+    all_tiers:
+      max_total_rub: 130000
+      build: { build.gpu.perf_raster: { ge: 71 } }
+      perf: { fps.cs2.1080p.medium: { ge: 240 }, fps.valorant.1080p.medium: { ge: 300 } }
+    optimum:
+      hypotheses:
+        - { predicate: esports_240, status: proved }
+
+- id: G-005
+  title: Киберспорт 1080p/240 Гц за 90 000 ₽ — не хватает бюджета
+  answers: { tasks: { main: esports }, budget: 90000, monitor: fhd_240 }
+  expect:
+    feasible: false
+    min_budget_rub: { ge: 90000, le: 120000 }
+    infeasible:
+      blocking: [req.gpu_raster_min]
+      relaxations: ["Монитор «Full HD, 144–165 Гц»"]
+      compromise: ["Монитор «Full HD, 144–165 Гц» вместо «Full HD, 240 Гц и выше»"]
+
+- id: G-006
+  title: Игры в 4K, 350 000 ₽
+  answers: { tasks: { main: aaa_gaming }, budget: 350000, monitor: uhd_144 }
+  expect:
+    facts: { profile.gaming_tier: extreme, need.gpu_game: Cyberpunk 2077, need.gpu_fps: 60, req.gpu_raster_min: 214, budget.share.gpu: 0.48 }
+    fired: [PRF-055, REQ-009, REQ-053, BUD-009, BUD-023]
+    all_tiers:
+      max_total_rub: 350000
+      build: { build.gpu.perf_raster: { ge: 214 }, build.gpu.vram_gb: { ge: 16 } }
+      perf: { fps.cyberpunk_2077.2160p.high: { ge: 55 }, perf.limited_by: gpu }
+    maximum:
+      perf: { fps.cyberpunk_2077.2160p.high: { ge: 70 }, fps.rdr2.2160p.ultra: { ge: 60 } }
+      hypotheses:
+        - { predicate: ready_for_4k, status: proved }
+        - { predicate: runs_game, args: { game: rdr2, preset: ultra }, bindings: { target_fps: 60 }, status: proved }
+
+- id: G-007
+  title: 3D-рендер, белая сборка, 400 000 ₽
+  answers: { tasks: { main: render_3d }, budget: 400000, color: white }
+  expect:
+    facts: { profile.workstation: true, profile.gpu_compute: true, req.ram_min_gb: 64, req.vrm_min: high, req.color: white }
+    fired: [PRF-027, PRF-048, REQ-019, REQ-026, REQ-044, BUD-006, BUD-024]
+    all_tiers:
+      max_total_rub: 400000
+      build: { build.case.color: white, build.ram.capacity_gb: { ge: 64 }, build.cpu.cores: { ge: 8 }, build.motherboard.vrm_tier: high, build.gpu.vram_gb: { ge: 12 } }
+      preferences: [BAL-018, SCR-007]
+      perf: { app.blender.pro: true, app.blender.minutes: { le: 3 }, app.max_3ds.minutes: { le: 15 } }
+      hypotheses:
+        - { predicate: runs_app, args: { app: blender, level: pro }, status: proved }
+        - { predicate: workstation_ready, status: proved }
+    maximum:
+      issues: [VAL-005]
+      perf: { app.blender.minutes: { le: 2 } }
+
+- id: G-008
+  title: Монтаж и игры, архив на HDD, 220 000 ₽
+  answers: { tasks: { main: video_editing, extra: [aaa_gaming] }, budget: 220000, monitor: qhd_144, archive: "yes" }
+  expect:
+    facts: { profile.main: video_editing, profile.workstation: true, req.need.hdd: true, req.ram_min_gb: 32, req.storage_min_gb: 2000 }
+    fired: [REQ-002, REQ-025, REQ-034, BUD-005, BUD-014, BUD-025]
+    trace_rules: [GEN-CHP-B860-OC]
+    all_tiers:
+      max_total_rub: 220000
+      build: { build.hdd.capacity_gb: { ge: 2000 }, build.ssd.capacity_gb: { ge: 2000 }, build.ram.capacity_gb: { ge: 32 }, build.cpu.cores: { ge: 8 } }
+      preferences: [BAL-018]
+      perf: { app.davinci_resolve.basic: true }
+    maximum:
+      perf: { app.davinci_resolve.minutes: { le: 9 } }
+
+- id: G-009
+  title: Компактная игровая сборка, 200 000 ₽
+  answers: { tasks: { main: aaa_gaming }, budget: 200000, monitor: fhd_144, case_size: mini }
+  expect:
+    facts: { profile.compact: true, req.case_size: mini, profile.gaming_tier: mid }
+    fired: [PRF-046, REQ-049, BUD-017]
+    rejected: { MB-ASUS-TUF-B650-PLUS-WIFI: GEN-FF-SIZE-MINI, CASE-ZALMAN-S2: FLT-018 }
+    all_tiers:
+      max_total_rub: 200000
+      build: { build.case.size: mini, build.motherboard.form_factor: { in: [Mini-ITX, Micro-ATX] } }
+      perf: { fps.cyberpunk_2077.1080p.high: { ge: 60 } }
+    trace_rules: [GEN-FF-MICRO-ATX-COMPACT]
+    maximum:
+      build: { build.motherboard.form_factor: Mini-ITX }
+      preferences: [GEN-FF-MINI-ITX-COMPACT]
+
+- id: G-010
+  title: Апгрейд вокруг имеющейся RX 9070 XT, 100 000 ₽
+  answers: { tasks: { main: aaa_gaming }, budget: 100000, monitor: qhd_144 }
+  owned: [GPU-SAPPHIRE-RX9070XT-PULSE]
+  expect:
+    all_tiers:
+      max_total_rub: 100000
+      build: { build.gpu.owned: true, build.gpu.sku: GPU-SAPPHIRE-RX9070XT-PULSE, build.case.max_gpu_mm: { ge: 314 }, build.psu.wattage: { ge: 750 } }
+      perf: { perf.gpu_utilization: { ge: 0.85 }, fps.cyberpunk_2077.1440p.high: { ge: 100 } }
+
+- id: G-011
+  title: Предпочтения брендов — Intel и NVIDIA, 180 000 ₽
+  answers: { tasks: { main: aaa_gaming }, budget: 180000, monitor: fhd_144, cpu_brand: intel, gpu_brand: nvidia }
+  expect:
+    facts: { req.cpu_brand: intel, req.gpu_brand: nvidia }
+    rejected: { CPU-AMD-R5-7500F: FLT-020, GPU-SAPPHIRE-RX9060XT-16G-PULSE: FLT-021 }
+    all_tiers:
+      max_total_rub: 180000
+      build: { build.cpu.brand: Intel, build.gpu.chip: { contains: GeForce } }
+
+- id: G-012
+  title: Офис с Wi-Fi, белым корпусом и стеклом, 100 000 ₽
+  answers: { tasks: { main: office }, budget: 100000, wifi: "yes", color: white, glass: "yes" }
+  expect:
+    facts: { req.wifi: true, req.glass: true, req.color: white, profile.aesthetic: true }
+    fired: [REQ-045, REQ-046, REQ-048, BUD-016]
+    all_tiers:
+      max_total_rub: 100000
+      build: { build.motherboard.wifi: true, build.case.glass: true, build.case.color: white }
+      issues: [VAL-017]
+      preferences: [SCR-008]
+
+- id: G-013
+  title: Программирование, 120 000 ₽ — без видеокарты, много ядер и памяти
+  answers: { tasks: { main: programming }, budget: 120000 }
+  expect:
+    facts: { profile.main: programming, req.need.gpu: false, req.ram_min_gb: 32, req.cpu_cores_min: 8 }
+    fired: [REQ-020, REQ-028, BUD-004]
+    all_tiers:
+      max_total_rub: 120000
+      absent: [gpu]
+      build: { build.cpu.cores: { ge: 8 }, build.ram.capacity_gb: { ge: 32 }, build.cpu.igpu: true }
+      perf: { app.visual_studio.pro: true, app.visual_studio.minutes: { le: 10 } }
+
+- id: G-014
+  title: Игры и стриминг, 200 000 ₽
+  answers: { tasks: { main: aaa_gaming, extra: [streaming] }, budget: 200000, monitor: qhd_144 }
+  expect:
+    facts: { profile.multitask: true, req.ram_min_gb: 32, req.cpu_cores_min: 8 }
+    fired: [PRF-028, REQ-021, REQ-029]
+    all_tiers:
+      max_total_rub: 200000
+      build: { build.cpu.cores: { ge: 8 }, build.ram.capacity_gb: { ge: 32 } }
+
+- id: G-015
+  title: Фото и CAD, 130 000 ₽
+  answers: { tasks: { main: photo_cad }, budget: 130000 }
+  expect:
+    facts: { profile.main: photo_cad, req.cpu_single_min: 100 }
+    fired: [REQ-022, BUD-007]
+    all_tiers:
+      max_total_rub: 130000
+      build: { build.cpu.perf_single: { ge: 100 } }
+
+- id: G-016
+  title: Сквозной пример вики (страница 8) — в основном игры, иногда монтаж, 2K/144–180 Гц, белый корпус, 170 000 ₽
+  answers: { tasks: { main: aaa_gaming, extra: [video_editing] }, budget: 170000, monitor: qhd_144, games: [cyberpunk_2077, baldurs_gate_3], color: white, storage_gb: 1000, archive: "no", future_proof: "yes" }
+  expect:
+    facts: { profile.main: aaa_gaming, profile.secondary: video_editing, profile.gaming_tier: high, need.gpu_game: Cyberpunk 2077, req.gpu_raster_min: 122, req.ram_min_gb: 16, req.color: white, req.cpu_single_min: 85 }
+    fired: [PRF-011, PRF-021, PRF-054, REQ-008, REQ-018, REQ-024, REQ-030, REQ-053, BUD-010, BUD-023]
+    rejected: { CASE-ZALMAN-S2: FLT-016, GPU-PALIT-RTX5060-DUAL: FLT-003 }
+    all_tiers:
+      max_total_rub: 170000
+      build: { build.case.color: white, build.gpu.vram_gb: { ge: 8 }, build.gpu.perf_raster: { ge: 122 }, build.cpu.perf_single: { ge: 85 }, build.ssd.capacity_gb: { ge: 1000 } }
+      issues: [VAL-013]
+      preferences: [BAL-017]
+      perf: { fps.cyberpunk_2077.1440p.high: { ge: 60 }, fps.baldurs_gate_3.1440p.high: { ge: 60 } }
+    economy:
+      build: { build.gpu.vram_gb: 8, build.ram.capacity_gb: 16 }
+      issues: [VAL-022, VAL-023]
+    maximum:
+      build: { build.gpu.vram_gb: { ge: 12 }, build.ram.capacity_gb: 32 }
+      preferences: [SCR-026]
+      perf: { fps.cyberpunk_2077.1440p.high: { ge: 90 }, fps.baldurs_gate_3.1440p.ultra: { ge: 60 }, perf.bottleneck_ratio: { between: [0.85, 1.5] } }
+      hypotheses:
+        - { predicate: runs_game, args: { game: cyberpunk_2077, preset: ultra }, status: unknown, asks: [target_fps] }
+        - { predicate: runs_game, args: { game: cyberpunk_2077, preset: ultra }, bindings: { target_fps: 60 }, status: proved }
+        - { predicate: runs_game, args: { game: alan_wake_2, preset: ultra }, bindings: { target_fps: 60, resolution: "2160p" }, status: failed }
+        - { predicate: runs_app, args: { app: davinci_resolve, level: basic }, status: proved }
+    why_not:
+      - { sku: GPU-PALIT-RTX5060-DUAL, verdict: filtered, rules: [FLT-003] }
+      - { sku: CASE-ZALMAN-S2, verdict: filtered, rules: [FLT-016] }
+      - { sku: GPU-MSI-RTX5080-VENTUS-3X, verdict: over_budget }
+      - { sku: CPU-AMD-R5-7600, verdict: incompatible, rules: [CMP-001] }
+      - { sku: HDD-WD-BLUE-2TB, verdict: not_needed }
+      - { sku: GPU-SAPPHIRE-RX9060XT-16G-PULSE, verdict: worse }
+
+- id: G-017
+  title: Игры Full HD/144 Гц, 120 000 ₽, клиент выбрал DDR4
+  answers: { tasks: { main: aaa_gaming }, budget: 120000, monitor: fhd_144, mem_type: DDR4 }
+  expect:
+    facts: { req.mem_type: DDR4 }
+    fired: [REQ-052]
+    rejected: { RAM-KINGSTON-BEAST-D5-2X8-5200: FLT-027, MB-MSI-B650M-P: FLT-027, CPU-AMD-R5-7500F: FLT-028 }
+    all_tiers:
+      max_total_rub: 120000
+      build: { build.ram.mem_type: DDR4, build.motherboard.mem_type: DDR4 }
+    economy:
+      issues: [VAL-023]
+    maximum:
+      build: { build.ram.capacity_gb: 32 }
+
+- id: G-018
+  title: Игры Full HD/144 Гц, 130 000 ₽, клиент выбрал DDR5
+  answers: { tasks: { main: aaa_gaming }, budget: 130000, monitor: fhd_144, mem_type: DDR5 }
+  expect:
+    facts: { req.mem_type: DDR5 }
+    fired: [REQ-052]
+    rejected: { RAM-KINGSTON-BEAST-D4-2X8-3200: FLT-027, MB-MSI-B760M-P-DDR4: FLT-027 }
+    all_tiers:
+      max_total_rub: 130000
+      build: { build.ram.mem_type: DDR5, build.motherboard.mem_type: DDR5 }
+
+- id: G-019
+  title: Основная задача — игры 2K/144 Гц, иногда стриминг, 180 000 ₽
+  answers: { tasks: { main: aaa_gaming, extra: [streaming] }, budget: 180000, monitor: qhd_144 }
+  expect:
+    facts: { profile.main: aaa_gaming, profile.secondary: streaming, profile.multitask: true, req.ram_min_gb: 32, req.cpu_cores_min: 8 }
+    fired: [PRF-011, PRF-024, PRF-028, REQ-029]
+    all_tiers:
+      max_total_rub: 180000
+      build: { build.ram.capacity_gb: { ge: 32 }, build.cpu.cores: { ge: 8 }, build.gpu.perf_raster: { ge: 135 } }
+
+- id: G-020
+  title: Основная задача — монтаж видео, иногда игры, 200 000 ₽
+  answers: { tasks: { main: video_editing, extra: [aaa_gaming] }, budget: 200000, monitor: qhd_144 }
+  expect:
+    facts: { profile.main: video_editing, profile.secondary: aaa_gaming, profile.multitask: true, req.ram_min_gb: 32 }
+    fired: [PRF-013, PRF-019, PRF-029, PRF-047]
+    all_tiers:
+      max_total_rub: 200000
+      build: { build.ram.capacity_gb: { ge: 32 }, build.cpu.cores: { ge: 8 } }
+
+- id: G-021
+  title: Основная задача — программирование, иногда современные игры, 130 000 ₽ — SSD 500 ГБ с советом
+  answers: { tasks: { main: programming, extra: [aaa_gaming] }, budget: 130000, monitor: fhd_144 }
+  expect:
+    facts: { profile.main: programming, profile.secondary: aaa_gaming, req.storage_min_gb: 500 }
+    not_fired: [REQ-033]
+    economy:
+      build: { build.ssd.capacity_gb: 500 }
+      issues: [BAL-031]
+
+- id: G-022
+  title: Игры 2K/144–180 Гц за 100 000 ₽ — компромиссная сборка ценой уступок
+  answers: { tasks: { main: aaa_gaming }, budget: 100000, monitor: qhd_144 }
+  expect:
+    feasible: false
+    min_budget_rub: { ge: 100000, le: 120000 }
+    infeasible:
+      blocking: [req.gpu_raster_min, req.storage_min_gb]
+      compromise:
+        - "SSD 500 ГБ вместо 1000"
+        - "Одна планка памяти вместо двух"
+

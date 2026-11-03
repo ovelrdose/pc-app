@@ -1,0 +1,13 @@
+sku,brand,model,release_year,capacity_gb,rpm,cache_mb,price_rub,price_checked_at,price_note
+HDD-SEAGATE-BARRACUDA-1TB,Seagate,BarraCuda 1 ТБ (ST1000DM014),2020,1000,7200,64,12580,2026-10-29,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+HDD-WD-BLUE-2TB,WD,Blue 2 ТБ (WD20EZBX),2021,2000,7200,256,15470,2026-10-29,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+HDD-TOSHIBA-P300-2TB,Toshiba,P300 2 ТБ (HDWD220),2019,2000,5400,128,8000,2026-10-29,ориентир; на price.ru только Ti-store (цены завышены)
+HDD-SEAGATE-BARRACUDA-4TB,Seagate,BarraCuda 4 ТБ (ST4000DM004),2018,4000,5400,256,15360,2026-10-29,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+HDD-WD-REDPLUS-4TB,WD,Red Plus 4 ТБ (WD40EFPX),2022,4000,5400,256,21920,2026-10-29,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+HDD-SEAGATE-IRONWOLF-8TB,Seagate,IronWolf 8 ТБ (ST8000VN004),2019,8000,7200,256,39700,2026-10-29,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+HDD-WD-REDPLUS-2TB,WD,Red Plus 2 ТБ (WD20EFPX),2023,2000,5400,64,14600,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+HDD-TOSHIBA-S300-4TB,Toshiba,S300 4 ТБ (HDWT840UZSVA),2021,4000,5400,128,14900,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+HDD-SEAGATE-SKYHAWK-4TB,Seagate,SkyHawk 4 ТБ (ST4000VX015),2021,4000,5400,256,15190,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+HDD-WD-BLUE-4TB,WD,Blue 4 ТБ (WD40EZZX),2023,4000,5400,256,16550,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+HDD-SEAGATE-SKYHAWK-6TB,Seagate,SkyHawk 6 ТБ (ST6000VX009),2021,6000,5400,256,24990,2026-10-30,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+HDD-WD-REDPLUS-8TB,WD,Red Plus 8 ТБ (WD80EFPX),2023,8000,5400,256,39370,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)

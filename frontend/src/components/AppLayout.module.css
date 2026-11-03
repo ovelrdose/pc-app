@@ -1,0 +1,7 @@
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--mantine-spacing-xs);
+  color: inherit;
+  text-decoration: none;
+}

@@ -1,0 +1,27 @@
+sku,brand,model,release_year,color,rgb,size,form_factors,max_gpu_mm,max_cooler_mm,psu_ff,fan_slots,fans_included,radiator_support,glass,price_rub,price_checked_at,price_note
+CASE-AEROCOOL-CYLON-MINI,Aerocool,Cylon Mini,2018,black,true,mini,Micro-ATX|Mini-ITX,300,153,ATX,4,1,120|240,false,2900,2026-10-29,ориентир; на price.ru не найден
+CASE-ZALMAN-S2,Zalman,S2,2018,black,false,mid,ATX|Micro-ATX|Mini-ITX,330,160,ATX,6,3,120|240,false,3279,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+CASE-DEEPCOOL-CC560-V2,Deepcool,CC560 V2,2023,black,true,mid,ATX|Micro-ATX|Mini-ITX,370,163,ATX,6,4,120|240|280|360,true,5800,2026-10-29,ориентир; на price.ru не найден
+CASE-FRACTAL-POP-MINI-AIR,Fractal Design,Pop Mini Air RGB,2022,black,true,mini,Micro-ATX|Mini-ITX,405,170,ATX,6,3,120|240|280,true,8500,2026-10-29,ориентир; на price.ru не найден
+CASE-NZXT-H5-FLOW-2024-W,NZXT,H5 Flow (2024) White,2024,white,false,mid,ATX|Micro-ATX|Mini-ITX,365,165,ATX,7,2,120|140|240|280|360,true,11880,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store)
+CASE-COOLERMASTER-NR200P,Cooler Master,MasterBox NR200P,2021,black,false,mini,Mini-ITX,330,155,SFX,7,2,120|240|280,true,9500,2026-10-29,ориентир; на price.ru не найден
+CASE-MONTECH-AIR903-MAX,Montech,AIR 903 MAX,2023,black,false,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,400,180,ATX,9,4,120|140|240|280|360|420,true,9640,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+CASE-LIANLI-LANCOOL-216,Lian Li,LANCOOL 216 RGB,2023,black,true,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,392,180,ATX,9,3,120|140|240|280|360,true,10500,2026-10-29,ориентир; на price.ru не найден
+CASE-PHANTEKS-ENTHOO-PRO2,Phanteks,Enthoo Pro 2,2021,black,false,full,E-ATX|ATX|Micro-ATX|Mini-ITX,503,195,ATX,15,0,120|140|240|280|360|420,true,15000,2026-10-29,ориентир; на price.ru не найден
+CASE-LIANLI-O11D-EVO,Lian Li,O11 Dynamic EVO,2022,black,false,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,426,167,ATX,10,0,120|140|240|280|360|420,true,16500,2026-10-29,ориентир; на price.ru не найден
+CASE-OCYPUS-GAMMA-C50-W,Ocypus,Gamma C50 White,2024,white,false,mini,Micro-ATX|Mini-ITX,340,160,ATX,6,0,120|240,true,2680,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CASE-ZALMAN-T3-PLUS,Zalman,T3 Plus,2021,black,false,mini,Micro-ATX|Mini-ITX,290,150,ATX,4,2,120,false,3310,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+CASE-DEEPCOOL-CH160,Deepcool,CH160,2023,black,false,mini,Mini-ITX,305,172,ATX,4,0,120|240,false,4950,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+CASE-DEEPCOOL-CG380-3F,Deepcool,CG380 3F,2024,black,true,mini,Micro-ATX|Mini-ITX,380,170,ATX,6,3,120|240|360,true,5000,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CASE-JONSBO-D41-MESH-W,Jonsbo,D41 MESH White,2023,white,false,mid,ATX|Micro-ATX|Mini-ITX,400,168,ATX,9,0,120|240|280|360,true,6230,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+CASE-MONTECH-AIR1000-LITE,Montech,AIR 1000 LITE,2022,black,false,mid,ATX|Micro-ATX|Mini-ITX,340,170,ATX,6,3,120|140|240|280|360,true,6280,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+CASE-DEEPCOOL-MATREXX55-MESH-V4,Deepcool,MATREXX 55 MESH V4,2024,black,true,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,370,165,ATX,7,4,120|240|280|360,true,6700,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+CASE-DEEPCOOL-CG530-4F,Deepcool,CG530 4F,2024,black,true,mid,ATX|Micro-ATX|Mini-ITX,410,160,ATX,8,4,120|240|280|360,true,6910,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CASE-DEEPCOOL-CH780,Deepcool,CH780,2024,black,true,full,E-ATX|ATX|Micro-ATX|Mini-ITX,480,132,ATX,13,1,120|140|240|280|360|420,true,8000,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+CASE-DEEPCOOL-CG580-4F,Deepcool,CG580 4F,2024,black,true,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,410,176,ATX,9,4,120|140|240|280|360,true,8200,2026-10-30,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+CASE-DEEPCOOL-CK560,Deepcool,CK560,2022,black,true,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,380,175,ATX,9,4,120|140|240|280|360,true,9710,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CASE-DEEPCOOL-CH560,Deepcool,CH560,2023,black,true,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,380,175,ATX,9,3,120|140|240|280|360,true,10710,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+CASE-ASUS-TUF-GT502-HORIZON-W,ASUS,TUF Gaming GT502 Horizon ARGB White,2025,white,true,mid,ATX|Micro-ATX|Mini-ITX,400,163,ATX,10,4,120|240|280|360,true,18750,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+CASE-FRACTAL-NORTH,Fractal Design,North (FD-C-NOR1C-01),2022,black,false,mid,ATX|Micro-ATX|Mini-ITX,355,170,ATX,6,2,120|140|240|280|360,false,23030,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+CASE-ASUS-ROG-HELIOS-GX601,ASUS,ROG Strix Helios GX601,2019,black,true,full,E-ATX|ATX|Micro-ATX|Mini-ITX,450,190,ATX,9,4,120|140|240|280|360|420,true,32950,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+CASE-ASUS-PROART-PA602,ASUS,ProArt PA602,2024,black,false,mid,E-ATX|ATX|Micro-ATX|Mini-ITX,450,190,ATX,10,3,120|140|240|280|360|420,true,35380,2026-10-30,price.ru: медиана 7 предл. магазинов Москвы (без Ti-store)

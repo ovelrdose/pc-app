@@ -1,0 +1,324 @@
+# CMP — совместимость деталей: проверяется, как только в сборке есть все упомянутые детали.
+# Совместимость плата/БП ↔ корпус и сокет ↔ чипсет — в сгенерированных GEN-FF и GEN-SKT.
+- code: CMP-001
+  name: Сокет процессора и платы
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.cpu.socket
+    op: ne
+    ref: build.motherboard.socket
+  then:
+  - action: reject
+    message: Процессор {build.cpu.socket} не встанет в плату {build.motherboard.socket}
+  explain: Процессор устанавливается только в плату с тем же сокетом.
+- code: CMP-002
+  name: Тип памяти и плата
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.ram.mem_type
+    op: ne
+    ref: build.motherboard.mem_type
+  then:
+  - action: reject
+    message: Память {build.ram.mem_type} не подходит к плате с {build.motherboard.mem_type}
+  explain: Планки DDR4 и DDR5 физически не взаимозаменяемы.
+- code: CMP-003
+  name: Процессор поддерживает тип памяти платы
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: not contains(build.cpu.mem_types, build.motherboard.mem_type)
+  then:
+  - action: reject
+    message: Процессор не работает с памятью {build.motherboard.mem_type}
+  explain: Контроллер памяти находится в процессоре и поддерживает только свои типы памяти.
+- code: CMP-004
+  name: Длина видеокарты
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.gpu.length_mm
+    op: gt
+    ref: build.case.max_gpu_mm
+  then:
+  - action: reject
+    message: Видеокарта {build.gpu.length_mm} мм не влезет в корпус (до {build.case.max_gpu_mm} мм)
+  explain: Видеокарта должна помещаться в корпус по длине.
+- code: CMP-005
+  name: Высота кулера
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.cpu_cooler.height_mm
+    op: gt
+    ref: build.case.max_cooler_mm
+  then:
+  - action: reject
+    message: Кулер {build.cpu_cooler.height_mm} мм выше допустимого ({build.case.max_cooler_mm} мм)
+  explain: Башенный кулер должен помещаться в корпус по высоте.
+- code: CMP-006
+  name: Кулер и сокет
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: not contains(build.cpu_cooler.sockets, build.cpu.socket)
+  then:
+  - action: reject
+    message: Кулер не крепится на сокет {build.cpu.socket}
+  explain: У кулера должно быть крепление под сокет процессора.
+- code: CMP-007
+  name: Минимальная мощность БП
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.psu.wattage < build.total.power_w * 1.2
+  then:
+  - action: reject
+    message: 'БП {build.psu.wattage} Вт слабоват: сборка потребляет около {build.total.power_w} Вт'
+  explain: Блок питания должен покрывать потребление сборки с запасом не меньше 20%.
+- code: CMP-008
+  name: Рекомендация производителя видеокарты
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.psu.wattage
+    op: lt
+    ref: build.gpu.rec_psu_w
+  then:
+  - action: reject
+    message: Для этой видеокарты производитель рекомендует БП от {build.gpu.rec_psu_w} Вт
+  explain: Производитель видеокарты указывает минимальную мощность блока питания.
+- code: CMP-009
+  name: Кулер справится с процессором
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.cpu_cooler.tdp_capacity_w
+    op: lt
+    ref: build.cpu.tdp_w
+  then:
+  - action: reject
+    message: Кулер рассчитан на {build.cpu_cooler.tdp_capacity_w} Вт, а TDP процессора {build.cpu.tdp_w}
+      Вт
+  explain: Кулер должен рассеивать не меньше тепла, чем выделяет процессор.
+- code: CMP-010
+  name: Радиатор СЖО и корпус
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.cpu_cooler.type == 'aio' and not contains(build.case.radiator_support, build.cpu_cooler.radiator_mm)
+  then:
+  - action: reject
+    message: Радиатор {build.cpu_cooler.radiator_mm} мм не устанавливается в этот корпус
+  explain: Корпус должен поддерживать радиатор водяного охлаждения нужного размера.
+- code: CMP-011
+  name: Слот M.2 для SSD
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.ssd.form_factor == 'm2_2280' and build.motherboard.m2_slots < 1
+  then:
+  - action: reject
+    message: На плате нет слота M.2
+  explain: SSD формата M.2 ставится только в слот M.2 на плате.
+- code: CMP-012
+  name: Порты SATA для HDD
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.hdd.capacity_gb > 0 and build.motherboard.sata_ports < 1
+  then:
+  - action: reject
+    message: На плате нет портов SATA для жёсткого диска
+  explain: Жёсткий диск подключается к порту SATA.
+- code: CMP-013
+  name: Порты SATA для двух дисков
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.ssd.interface == 'sata' and build.hdd.capacity_gb > 0 and build.motherboard.sata_ports
+      < 2
+  then:
+  - action: reject
+    message: На плате не хватает портов SATA для SSD и HDD
+  explain: SATA-накопителям нужно по порту на каждый.
+- code: CMP-014
+  name: Планок больше, чем слотов
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.ram.modules
+    op: gt
+    ref: build.motherboard.mem_slots
+  then:
+  - action: reject
+    message: В комплекте {build.ram.modules} планки, а на плате {build.motherboard.mem_slots} слота
+  explain: Каждой планке памяти нужен свой слот.
+- code: CMP-015
+  name: Объём памяти больше максимума платы
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    fact: build.ram.capacity_gb
+    op: gt
+    ref: build.motherboard.max_mem_gb
+  then:
+  - action: reject
+    message: Плата поддерживает до {build.motherboard.max_mem_gb} ГБ
+  explain: Плата не увидит память сверх своего максимума.
+- code: CMP-016
+  name: Питание 12V-2x6 для видеокарты
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: contains(build.gpu.power_connectors, '12V-2x6') and not contains(build.psu.pcie_connectors,
+      '12V-2x6') and len(build.psu.pcie_connectors) < 3
+  then:
+  - action: reject
+    message: Видеокарте нужен разъём 12V-2x6 или переходник из трёх 8-pin — у БП их нет
+  explain: Новые видеокарты питаются через 12V-2x6; без него нужен переходник из нескольких 8-pin.
+- code: CMP-017
+  name: Хватает разъёмов питания видеокарты
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: len(build.gpu.power_connectors) > len(build.psu.pcie_connectors)
+  then:
+  - action: reject
+    message: Видеокарте нужно {len(build.gpu.power_connectors)} разъёма питания, у БП — {len(build.psu.pcie_connectors)}
+  explain: Каждому разъёму питания видеокарты нужен свой кабель от блока питания.
+- code: CMP-018
+  name: Есть куда поставить вентиляторы
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.case.fans_included + build.case_fan.quantity > build.case.fan_slots
+  then:
+  - action: reject
+    message: В корпусе {build.case.fan_slots} мест под вентиляторы, а нужно {build.case.fans_included
+      + build.case_fan.quantity}
+  explain: Докупленным вентиляторам нужны свободные места в корпусе.
+- code: CMP-019
+  name: Без видеокарты — только процессор с графикой
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    all:
+    - fact: build.cpu.igpu
+      op: eq
+      value: false
+    - fact: req.need.gpu
+      op: eq
+      value: false
+  then:
+  - action: reject
+    message: Без видеокарты процессору нужна встроенная графика
+  explain: Если видеокарты нет, изображение может вывести только встроенная графика процессора.
+- code: CMP-020
+  name: Толстая видеокарта в компактном корпусе
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.case.size == 'mini' and build.gpu.slots > 2.5
+  then:
+  - action: reject
+    message: Видеокарта толщиной {build.gpu.slots} слота не поместится в компактный корпус
+  explain: Компактные корпуса рассчитаны на видеокарты толщиной до 2,5 слота.
+- code: CMP-021
+  name: Вентиляторы СЖО в корпусе
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.cpu_cooler.type == 'aio' and build.case.fan_slots < 2
+  then:
+  - action: reject
+    message: В корпусе мало мест под вентиляторы радиатора
+  explain: Радиатору СЖО нужны места под вентиляторы.
+- code: CMP-022
+  name: Высокая память под башенным кулером в компактном корпусе
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.case.size == 'mini' and build.cpu_cooler.type == 'air' and build.ram.height_mm > 42
+  then:
+  - action: reject
+    message: Высокие планки ({build.ram.height_mm} мм) упрутся в радиатор кулера в компактном корпусе
+  explain: В тесном корпусе высокие планки с подсветкой мешают башенному кулеру.
+- code: CMP-023
+  name: Слишком мощный БП для отсека SFX
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    expr: build.case.psu_ff == 'SFX' and build.psu.wattage > 1000
+  then:
+  - action: reject
+    message: Блоки мощнее 1000 Вт не выпускаются в формате SFX
+  explain: В компактные корпуса ставятся только блоки SFX.
+- code: CMP-024
+  name: Мало вентиляторов в корпусе
+  kind: compat
+  group: compatibility
+  priority: 900
+  cf: 1.0
+  when:
+    any:
+    - all:
+      - not:
+          fact: build.case_fan.quantity
+          op: exists
+      - fact: build.case.fans_included
+        op: lt
+        value: 2
+    - expr: build.case.fans_included + build.case_fan.quantity < 2
+  then:
+  - action: reject
+    message: 'Вентиляторов в корпусе: {build.case.fans_included}, а нужно хотя бы два — своих или докупленных'
+  explain: Без двух вентиляторов (на вдув и выдув) горячий воздух застаивается в корпусе.

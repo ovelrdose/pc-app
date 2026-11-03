@@ -1,0 +1,15 @@
+# Форм-факторы. rank — относительный размер платы (больше — крупнее).
+# psu.fits_case_psu — в какие отсеки БП корпуса встаёт блок питания (SFX — через переходник).
+# case_sizes.max_board_rank — самая крупная плата, уместная в корпусе этого размера.
+motherboard:
+  - { id: Mini-ITX, rank: 1, width_mm: 170, height_mm: 170 }
+  - { id: Micro-ATX, rank: 2, width_mm: 244, height_mm: 244 }
+  - { id: ATX, rank: 3, width_mm: 305, height_mm: 244 }
+  - { id: E-ATX, rank: 4, width_mm: 305, height_mm: 330 }
+psu:
+  - { id: SFX, fits_case_psu: [SFX, ATX] }
+  - { id: ATX, fits_case_psu: [ATX] }
+case_sizes:
+  - { size: mini, max_board_rank: 2 }
+  - { size: mid, max_board_rank: 4 }
+  - { size: full, max_board_rank: 4 }

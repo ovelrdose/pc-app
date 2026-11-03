@@ -1,0 +1,796 @@
+# PRF — профилирование клиента: из ответов (user.*) выводится профиль (profile.*).
+# Выведенные из базы правила (коды не переиспользуются) — в rules/retired.yaml.
+- code: PRF-001
+  name: Сценарий «офис» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.office
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.office
+    expr: user.weight.office
+  explain: Вы отметили задачу «офис» с важностью {round(user.weight.office * 100)}%, она учитывается при
+    подборе.
+- code: PRF-002
+  name: Сценарий «киберспорт» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.esports
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.esports
+    expr: user.weight.esports
+  explain: Вы отметили задачу «киберспорт» с важностью {round(user.weight.esports * 100)}%, она учитывается
+    при подборе.
+- code: PRF-003
+  name: Сценарий «современные игры» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.aaa_gaming
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.aaa_gaming
+    expr: user.weight.aaa_gaming
+  explain: Вы отметили задачу «современные игры» с важностью {round(user.weight.aaa_gaming * 100)}%, она
+    учитывается при подборе.
+- code: PRF-004
+  name: Сценарий «3D-рендер» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.render_3d
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.render_3d
+    expr: user.weight.render_3d
+  explain: Вы отметили задачу «3D-рендер» с важностью {round(user.weight.render_3d * 100)}%, она учитывается
+    при подборе.
+- code: PRF-005
+  name: Сценарий «монтаж видео» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.video_editing
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.video_editing
+    expr: user.weight.video_editing
+  explain: Вы отметили задачу «монтаж видео» с важностью {round(user.weight.video_editing * 100)}%, она
+    учитывается при подборе.
+- code: PRF-006
+  name: Сценарий «фото и CAD» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.photo_cad
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.photo_cad
+    expr: user.weight.photo_cad
+  explain: Вы отметили задачу «фото и CAD» с важностью {round(user.weight.photo_cad * 100)}%, она учитывается
+    при подборе.
+- code: PRF-007
+  name: Сценарий «программирование» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.programming
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.programming
+    expr: user.weight.programming
+  explain: Вы отметили задачу «программирование» с важностью {round(user.weight.programming * 100)}%,
+    она учитывается при подборе.
+- code: PRF-008
+  name: Сценарий «стриминг» заявлен клиентом
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.weight.streaming
+    op: ge
+    value: 0.1
+  then:
+  - action: assert
+    fact: profile.weight.streaming
+    expr: user.weight.streaming
+  explain: Вы отметили задачу «стриминг» с важностью {round(user.weight.streaming * 100)}%, она учитывается
+    при подборе.
+- code: PRF-009
+  name: Главный сценарий — офис
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.office >= 0.4 and user.weight.office == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: office
+  explain: Задача «офис» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-010
+  name: Главный сценарий — киберспорт
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.esports >= 0.4 and user.weight.esports == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: esports
+  explain: Задача «киберспорт» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-011
+  name: Главный сценарий — современные игры
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.aaa_gaming >= 0.4 and user.weight.aaa_gaming == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: aaa_gaming
+  explain: Задача «современные игры» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-012
+  name: Главный сценарий — 3D-рендер
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.render_3d >= 0.4 and user.weight.render_3d == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: render_3d
+  explain: Задача «3D-рендер» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-013
+  name: Главный сценарий — монтаж видео
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.video_editing >= 0.4 and user.weight.video_editing == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: video_editing
+  explain: Задача «монтаж видео» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-014
+  name: Главный сценарий — фото и CAD
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.photo_cad >= 0.4 and user.weight.photo_cad == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: photo_cad
+  explain: Задача «фото и CAD» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-015
+  name: Главный сценарий — программирование
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.programming >= 0.4 and user.weight.programming == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: programming
+  explain: Задача «программирование» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-016
+  name: Главный сценарий — стриминг
+  kind: inference
+  group: profile
+  priority: 710
+  cf: 1.0
+  when:
+    expr: user.weight.streaming >= 0.4 and user.weight.streaming == max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.main
+    value: streaming
+  explain: Задача «стриминг» для вас важнее остальных, сборка строится вокруг неё.
+- code: PRF-017
+  name: Второй сценарий — офис
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.office >= 0.25 and user.weight.office < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: office
+  explain: Задача «офис» тоже важна ({round(user.weight.office * 100)}%), её требования учитываются.
+- code: PRF-018
+  name: Второй сценарий — киберспорт
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.esports >= 0.25 and user.weight.esports < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: esports
+  explain: Задача «киберспорт» тоже важна ({round(user.weight.esports * 100)}%), её требования учитываются.
+- code: PRF-019
+  name: Второй сценарий — современные игры
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.aaa_gaming >= 0.25 and user.weight.aaa_gaming < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: aaa_gaming
+  explain: Задача «современные игры» тоже важна ({round(user.weight.aaa_gaming * 100)}%), её требования
+    учитываются.
+- code: PRF-020
+  name: Второй сценарий — 3D-рендер
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.render_3d >= 0.25 and user.weight.render_3d < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: render_3d
+  explain: Задача «3D-рендер» тоже важна ({round(user.weight.render_3d * 100)}%), её требования учитываются.
+- code: PRF-021
+  name: Второй сценарий — монтаж видео
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.video_editing >= 0.25 and user.weight.video_editing < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: video_editing
+  explain: Задача «монтаж видео» тоже важна ({round(user.weight.video_editing * 100)}%), её требования
+    учитываются.
+- code: PRF-022
+  name: Второй сценарий — фото и CAD
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.photo_cad >= 0.25 and user.weight.photo_cad < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: photo_cad
+  explain: Задача «фото и CAD» тоже важна ({round(user.weight.photo_cad * 100)}%), её требования учитываются.
+- code: PRF-023
+  name: Второй сценарий — программирование
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.programming >= 0.25 and user.weight.programming < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: programming
+  explain: Задача «программирование» тоже важна ({round(user.weight.programming * 100)}%), её требования
+    учитываются.
+- code: PRF-024
+  name: Второй сценарий — стриминг
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: user.weight.streaming >= 0.25 and user.weight.streaming < max(user.weight.office, user.weight.esports,
+      user.weight.aaa_gaming, user.weight.render_3d, user.weight.video_editing, user.weight.photo_cad,
+      user.weight.programming, user.weight.streaming)
+  then:
+  - action: assert
+    fact: profile.secondary
+    value: streaming
+  explain: Задача «стриминг» тоже важна ({round(user.weight.streaming * 100)}%), её требования учитываются.
+- code: PRF-025
+  name: Игровой вес
+  kind: inference
+  group: profile
+  priority: 720
+  cf: 1.0
+  when:
+    expr: max(user.weight.esports, user.weight.aaa_gaming) > 0
+  then:
+  - action: assert
+    fact: profile.gaming
+    expr: max(user.weight.esports, user.weight.aaa_gaming)
+  explain: 'Игровая нагрузка определяется самым важным из игровых сценариев: {round(profile.gaming * 100)}%.'
+- code: PRF-026
+  name: Вес творческих задач
+  kind: inference
+  group: profile
+  priority: 720
+  cf: 1.0
+  when:
+    expr: max(user.weight.video_editing, user.weight.render_3d, user.weight.photo_cad) > 0
+  then:
+  - action: assert
+    fact: profile.creator
+    expr: max(user.weight.video_editing, user.weight.render_3d, user.weight.photo_cad)
+  explain: Творческие задачи (монтаж, 3D, фото) весят {round(profile.creator * 100)}%.
+- code: PRF-027
+  name: Рабочая станция
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    expr: max(user.weight.render_3d, user.weight.video_editing) >= 0.6
+  then:
+  - action: assert
+    fact: profile.workstation
+    value: true
+  explain: 'Рендер или монтаж — основная работа: нужна рабочая станция с упором на процессор и память.'
+- code: PRF-028
+  name: Игры и стриминг одновременно
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    all:
+    - fact: user.weight.streaming
+      op: ge
+      value: 0.3
+    - expr: max(user.weight.esports, user.weight.aaa_gaming) >= 0.5
+  then:
+  - action: assert
+    fact: profile.multitask
+    value: true
+  explain: Стрим во время игры нагружает процессор и видеокарту одновременно.
+- code: PRF-029
+  name: Игры и творческие задачи одновременно
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.8
+  when:
+    expr: max(user.weight.esports, user.weight.aaa_gaming) >= 0.3 and max(user.weight.video_editing, user.weight.render_3d,
+      user.weight.photo_cad) >= 0.5
+  then:
+  - action: assert
+    fact: profile.multitask
+    value: true
+  explain: Основная задача — творческая работа, но компьютер нужен и для игр — нужен запас по памяти и ядрам.
+- code: PRF-030
+  name: Игровой нагрузки нет
+  kind: inference
+  group: profile
+  priority: 705
+  cf: 1.0
+  when:
+    any:
+    - not:
+        fact: profile.gaming
+        op: exists
+    - fact: profile.gaming
+      op: lt
+      value: 0.3
+  then:
+  - action: assert
+    fact: profile.gaming_tier
+    value: none
+  explain: Игры для вас не главное, мощная видеокарта не требуется.
+- code: PRF-039
+  name: Монитор с высокой частотой
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.refresh_hz
+    op: ge
+    value: 144
+  then:
+  - action: assert
+    fact: profile.high_refresh
+    value: true
+  explain: Монитор {user.refresh_hz} Гц раскрывается только при высоком FPS.
+- code: PRF-040
+  name: 'Бюджет: начальный'
+  kind: inference
+  group: profile
+  priority: 730
+  cf: 1.0
+  when:
+    fact: user.budget
+    op: between
+    value:
+    - 0
+    - 59999
+  then:
+  - action: assert
+    fact: profile.budget_class
+    value: entry
+  explain: Бюджет {user.budget} ₽ относится к классу «начальный».
+- code: PRF-041
+  name: 'Бюджет: небольшой'
+  kind: inference
+  group: profile
+  priority: 730
+  cf: 1.0
+  when:
+    fact: user.budget
+    op: between
+    value:
+    - 60000
+    - 99999
+  then:
+  - action: assert
+    fact: profile.budget_class
+    value: low
+  explain: Бюджет {user.budget} ₽ относится к классу «небольшой».
+- code: PRF-042
+  name: 'Бюджет: средний'
+  kind: inference
+  group: profile
+  priority: 730
+  cf: 1.0
+  when:
+    fact: user.budget
+    op: between
+    value:
+    - 100000
+    - 179999
+  then:
+  - action: assert
+    fact: profile.budget_class
+    value: mid
+  explain: Бюджет {user.budget} ₽ относится к классу «средний».
+- code: PRF-043
+  name: 'Бюджет: высокий'
+  kind: inference
+  group: profile
+  priority: 730
+  cf: 1.0
+  when:
+    fact: user.budget
+    op: between
+    value:
+    - 180000
+    - 299999
+  then:
+  - action: assert
+    fact: profile.budget_class
+    value: high
+  explain: Бюджет {user.budget} ₽ относится к классу «высокий».
+- code: PRF-044
+  name: 'Бюджет: премиальный'
+  kind: inference
+  group: profile
+  priority: 730
+  cf: 1.0
+  when:
+    fact: user.budget
+    op: between
+    value:
+    - 300000
+    - 10000000
+  then:
+  - action: assert
+    fact: profile.budget_class
+    value: premium
+  explain: Бюджет {user.budget} ₽ относится к классу «премиальный».
+- code: PRF-045
+  name: Важен внешний вид
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.9
+  when:
+    any:
+    - fact: user.rgb
+      op: eq
+      value: true
+    - fact: user.glass
+      op: eq
+      value: true
+    - fact: user.color
+      op: eq
+      value: white
+  then:
+  - action: assert
+    fact: profile.aesthetic
+    value: true
+  explain: Вы указали пожелания к внешнему виду — они учитываются при выборе корпуса и деталей.
+- code: PRF-046
+  name: Компактная сборка
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 1.0
+  when:
+    fact: user.case_size
+    op: eq
+    value: mini
+  then:
+  - action: assert
+    fact: profile.compact
+    value: true
+  explain: Нужен компактный корпус — подойдут платы Mini-ITX и Micro-ATX.
+- code: PRF-047
+  name: Задачи требуют много памяти
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.85
+  when:
+    any:
+    - fact: user.weight.video_editing
+      op: ge
+      value: 0.4
+    - fact: user.weight.render_3d
+      op: ge
+      value: 0.4
+    - fact: user.weight.programming
+      op: ge
+      value: 0.6
+  then:
+  - action: assert
+    fact: profile.ram_heavy
+    value: true
+  explain: Монтаж, 3D и тяжёлая разработка держат в памяти большие проекты.
+- code: PRF-048
+  name: Вычисления на видеокарте
+  kind: inference
+  group: profile
+  priority: 700
+  cf: 0.85
+  when:
+    fact: user.weight.render_3d
+    op: ge
+    value: 0.4
+  then:
+  - action: assert
+    fact: profile.gpu_compute
+    value: true
+  explain: Современный 3D-рендер (Cycles, Redshift) считается на видеокарте.
+- code: PRF-049
+  name: 'Дискретная видеокарта не нужна: офисные задачи'
+  kind: inference
+  group: profile
+  priority: 690
+  cf: 0.8
+  when:
+    all:
+    - fact: profile.main
+      op: in
+      value:
+      - office
+      - programming
+      - photo_cad
+    - any:
+      - not:
+          fact: profile.gaming
+          op: exists
+      - fact: profile.gaming
+        op: lt
+        value: 0.2
+    - not:
+        fact: profile.gpu_compute
+        op: eq
+        value: true
+    - not:
+        fact: profile.creator
+        op: ge
+        value: 0.4
+  then:
+  - action: assert
+    fact: profile.no_dgpu
+    value: true
+  explain: Для офиса и разработки хватает встроенной графики процессора — это экономит бюджет.
+- code: PRF-050
+  name: 'Дискретная видеокарта не нужна: маленький бюджет без игр'
+  kind: inference
+  group: profile
+  priority: 690
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.budget_class
+      op: eq
+      value: entry
+    - any:
+      - not:
+          fact: profile.gaming
+          op: exists
+      - fact: profile.gaming
+        op: lt
+        value: 0.3
+  then:
+  - action: assert
+    fact: profile.no_dgpu
+    value: true
+  explain: При бюджете {user.budget} ₽ без игр выгоднее процессор со встроенной графикой.
+- code: PRF-051
+  name: Важна трассировка лучей
+  kind: inference
+  group: profile
+  priority: 690
+  cf: 0.7
+  when:
+    all:
+    - fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+    - fact: profile.gaming_tier
+      op: in
+      value:
+      - high
+      - extreme
+  then:
+  - action: assert
+    fact: profile.raytracing
+    value: true
+  explain: В современных играх на высоких настройках включают трассировку лучей.
+- code: PRF-052
+  name: 'Лёгкая игровая нагрузка'
+  kind: inference
+  group: profile
+  priority: 705
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: need.gpu_raster
+      op: lt
+      value: 75
+  then:
+  - action: assert
+    fact: profile.gaming_tier
+    value: light
+  explain: Вашим играм на вашем мониторе хватит видеокарты начального уровня (индекс до 75).
+- code: PRF-053
+  name: 'Средняя игровая нагрузка'
+  kind: inference
+  group: profile
+  priority: 705
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: need.gpu_raster
+      op: ge
+      value: 75
+    - fact: need.gpu_raster
+      op: lt
+      value: 120
+  then:
+  - action: assert
+    fact: profile.gaming_tier
+    value: mid
+  explain: Вашим играм нужна видеокарта среднего класса (индекс {need.gpu_raster}).
+- code: PRF-054
+  name: 'Высокая игровая нагрузка'
+  kind: inference
+  group: profile
+  priority: 705
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: need.gpu_raster
+      op: ge
+      value: 120
+    - fact: need.gpu_raster
+      op: lt
+      value: 185
+  then:
+  - action: assert
+    fact: profile.gaming_tier
+    value: high
+  explain: Вашим играм нужна видеокарта высокого класса (индекс {need.gpu_raster}).
+- code: PRF-055
+  name: 'Экстремальная игровая нагрузка'
+  kind: inference
+  group: profile
+  priority: 705
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.3
+    - fact: need.gpu_raster
+      op: ge
+      value: 185
+  then:
+  - action: assert
+    fact: profile.gaming_tier
+    value: extreme
+  explain: Вашим играм нужна видеокарта топ-класса (индекс {need.gpu_raster}).

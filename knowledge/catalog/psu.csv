@@ -1,0 +1,25 @@
+sku,brand,model,release_year,wattage,efficiency,modular,form_factor,pcie_connectors,price_rub,price_checked_at,price_note
+PSU-DEEPCOOL-PF500,Deepcool,PF500,2022,500,80plus,none,ATX,8-pin|8-pin,2940,2026-10-29,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+PSU-DEEPCOOL-PF650,Deepcool,PF650,2022,650,80plus,none,ATX,8-pin|8-pin,3840,2026-10-29,price.ru: медиана 5 предл. магазинов Москвы (без Ti-store)
+PSU-MSI-MAG-A650BN,MSI,MAG A650BN,2021,650,bronze,none,ATX,8-pin|8-pin,4700,2026-10-29,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+PSU-BEQUIET-SP10-650,be quiet!,System Power 10 650W,2022,650,bronze,none,ATX,8-pin|8-pin,6800,2026-10-29,ориентир; на price.ru не найден
+PSU-DEEPCOOL-PK750D,Deepcool,PK750D,2022,750,bronze,none,ATX,8-pin|8-pin|8-pin|8-pin,6980,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store); в предложении PK750D V2
+PSU-CORSAIR-RM750E,Corsair,RM750e (2025),2025,750,gold,full,ATX,12V-2x6|8-pin|8-pin,16320,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store); версия CP-9020295-UK (вилка UK)
+PSU-DEEPCOOL-PN850M,Deepcool,PN850M,2024,850,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin,8800,2026-10-29,price.ru: медиана 8 предл. магазинов Москвы (без Ti-store)
+PSU-CORSAIR-SF750,Corsair,SF750 (2024),2024,750,platinum,full,SFX,12V-2x6|8-pin|8-pin,23230,2026-10-29,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-BEQUIET-PP12M-1000,be quiet!,Pure Power 12 M 1000W,2023,1000,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,17500,2026-10-29,ориентир; на price.ru только Ti-store (цены завышены)
+PSU-SEASONIC-VERTEX-GX1200,Seasonic,VERTEX GX-1200,2023,1200,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,20394,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+PSU-GIGABYTE-P550SS,Gigabyte,P550SS (GP-P550SS),2023,550,silver,none,ATX,8-pin|8-pin,4920,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+PSU-DEEPCOOL-PF600,Deepcool,PF600,2023,600,80plus,none,ATX,8-pin|8-pin,3750,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+PSU-GIGABYTE-P650SS,Gigabyte,P650SS (GP-P650SS),2023,650,silver,none,ATX,8-pin|8-pin,6220,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+PSU-DEEPCOOL-PF700,Deepcool,PF700,2023,700,80plus,none,ATX,8-pin|8-pin,4260,2026-10-30,price.ru: медиана 4 предл. магазинов Москвы (без Ti-store)
+PSU-CHIEFTEC-VEGA-850,Chieftec,Vega 850W (PPG-850-S),2023,850,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin,7170,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-MSI-MAG-A850GL,MSI,MAG A850GL PCIE5,2023,850,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin,9990,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-ASUS-ROG-LOKI-850P,ASUS,ROG Loki 850P SFX-L,2022,850,platinum,full,SFX,12V-2x6|8-pin|8-pin,20780,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-CORSAIR-SF850,Corsair,SF850 (CP-9020256-EU),2024,850,platinum,full,SFX,12V-2x6|8-pin|8-pin,27170,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-GIGABYTE-UD1000GM-PG5,Gigabyte,UD1000GM PG5,2022,1000,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,14700,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+PSU-CORSAIR-RM1000X,Corsair,RM1000x,2024,1000,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,23960,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-ASUS-ROG-STRIX-1000P-W,ASUS,ROG Strix 1000W Platinum White,2024,1000,platinum,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,28430,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+PSU-DEEPCOOL-PQ1200G,Deepcool,PQ1200G,2023,1200,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,10100,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+PSU-MSI-MAG-A1250GL,MSI,MAG A1250GL PCIE5,2024,1250,gold,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,14760,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+PSU-SEASONIC-PRIME-TX-1300,Seasonic,PRIME TX-1300,2024,1300,titanium,full,ATX,12V-2x6|8-pin|8-pin|8-pin|8-pin,38150,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)

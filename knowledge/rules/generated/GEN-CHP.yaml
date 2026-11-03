@@ -1,0 +1,1031 @@
+# СГЕНЕРИРОВАНО scripts/generate_rules.py из knowledge/tables/. НЕ ПРАВИТЬ РУКАМИ:
+# правьте справочник и запустите генератор заново.
+- code: GEN-CHP-A320-OC
+  name: Чипсет A320 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#A320
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: A320
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете A320 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На A320 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-A320-TDP
+  name: Платы на A320 рассчитаны на CPU до 95 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#A320
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: A320
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 95
+  then:
+  - action: reject
+    message: Платы на A320 рассчитаны на процессоры до 95 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на A320 рассчитана на процессоры с TDP до 95 Вт: мощнее —
+    перегрев и сброс частот.'
+- code: GEN-CHP-A520-OC
+  name: Чипсет A520 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#A520
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: A520
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете A520 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На A520 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-A520-TDP
+  name: Платы на A520 рассчитаны на CPU до 105 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#A520
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: A520
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 105
+  then:
+  - action: reject
+    message: Платы на A520 рассчитаны на процессоры до 105 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на A520 рассчитана на процессоры с TDP до 105 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-A620-OC
+  name: Чипсет A620 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#A620
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: A620
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете A620 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На A620 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-A620-TDP
+  name: Платы на A620 рассчитаны на CPU до 120 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#A620
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: A620
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 120
+  then:
+  - action: reject
+    message: Платы на A620 рассчитаны на процессоры до 120 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на A620 рассчитана на процессоры с TDP до 120 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B350-TDP
+  name: Платы на B350 рассчитаны на CPU до 105 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B350
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B350
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 105
+  then:
+  - action: reject
+    message: Платы на B350 рассчитаны на процессоры до 105 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B350 рассчитана на процессоры с TDP до 105 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B450-TDP
+  name: Платы на B450 рассчитаны на CPU до 105 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B450
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B450
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 105
+  then:
+  - action: reject
+    message: Платы на B450 рассчитаны на процессоры до 105 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B450 рассчитана на процессоры с TDP до 105 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B550-TDP
+  name: Платы на B550 рассчитаны на CPU до 142 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B550
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B550
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 142
+  then:
+  - action: reject
+    message: Платы на B550 рассчитаны на процессоры до 142 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B550 рассчитана на процессоры с TDP до 142 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B650-TDP
+  name: Платы на B650 рассчитаны на CPU до 170 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B650
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B650
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 170
+  then:
+  - action: reject
+    message: Платы на B650 рассчитаны на процессоры до 170 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B650 рассчитана на процессоры с TDP до 170 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B650E-PCIE5
+  name: 'Чипсет B650E: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#B650E
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B650E
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на B650E — запас для новых видеокарт
+  explain: Платы на B650E получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-B650E-TDP
+  name: Платы на B650E рассчитаны на CPU до 230 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B650E
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B650E
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 230
+  then:
+  - action: reject
+    message: Платы на B650E рассчитаны на процессоры до 230 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B650E рассчитана на процессоры с TDP до 230 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B660-OC
+  name: Чипсет B660 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B660
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B660
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете B660 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На B660 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-B660-TDP
+  name: Платы на B660 рассчитаны на CPU до 125 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B660
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B660
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 125
+  then:
+  - action: reject
+    message: Платы на B660 рассчитаны на процессоры до 125 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B660 рассчитана на процессоры с TDP до 125 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B760-OC
+  name: Чипсет B760 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B760
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B760
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете B760 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На B760 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-B760-TDP
+  name: Платы на B760 рассчитаны на CPU до 125 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B760
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B760
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 125
+  then:
+  - action: reject
+    message: Платы на B760 рассчитаны на процессоры до 125 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B760 рассчитана на процессоры с TDP до 125 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B840-OC
+  name: Чипсет B840 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B840
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B840
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете B840 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На B840 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-B840-TDP
+  name: Платы на B840 рассчитаны на CPU до 120 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B840
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B840
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 120
+  then:
+  - action: reject
+    message: Платы на B840 рассчитаны на процессоры до 120 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B840 рассчитана на процессоры с TDP до 120 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B850-PCIE5
+  name: 'Чипсет B850: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#B850
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B850
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на B850 — запас для новых видеокарт
+  explain: Платы на B850 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-B850-TDP
+  name: Платы на B850 рассчитаны на CPU до 230 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B850
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B850
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 230
+  then:
+  - action: reject
+    message: Платы на B850 рассчитаны на процессоры до 230 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B850 рассчитана на процессоры с TDP до 230 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-B860-OC
+  name: Чипсет B860 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B860
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B860
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете B860 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На B860 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-B860-PCIE5
+  name: 'Чипсет B860: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#B860
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B860
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на B860 — запас для новых видеокарт
+  explain: Платы на B860 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-B860-TDP
+  name: Платы на B860 рассчитаны на CPU до 125 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#B860
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: B860
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 125
+  then:
+  - action: reject
+    message: Платы на B860 рассчитаны на процессоры до 125 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на B860 рассчитана на процессоры с TDP до 125 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-H610-OC
+  name: Чипсет H610 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H610
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H610
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете H610 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На H610 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-H610-TDP
+  name: Платы на H610 рассчитаны на CPU до 65 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H610
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H610
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 65
+  then:
+  - action: reject
+    message: Платы на H610 рассчитаны на процессоры до 65 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на H610 рассчитана на процессоры с TDP до 65 Вт: мощнее —
+    перегрев и сброс частот.'
+- code: GEN-CHP-H670-OC
+  name: Чипсет H670 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H670
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H670
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете H670 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На H670 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-H670-PCIE5
+  name: 'Чипсет H670: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#H670
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H670
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на H670 — запас для новых видеокарт
+  explain: Платы на H670 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-H670-TDP
+  name: Платы на H670 рассчитаны на CPU до 125 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H670
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H670
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 125
+  then:
+  - action: reject
+    message: Платы на H670 рассчитаны на процессоры до 125 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на H670 рассчитана на процессоры с TDP до 125 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-H770-OC
+  name: Чипсет H770 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H770
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H770
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете H770 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На H770 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-H770-PCIE5
+  name: 'Чипсет H770: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#H770
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H770
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на H770 — запас для новых видеокарт
+  explain: Платы на H770 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-H770-TDP
+  name: Платы на H770 рассчитаны на CPU до 125 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H770
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H770
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 125
+  then:
+  - action: reject
+    message: Платы на H770 рассчитаны на процессоры до 125 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на H770 рассчитана на процессоры с TDP до 125 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-H810-OC
+  name: Чипсет H810 не поддерживает разгон процессора
+  kind: validate
+  group: gen_chipset
+  priority: 400
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H810
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H810
+    - fact: build.cpu.unlocked
+      op: eq
+      value: true
+  then:
+  - action: warn
+    message: 'На чипсете H810 разгон процессора недоступен: переплата за разблокированный множитель не
+      окупится'
+  explain: На H810 разблокированный множитель процессора не пригодится.
+- code: GEN-CHP-H810-TDP
+  name: Платы на H810 рассчитаны на CPU до 65 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#H810
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: H810
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 65
+  then:
+  - action: reject
+    message: Платы на H810 рассчитаны на процессоры до 65 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на H810 рассчитана на процессоры с TDP до 65 Вт: мощнее —
+    перегрев и сброс частот.'
+- code: GEN-CHP-X370-TDP
+  name: Платы на X370 рассчитаны на CPU до 142 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X370
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X370
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 142
+  then:
+  - action: reject
+    message: Платы на X370 рассчитаны на процессоры до 142 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X370 рассчитана на процессоры с TDP до 142 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-X470-TDP
+  name: Платы на X470 рассчитаны на CPU до 142 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X470
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X470
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 142
+  then:
+  - action: reject
+    message: Платы на X470 рассчитаны на процессоры до 142 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X470 рассчитана на процессоры с TDP до 142 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-X570-TDP
+  name: Платы на X570 рассчитаны на CPU до 142 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X570
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X570
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 142
+  then:
+  - action: reject
+    message: Платы на X570 рассчитаны на процессоры до 142 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X570 рассчитана на процессоры с TDP до 142 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-X670-TDP
+  name: Платы на X670 рассчитаны на CPU до 230 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X670
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X670
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 230
+  then:
+  - action: reject
+    message: Платы на X670 рассчитаны на процессоры до 230 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X670 рассчитана на процессоры с TDP до 230 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-X670E-PCIE5
+  name: 'Чипсет X670E: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#X670E
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X670E
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на X670E — запас для новых видеокарт
+  explain: Платы на X670E получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-X670E-TDP
+  name: Платы на X670E рассчитаны на CPU до 230 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X670E
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X670E
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 230
+  then:
+  - action: reject
+    message: Платы на X670E рассчитаны на процессоры до 230 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X670E рассчитана на процессоры с TDP до 230 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-X870-PCIE5
+  name: 'Чипсет X870: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#X870
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X870
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на X870 — запас для новых видеокарт
+  explain: Платы на X870 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-X870-TDP
+  name: Платы на X870 рассчитаны на CPU до 230 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X870
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X870
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 230
+  then:
+  - action: reject
+    message: Платы на X870 рассчитаны на процессоры до 230 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X870 рассчитана на процессоры с TDP до 230 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-X870E-PCIE5
+  name: 'Чипсет X870E: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#X870E
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X870E
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на X870E — запас для новых видеокарт
+  explain: Платы на X870E получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-X870E-TDP
+  name: Платы на X870E рассчитаны на CPU до 230 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#X870E
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: X870E
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 230
+  then:
+  - action: reject
+    message: Платы на X870E рассчитаны на процессоры до 230 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на X870E рассчитана на процессоры с TDP до 230 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-Z690-PCIE5
+  name: 'Чипсет Z690: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#Z690
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: Z690
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на Z690 — запас для новых видеокарт
+  explain: Платы на Z690 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-Z690-TDP
+  name: Платы на Z690 рассчитаны на CPU до 253 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#Z690
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: Z690
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 253
+  then:
+  - action: reject
+    message: Платы на Z690 рассчитаны на процессоры до 253 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на Z690 рассчитана на процессоры с TDP до 253 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-Z790-PCIE5
+  name: 'Чипсет Z790: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#Z790
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: Z790
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на Z790 — запас для новых видеокарт
+  explain: Платы на Z790 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-Z790-TDP
+  name: Платы на Z790 рассчитаны на CPU до 253 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#Z790
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: Z790
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 253
+  then:
+  - action: reject
+    message: Платы на Z790 рассчитаны на процессоры до 253 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на Z790 рассчитана на процессоры с TDP до 253 Вт: мощнее
+    — перегрев и сброс частот.'
+- code: GEN-CHP-Z890-PCIE5
+  name: 'Чипсет Z890: слот видеокарты PCIe 5.0'
+  kind: score
+  group: gen_chipset
+  priority: 300
+  cf: 0.7
+  origin: generated
+  source: tables/chipsets.yaml#Z890
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.chipset
+      op: eq
+      value: Z890
+  then:
+  - action: prefer
+    weight: 2.0
+    message: PCIe 5.0 на Z890 — запас для новых видеокарт
+  explain: Платы на Z890 получают PCIe 5.0 для видеокарт будущих поколений.
+- code: GEN-CHP-Z890-TDP
+  name: Платы на Z890 рассчитаны на CPU до 250 Вт
+  kind: compat
+  group: gen_chipset
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/chipsets.yaml#Z890
+  when:
+    all:
+    - fact: build.motherboard.chipset
+      op: eq
+      value: Z890
+    - fact: build.cpu.tdp_w
+      op: gt
+      value: 250
+  then:
+  - action: reject
+    message: Платы на Z890 рассчитаны на процессоры до 250 Вт, а у этого {build.cpu.tdp_w} Вт
+  explain: 'Подсистема питания типичных плат на Z890 рассчитана на процессоры с TDP до 250 Вт: мощнее
+    — перегрев и сброс частот.'

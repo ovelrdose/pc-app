@@ -1,0 +1,125 @@
+# Вопросы визарда. Это данные, а не код: порядок, тексты и варианты правятся здесь.
+# Каждый ответ превращается в факт user.* (см. backend/app/expert/questionnaire.py).
+#
+# Типы вопросов:
+#   tasks       — основная задача (одна) и дополнительные (несколько); факт <fact>.<вариант> =
+#                 main_weight для основной, extra_weight для дополнительных, 0 для остальных.
+#                 Пороги правил (≥ 0.4 — «только основная», ≤ 0.3 — «основная или дополнительная»)
+#                 рассчитаны на значения по умолчанию 1.0 и 0.3.
+#   number      — число в диапазоне [min; max]
+#   choice      — один вариант из options; вариант с facts записывает сразу несколько фактов
+#                 (монитор: разрешение и частота), тогда fact у вопроса не указывается
+#   multichoice — несколько вариантов; options_from — справочник (games / applications)
+#   yesno       — «да / скорее да / скорее нет / нет / не знаю»
+# «Не знаю» (unknown) — факт не записывается.
+steps:
+  - id: purposes
+    title: "Задачи"
+    questions:
+      - id: tasks
+        type: tasks
+        fact: user.weight
+        title: "Для чего в основном нужен компьютер?"
+        extra_title: "Чем ещё будете заниматься иногда?"
+        main_weight: 1.0
+        extra_weight: 0.3
+        options:
+          - { value: aaa_gaming, label: "Современные игры (AAA)" }
+          - { value: esports, label: "Киберспорт и онлайн-игры" }
+          - { value: office, label: "Офис, учёба, браузер" }
+          - { value: programming, label: "Программирование" }
+          - { value: video_editing, label: "Монтаж видео" }
+          - { value: render_3d, label: "3D-графика и рендер" }
+          - { value: photo_cad, label: "Фото, графика, CAD" }
+          - { value: streaming, label: "Стриминг" }
+  - id: budget
+    title: "Бюджет"
+    questions:
+      - { id: budget, type: number, fact: user.budget, title: "Сколько готовы потратить, ₽?", min: 35000, max: 500000, step: 1000 }
+  - id: monitor
+    title: "Монитор"
+    questions:
+      - id: monitor
+        type: choice
+        title: "Какой у вас монитор?"
+        allow_unknown: true
+        options:
+          - { value: fhd_60, label: "Full HD (1920×1080), 60–75 Гц", facts: { user.resolution: "1080p", user.refresh_hz: 60 } }
+          - { value: fhd_144, label: "Full HD, 144–165 Гц", facts: { user.resolution: "1080p", user.refresh_hz: 144 } }
+          - { value: fhd_240, label: "Full HD, 240 Гц и выше", facts: { user.resolution: "1080p", user.refresh_hz: 240 } }
+          - { value: qhd_144, label: "2K (2560×1440), 144–180 Гц", facts: { user.resolution: "1440p", user.refresh_hz: 144 } }
+          - { value: qhd_240, label: "2K, 240 Гц и выше", facts: { user.resolution: "1440p", user.refresh_hz: 240 } }
+          - { value: uhd_60, label: "4K (3840×2160), 60 Гц", facts: { user.resolution: "2160p", user.refresh_hz: 60 } }
+          - { value: uhd_144, label: "4K, 120–165 Гц", facts: { user.resolution: "2160p", user.refresh_hz: 144 } }
+  - id: software
+    title: "Игры и программы"
+    questions:
+      - { id: games, type: multichoice, fact: user.games, title: "В какие игры планируете играть?", options_from: games }
+      - { id: apps, type: multichoice, fact: user.apps, title: "Какими программами пользуетесь?", options_from: applications }
+  - id: appearance
+    title: "Внешний вид"
+    questions:
+      - id: color
+        type: choice
+        fact: user.color
+        title: "Цвет сборки"
+        allow_unknown: true
+        options:
+          - { value: black, label: "Чёрный" }
+          - { value: white, label: "Белый" }
+          - { value: any, label: "Не важно" }
+      - { id: rgb, type: yesno, fact: user.rgb, title: "Нужна RGB-подсветка?" }
+      - { id: glass, type: yesno, fact: user.glass, title: "Нужна стеклянная боковая панель?" }
+      - id: case_size
+        type: choice
+        fact: user.case_size
+        title: "Размер корпуса"
+        allow_unknown: true
+        options:
+          - { value: mini, label: "Компактный" }
+          - { value: mid, label: "Обычный (Mid-Tower)" }
+          - { value: full, label: "Большой (Full-Tower)" }
+          - { value: any, label: "Не важно" }
+  - id: extras
+    title: "Дополнительно"
+    questions:
+      - id: storage_gb
+        type: choice
+        fact: user.storage_gb
+        title: "Сколько места нужно на быстром накопителе?"
+        allow_unknown: true
+        options:
+          - { value: 500, label: "500 ГБ" }
+          - { value: 1000, label: "1 ТБ" }
+          - { value: 2000, label: "2 ТБ" }
+          - { value: 4000, label: "4 ТБ" }
+      - { id: archive, type: yesno, fact: user.archive, title: "Нужен ли жёсткий диск для архива (фото, фильмы)?" }
+      - { id: future_proof, type: yesno, fact: user.future_proof, title: "Важен ли задел на будущее (апгрейд)?" }
+      - { id: wifi, type: yesno, fact: user.wifi, title: "Нужен ли Wi-Fi?" }
+      - id: mem_type
+        type: choice
+        fact: user.mem_type
+        title: "Тип оперативной памяти"
+        allow_unknown: true
+        options:
+          - { value: DDR4, label: "DDR4 — дешевле, платформы прошлых поколений" }
+          - { value: DDR5, label: "DDR5 — современные платформы, задел на апгрейд" }
+          - { value: any, label: "Не важно" }
+      - id: cpu_brand
+        type: choice
+        fact: user.cpu_brand
+        title: "Предпочтение по производителю процессора"
+        allow_unknown: true
+        options:
+          - { value: amd, label: "AMD" }
+          - { value: intel, label: "Intel" }
+          - { value: any, label: "Не важно" }
+      - id: gpu_brand
+        type: choice
+        fact: user.gpu_brand
+        title: "Предпочтение по производителю видеокарты"
+        allow_unknown: true
+        options:
+          - { value: nvidia, label: "NVIDIA" }
+          - { value: amd, label: "AMD" }
+          - { value: any, label: "Не важно" }

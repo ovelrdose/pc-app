@@ -1,0 +1,24 @@
+sku,brand,model,release_year,color,rgb,type,sockets,height_mm,tdp_capacity_w,radiator_mm,noise_db,price_rub,price_checked_at,price_note
+COOL-IDCOOLING-SE224XTS,ID-Cooling,SE-224-XTS,2022,black,false,air,AM4|AM5|LGA1700|LGA1851,154,220,,31.5,1780,2026-10-29,price.ru: медиана 10 предл. магазинов Москвы (без Ti-store); по 10 видимым предложениям из 15
+COOL-DEEPCOOL-AG400,Deepcool,AG400,2022,black,false,air,AM4|AM5|LGA1700|LGA1851,150,220,,29.0,1700,2026-10-29,price.ru: медиана 10 предл. магазинов Москвы (без Ti-store); по 10 видимым предложениям из 20
+COOL-THERMALRIGHT-AXP90-X47,Thermalright,AXP90-X47,2021,black,false,air,AM4|AM5|LGA1700|LGA1851,47,130,,30.0,2900,2026-10-29,ориентир; на price.ru не найден
+COOL-THERMALRIGHT-PA120SE,Thermalright,Peerless Assassin 120 SE,2022,black,false,air,AM4|AM5|LGA1700|LGA1851,155,245,,25.6,3850,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store)
+COOL-THERMALRIGHT-PS120SE-ARGB,Thermalright,Phantom Spirit 120 SE ARGB,2023,black,true,air,AM4|AM5|LGA1700|LGA1851,157,265,,25.6,4300,2026-10-29,ориентир; на price.ru не найден
+COOL-DEEPCOOL-AK620,Deepcool,AK620,2021,black,false,air,AM4|AM5|LGA1700|LGA1851,160,260,,28.0,4950,2026-10-29,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+COOL-NOCTUA-NHD15-G2,Noctua,NH-D15 G2,2024,other,false,air,AM4|AM5|LGA1700|LGA1851,168,280,,24.8,16000,2026-10-29,ориентир; на price.ru не найден
+COOL-DEEPCOOL-LE520,Deepcool,LE520,2023,black,true,aio,AM4|AM5|LGA1700|LGA1851,,250,240,30.0,10634,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+COOL-ARCTIC-LF3-360,Arctic,Liquid Freezer III 360,2024,black,false,aio,AM4|AM5|LGA1700|LGA1851,,300,360,22.5,15700,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+COOL-DEEPCOOL-LT720,Deepcool,LT720,2022,black,true,aio,AM4|AM5|LGA1700|LGA1851,,300,360,32.9,10643,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+COOL-DEEPCOOL-AG300,Deepcool,AG300,2022,black,false,air,AM4|AM5|LGA1700|LGA1851,150,150,,30.5,1100,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+COOL-DEEPCOOL-AK400,Deepcool,AK400,2022,black,false,air,AM4|AM5|LGA1700|LGA1851,155,220,,29.0,2340,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+COOL-THERMALRIGHT-AK120-SE-ARGB-W,Thermalright,Assassin King 120 SE White ARGB,2023,white,true,air,AM4|AM5|LGA1700|LGA1851,148,220,,25.6,2360,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+COOL-THERMALRIGHT-AS120-EVO-DARK,Thermalright,Assassin Spirit 120 EVO Dark,2023,black,false,air,AM4|AM5|LGA1700|LGA1851,156,230,,25.6,2410,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+COOL-DEEPCOOL-AK400-DIGITAL-SE-W,Deepcool,AK400 DIGITAL SE WH,2024,white,true,air,AM4|AM5|LGA1700|LGA1851,155,220,,29.0,2700,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+COOL-THERMALRIGHT-SILVER-SOUL-135,Thermalright,Silver Soul 135 Black,2024,black,false,air,AM4|AM5|LGA1700|LGA1851,135,220,,25.6,4140,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+COOL-THERMALRIGHT-AXP100H-MUSCLE,Thermalright,AXP-100H Muscle,2019,silver,false,air,AM4|AM5|LGA1700|LGA1851,65,180,,27.0,4360,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+COOL-DEEPCOOL-AN600,Deepcool,AN600,2024,black,false,air,AM4|AM5|LGA1700|LGA1851,67,180,,29.0,4380,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+COOL-DEEPCOOL-AK500-G2,Deepcool,AK500 G2,2025,black,false,air,AM4|AM5|LGA1700|LGA1851,159,240,,30.0,4790,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+COOL-ARCTIC-LF3-280-ARGB-W,Arctic,Liquid Freezer III 280 A-RGB White,2024,white,true,aio,AM4|AM5|LGA1700|LGA1851,,300,280,22.5,7490,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+COOL-ARCTIC-LF3-PRO-360-ARGB,Arctic,Liquid Freezer III Pro 360 A-RGB,2025,black,true,aio,AM4|AM5|LGA1700|LGA1851,,330,360,22.5,10450,2026-10-30,price.ru: медиана 3 предл. магазинов Москвы (без Ti-store)
+COOL-NZXT-KRAKEN-240,NZXT,Kraken 240 (RL-KN240-B1),2023,black,true,aio,AM4|AM5|LGA1700|LGA1851,,250,240,,17990,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)
+COOL-NZXT-KRAKEN-RGB-360-W,NZXT,Kraken RGB 360 White (RL-KR360-W1),2023,white,true,aio,AM4|AM5|LGA1700|LGA1851,,300,360,,34990,2026-10-30,price.ru: единственное предложение в Москве (без Ti-store)

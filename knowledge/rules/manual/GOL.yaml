@@ -1,0 +1,194 @@
+# GOL — общие цели обратного вывода (проверяются по запросу клиента, этап 5).
+- code: GOL-001
+  name: Готовность к играм в 4K
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: ready_for_4k
+    args: {}
+  when:
+    all:
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+    - fact: build.gpu.perf_raster
+      op: ge
+      value: 200
+  explain: Для 4K нужна видеокарта от 16 ГБ и примерно вдвое мощнее RTX 4060.
+- code: GOL-002
+  name: Готовность к стримингу
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: ready_for_streaming
+    args: {}
+  when:
+    all:
+    - fact: build.cpu.cores
+      op: ge
+      value: 8
+    - fact: build.gpu.perf_raster
+      op: ge
+      value: 100
+    - goal:
+        predicate: runs_app
+        args:
+          app: obs
+          level: basic
+  explain: Стриминг требует 8+ ядер и видеокарты не слабее RTX 4060.
+- code: GOL-003
+  name: Готовность к апгрейду
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: upgrade_friendly
+    args: {}
+  when:
+    all:
+    - expr: build.psu.wattage >= build.total.power_w * 1.5
+    - expr: build.ram.modules < build.motherboard.mem_slots
+    - fact: build.motherboard.m2_slots
+      op: ge
+      value: 2
+  explain: Запас БП, свободные слоты памяти и M.2 позволяют обновлять компьютер по частям.
+- code: GOL-004
+  name: Тихая сборка
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: quiet_build
+    args: {}
+  when:
+    all:
+    - fact: build.cpu_cooler.noise_db
+      op: le
+      value: 26
+    - fact: build.psu.efficiency
+      op: in
+      value:
+      - gold
+      - platinum
+      - titanium
+  explain: Тихий кулер и блок питания с высоким КПД.
+- code: GOL-005
+  name: Готовность к VR
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: vr_ready
+    args: {}
+  when:
+    all:
+    - fact: build.gpu.perf_raster
+      op: ge
+      value: 120
+    - fact: build.cpu.perf_single
+      op: ge
+      value: 95
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 16
+  explain: VR требует стабильно высокого FPS на двух экранах.
+- code: GOL-006
+  name: Готовность к локальным нейросетям
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: ai_ready
+    args: {}
+  when:
+    all:
+    - fact: build.gpu.vram_gb
+      op: ge
+      value: 16
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 32
+  explain: Модели нейросетей должны помещаться в видеопамять.
+- code: GOL-007
+  name: Готовность к офисной работе
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: office_ready
+    args: {}
+  when:
+    all:
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 8
+    - fact: build.ssd.capacity_gb
+      op: ge
+      value: 240
+  explain: Для офиса нужны SSD и от 8 ГБ памяти.
+- code: GOL-008
+  name: Киберспорт на 240 Гц
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: esports_240
+    args: {}
+  when:
+    goal:
+      predicate: fps_at_least
+      args:
+        game: cs2
+        preset: medium
+        resolution: 1080p
+        fps: 240
+  explain: Чтобы раскрыть монитор 240 Гц, CS2 на средних настройках (как играют в соревновательном режиме)
+    должна выдавать от 240 кадров/с — это зависит и от видеокарты, и от процессора.
+- code: GOL-009
+  name: Профессиональная рабочая станция
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: workstation_ready
+    args: {}
+  when:
+    all:
+    - fact: build.cpu.cores
+      op: ge
+      value: 12
+    - fact: build.ram.capacity_gb
+      op: ge
+      value: 64
+  explain: Профессиональный рендер требует 12+ ядер и 64 ГБ памяти.
+- code: GOL-010
+  name: Компактная сборка
+  kind: goal
+  group: goal
+  priority: 100
+  cf: 1.0
+  goal:
+    predicate: compact_build
+    args: {}
+  when:
+    all:
+    - fact: build.case.size
+      op: eq
+      value: mini
+    - fact: build.motherboard.form_factor
+      op: in
+      value:
+      - Mini-ITX
+      - Micro-ATX
+  explain: Компактный корпус и плата малого форм-фактора.

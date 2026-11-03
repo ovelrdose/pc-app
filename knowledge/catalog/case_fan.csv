@@ -1,0 +1,15 @@
+sku,brand,model,release_year,color,rgb,size_mm,quantity,pwm,noise_db,airflow_cfm,price_rub,price_checked_at,price_note
+FAN-THERMALRIGHT-TLC12C,Thermalright,TL-C12C ARGB,2022,black,true,120,1,true,25.6,66.2,600,2026-10-29,ориентир; на price.ru не найден
+FAN-ARCTIC-P12-PST,Arctic,P12 PWM PST,2019,black,false,120,1,true,22.5,56.3,1487,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+FAN-ARCTIC-P14-PST,Arctic,P14 PWM PST,2019,black,false,140,1,true,24.0,72.8,874,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+FAN-BEQUIET-SW4-120,be quiet!,Silent Wings 4 120mm PWM,2022,black,false,120,1,true,18.9,48.7,2220,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+FAN-NOCTUA-NFA14-PWM,Noctua,NF-A14 PWM,2013,other,false,140,1,true,24.6,82.5,2990,2026-10-29,price.ru: единственное предложение в Москве (без Ti-store)
+FAN-DEEPCOOL-FC120-3,Deepcool,FC120 (3 шт.),2021,black,true,120,3,true,28.0,61.9,3300,2026-10-29,ориентир; на price.ru не найден
+FAN-ARCTIC-P12-PST-5,Arctic,P12 PWM PST Value Pack (5 шт.),2019,black,false,120,5,true,22.5,56.3,2618,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+FAN-ARCTIC-P12-ARGB-3-W,Arctic,P12 PWM PST A-RGB White (3 шт.),2021,white,true,120,3,true,22.5,48.8,3800,2026-10-29,ориентир; на price.ru не найден
+FAN-NOCTUA-NFA12X25-PWM,Noctua,NF-A12x25 PWM,2018,other,false,120,1,true,22.6,60.1,4600,2026-10-29,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+FAN-LIANLI-SL-INF-120-3-W,Lian Li,UNI FAN SL-INF 120 White (3 шт.),2022,white,true,120,3,true,29.0,61.3,9887,2026-10-29,"price.ru: последняя цена, сейчас нет предложений"
+FAN-THERMALRIGHT-TLK12W,Thermalright,TL-K12W,2023,white,false,120,1,true,,,1490,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+FAN-THERMALRIGHT-TLM12Q-X3,Thermalright,TL-M12Q ARGB (3 шт.),2024,black,true,120,3,true,,,2010,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+FAN-ARCTIC-P12-SLIM-3,Arctic,P12 Slim PWM PST (3 шт.),2023,black,false,120,3,true,,,2180,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)
+FAN-ARCTIC-P14-5,Arctic,P14 PWM PST Value Pack (5 шт.),2023,black,false,140,5,true,,,3330,2026-10-30,price.ru: медиана 2 предл. магазинов Москвы (без Ti-store)

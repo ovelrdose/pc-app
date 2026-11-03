@@ -1,0 +1,429 @@
+# VAL — проверка готовой сборки: ошибки, предупреждения и советы.
+- code: VAL-001
+  name: Одна планка памяти
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    fact: build.ram.modules
+    op: eq
+    value: 1
+  then:
+  - action: warn
+    message: 'Одна планка памяти: нет двухканального режима'
+  explain: Две планки быстрее одной того же объёма.
+- code: VAL-002
+  name: SSD меньше желательного
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    fact: build.ssd.capacity_gb
+    op: lt
+    ref: req.storage_min_gb
+  then:
+  - action: warn
+    message: SSD {build.ssd.capacity_gb} ГБ меньше желательных {req.storage_min_gb} ГБ
+  explain: Объём накопителя меньше рекомендованного.
+- code: VAL-003
+  name: Остался запас бюджета
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    expr: build.total.price_rub < user.budget * 0.8
+  then:
+  - action: suggest
+    category: gpu
+    target: upgrade
+    message: Остаётся больше 20% бюджета — можно взять деталь мощнее
+  explain: Неиспользованный бюджет можно вложить в производительность.
+- code: VAL-004
+  name: Нет вентиляторов в корпусе
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.case.fans_included
+      op: eq
+      value: 0
+    - not:
+        fact: build.case_fan.quantity
+        op: ge
+        value: 1
+  then:
+  - action: warn
+    message: В корпусе нет вентиляторов — нужно докупить хотя бы два
+  explain: Без вентиляторов в корпусе застаивается горячий воздух.
+- code: VAL-005
+  name: Горячая видеокарта и слабый обдув
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.gpu.tbp_w
+      op: ge
+      value: 300
+    - fact: build.case.fans_included
+      op: lt
+      value: 3
+  then:
+  - action: warn
+    message: Видеокарте на {build.gpu.tbp_w} Вт нужен хороший обдув корпуса
+  explain: Мощная видеокарта выделяет много тепла.
+- code: VAL-006
+  name: Горячий процессор на воздушном кулере
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.cpu.tdp_w
+      op: ge
+      value: 150
+    - fact: build.cpu_cooler.type
+      op: eq
+      value: air
+  then:
+  - action: warn
+    message: Процессору с TDP {build.cpu.tdp_w} Вт под долгой нагрузкой будет жарко на воздушном кулере
+  explain: Горячим процессорам лучше подходит СЖО.
+- code: VAL-007
+  name: 'Совет: СЖО для горячего процессора'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.cpu.tdp_w
+      op: ge
+      value: 150
+    - fact: build.cpu_cooler.type
+      op: eq
+      value: air
+    - fact: build.case.radiator_support
+      op: contains
+      value: 360
+  then:
+  - action: suggest
+    category: cpu_cooler
+    target: aio_360
+    message: Корпус позволяет поставить СЖО на 360 мм — будет тише и холоднее
+  explain: СЖО отводит тепло эффективнее воздушного кулера.
+- code: VAL-008
+  name: 'Совет: БП с сертификатом Gold'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.psu.efficiency
+      op: in
+      value:
+      - 80plus
+      - bronze
+    - fact: build.total.power_w
+      op: ge
+      value: 400
+  then:
+  - action: suggest
+    category: psu
+    target: gold
+    message: Для сборки на {build.total.power_w} Вт лучше БП с сертификатом Gold — тише и экономичнее
+  explain: Высокий КПД важен при большом потреблении.
+- code: VAL-009
+  name: Система на маленьком SSD
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.hdd.capacity_gb
+      op: gt
+      value: 0
+    - fact: build.ssd.capacity_gb
+      op: lt
+      value: 500
+  then:
+  - action: warn
+    message: Системный SSD меньше 500 ГБ быстро заполнится
+  explain: На HDD хорошо хранить архив, но программы лучше держать на SSD.
+- code: VAL-010
+  name: 'Совет: 12 ГБ видеопамяти для новых игр'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+    - fact: profile.gaming_tier
+      op: in
+      value:
+      - high
+      - extreme
+    - fact: build.gpu.vram_gb
+      op: lt
+      value: 12
+  then:
+  - action: suggest
+    category: gpu
+    target: vram_12
+    message: Для новых игр на высоких настройках лучше видеокарта с 12+ ГБ
+  explain: Новые игры требуют всё больше видеопамяти.
+- code: VAL-011
+  name: 'Совет: 16 ГБ памяти для игр'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: build.ram.capacity_gb
+      op: lt
+      value: 16
+  then:
+  - action: suggest
+    category: ram
+    target: 16gb
+    message: Для игр нужно хотя бы 16 ГБ памяти
+  explain: 8 ГБ мало для современных игр.
+- code: VAL-012
+  name: Видеокарта новее слота платы
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    expr: build.gpu.pcie_gen > build.motherboard.pcie_gen
+  then:
+  - action: warn
+    message: Видеокарта PCIe {build.gpu.pcie_gen}.0 в слоте {build.motherboard.pcie_gen}.0 — потеря производительности
+      1–3%
+  explain: Видеокарта работает и в слоте старшего поколения, но чуть медленнее.
+- code: VAL-013
+  name: Старая платформа DDR4 при заделе на будущее
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.motherboard.mem_type
+      op: eq
+      value: DDR4
+  then:
+  - action: warn
+    message: Платформа на DDR4 больше не развивается — апгрейд потребует замены платы и памяти
+  explain: Для задела на будущее лучше DDR5.
+- code: VAL-014
+  name: Процессор без графики и маленький бюджет
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.cpu.igpu
+      op: eq
+      value: false
+    - fact: profile.budget_class
+      op: in
+      value:
+      - entry
+      - low
+  then:
+  - action: warn
+    message: 'У процессора нет встроенной графики: без видеокарты не будет изображения'
+  explain: Встроенная графика — запасной вариант при поломке видеокарты.
+- code: VAL-015
+  name: Горячая видеокарта в компактном корпусе
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.case.size
+      op: eq
+      value: mini
+    - fact: build.gpu.tbp_w
+      op: ge
+      value: 250
+  then:
+  - action: warn
+    message: Видеокарта на {build.gpu.tbp_w} Вт в компактном корпусе будет сильно греться
+  explain: В тесном корпусе сложнее отводить тепло.
+- code: VAL-016
+  name: СЖО в компактном корпусе
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.case.size
+      op: eq
+      value: mini
+    - fact: build.cpu_cooler.type
+      op: eq
+      value: aio
+  then:
+  - action: warn
+    message: В компактном корпусе радиатор СЖО займёт место для обдува видеокарты
+  explain: Компоновка в тесном корпусе требует внимания.
+- code: VAL-017
+  name: 'Совет: модульный БП для корпуса со стеклом'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: build.case.glass
+      op: eq
+      value: true
+    - fact: profile.aesthetic
+      op: eq
+      value: true
+    - fact: build.psu.modular
+      op: eq
+      value: none
+  then:
+  - action: suggest
+    category: psu
+    target: modular
+    message: Модульный блок питания позволит убрать лишние кабели с глаз
+  explain: Через стекло видно все кабели.
+- code: VAL-018
+  name: Высокая частота в 4K недостижима
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: user.resolution
+      op: eq
+      value: 2160p
+    - fact: user.refresh_hz
+      op: ge
+      value: 165
+    - fact: build.gpu.perf_raster
+      op: lt
+      value: 250
+  then:
+  - action: warn
+    message: В 4K эта видеокарта не выдаст {user.refresh_hz} кадров — монитор не раскроется
+  explain: Высокая частота в 4K требует топовой видеокарты.
+- code: VAL-019
+  name: Слабая трассировка
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.raytracing
+      op: eq
+      value: true
+    - fact: build.gpu.perf_rt
+      op: lt
+      value: 150
+  then:
+  - action: warn
+    message: С включённой трассировкой лучей FPS заметно упадёт
+  explain: Трассировка лучей сильно нагружает видеокарту.
+- code: VAL-020
+  name: 'Совет: HDD для большого архива'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: user.storage_gb
+      op: ge
+      value: 4000
+    - not:
+        fact: build.hdd.capacity_gb
+        op: gt
+        value: 0
+    - expr: build.ssd.capacity_gb < user.storage_gb
+  then:
+  - action: suggest
+    category: hdd
+    target: archive
+    message: Для {user.storage_gb} ГБ выгоднее добавить жёсткий диск
+  explain: Хранить архив на SSD дорого.
+- code: VAL-021
+  name: Мало мест под докупленные вентиляторы
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: req.need.case_fan
+      op: eq
+      value: true
+    - expr: build.case.fan_slots - build.case.fans_included < req.extra_fans
+  then:
+  - action: warn
+    message: В корпусе мало свободных мест под дополнительные вентиляторы
+  explain: Для обдува нужны свободные места под вентиляторы.
+- code: VAL-022
+  name: 'Риски: 8 ГБ видеопамяти в играх'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: build.gpu.vram_gb
+      op: le
+      value: 8
+  then:
+  - action: warn
+    message: '{build.gpu.vram_gb} ГБ видеопамяти — рабочий игровой вариант, но с рисками: в новых играх на высоких и ультра настройках (особенно в 2K) текстурам тесно — возможны подтормаживания и подгрузка текстур, качество текстур придётся снижать. Запаса на игры следующих лет мало.'
+  explain: 8 ГБ видеопамяти хватает большинству игр в Full HD, но новые проекты требуют всё больше.
+- code: VAL-023
+  name: 'Риски: 16 ГБ оперативной памяти в играх'
+  kind: validate
+  group: validation
+  priority: 400
+  cf: 1.0
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: build.ram.capacity_gb
+      op: eq
+      value: 16
+  then:
+  - action: warn
+    message: '16 ГБ оперативной памяти — рабочий игровой объём, но с рисками: браузер, Discord или стрим параллельно с игрой съедают запас, отдельные новые игры (например, Microsoft Flight Simulator 2024) просят 32 ГБ, а через 2–3 года может стать тесно.'
+  explain: 16 ГБ хватает большинству игр, но запаса у этого объёма немного.

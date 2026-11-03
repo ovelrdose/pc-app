@@ -1,0 +1,279 @@
+# СГЕНЕРИРОВАНО scripts/generate_rules.py из knowledge/tables/. НЕ ПРАВИТЬ РУКАМИ:
+# правьте справочник и запустите генератор заново.
+- code: GEN-SKT-AM4-CHIPSET
+  name: Процессор AM4 — только на платах с чипсетами своей платформы
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#AM4
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: AM4
+    - fact: build.motherboard.chipset
+      op: not_in
+      value:
+      - A320
+      - A520
+      - B350
+      - B450
+      - B550
+      - X370
+      - X470
+      - X570
+  then:
+  - action: reject
+    message: Плата на чипсете {build.motherboard.chipset} не поддерживает процессоры AM4
+  explain: Процессоры AM4 работают только с чипсетами A320, A520, B350, B450, B550, X370, X470, X570.
+- code: GEN-SKT-AM4-FUTURE
+  name: 'Задел на будущее: платформа AM4'
+  kind: score
+  group: gen_socket
+  priority: 300
+  cf: 0.8
+  origin: generated
+  source: tables/sockets.yaml#AM4
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.cpu.socket
+      op: eq
+      value: AM4
+  then:
+  - action: prefer
+    weight: -3.0
+    message: Платформа AM4 больше не получит новых процессоров — апгрейд потребует замены платы
+  explain: Платформа AM4 больше не получит новых процессоров — апгрейд потребует замены платы.
+- code: GEN-SKT-AM4-MEM
+  name: Платформа AM4 работает только с памятью DDR4
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#AM4
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: AM4
+    - fact: build.ram.mem_type
+      op: not_in
+      value:
+      - DDR4
+  then:
+  - action: reject
+    message: Память {build.ram.mem_type} не подходит к платформе AM4
+  explain: Контроллер памяти процессоров AM4 поддерживает только DDR4.
+- code: GEN-SKT-AM5-CHIPSET
+  name: Процессор AM5 — только на платах с чипсетами своей платформы
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#AM5
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: AM5
+    - fact: build.motherboard.chipset
+      op: not_in
+      value:
+      - A620
+      - B840
+      - B650
+      - B650E
+      - B850
+      - X670
+      - X670E
+      - X870
+      - X870E
+  then:
+  - action: reject
+    message: Плата на чипсете {build.motherboard.chipset} не поддерживает процессоры AM5
+  explain: Процессоры AM5 работают только с чипсетами A620, B840, B650, B650E, B850, X670, X670E, X870,
+    X870E.
+- code: GEN-SKT-AM5-FUTURE
+  name: 'Задел на будущее: платформа AM5'
+  kind: score
+  group: gen_socket
+  priority: 300
+  cf: 0.8
+  origin: generated
+  source: tables/sockets.yaml#AM5
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.cpu.socket
+      op: eq
+      value: AM5
+  then:
+  - action: prefer
+    weight: 6.0
+    message: Платформа AM5 ещё получит новые процессоры — можно будет обновить только CPU
+  explain: Платформа AM5 ещё получит новые процессоры — можно будет обновить только CPU.
+- code: GEN-SKT-AM5-MEM
+  name: Платформа AM5 работает только с памятью DDR5
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#AM5
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: AM5
+    - fact: build.ram.mem_type
+      op: not_in
+      value:
+      - DDR5
+  then:
+  - action: reject
+    message: Память {build.ram.mem_type} не подходит к платформе AM5
+  explain: Контроллер памяти процессоров AM5 поддерживает только DDR5.
+- code: GEN-SKT-LGA1700-CHIPSET
+  name: Процессор LGA1700 — только на платах с чипсетами своей платформы
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#LGA1700
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: LGA1700
+    - fact: build.motherboard.chipset
+      op: not_in
+      value:
+      - H610
+      - B660
+      - H670
+      - B760
+      - H770
+      - Z690
+      - Z790
+  then:
+  - action: reject
+    message: Плата на чипсете {build.motherboard.chipset} не поддерживает процессоры LGA1700
+  explain: Процессоры LGA1700 работают только с чипсетами H610, B660, H670, B760, H770, Z690, Z790.
+- code: GEN-SKT-LGA1700-FUTURE
+  name: 'Задел на будущее: платформа LGA1700'
+  kind: score
+  group: gen_socket
+  priority: 300
+  cf: 0.8
+  origin: generated
+  source: tables/sockets.yaml#LGA1700
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.cpu.socket
+      op: eq
+      value: LGA1700
+  then:
+  - action: prefer
+    weight: -3.0
+    message: Платформа LGA1700 больше не получит новых процессоров — апгрейд потребует замены платы
+  explain: Платформа LGA1700 больше не получит новых процессоров — апгрейд потребует замены платы.
+- code: GEN-SKT-LGA1700-MEM
+  name: Платформа LGA1700 работает только с памятью DDR4, DDR5
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#LGA1700
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: LGA1700
+    - fact: build.ram.mem_type
+      op: not_in
+      value:
+      - DDR4
+      - DDR5
+  then:
+  - action: reject
+    message: Память {build.ram.mem_type} не подходит к платформе LGA1700
+  explain: Контроллер памяти процессоров LGA1700 поддерживает только DDR4, DDR5.
+- code: GEN-SKT-LGA1851-CHIPSET
+  name: Процессор LGA1851 — только на платах с чипсетами своей платформы
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#LGA1851
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: LGA1851
+    - fact: build.motherboard.chipset
+      op: not_in
+      value:
+      - H810
+      - B860
+      - Z890
+  then:
+  - action: reject
+    message: Плата на чипсете {build.motherboard.chipset} не поддерживает процессоры LGA1851
+  explain: Процессоры LGA1851 работают только с чипсетами H810, B860, Z890.
+- code: GEN-SKT-LGA1851-FUTURE
+  name: 'Задел на будущее: платформа LGA1851'
+  kind: score
+  group: gen_socket
+  priority: 300
+  cf: 0.8
+  origin: generated
+  source: tables/sockets.yaml#LGA1851
+  when:
+    all:
+    - fact: user.future_proof
+      op: eq
+      value: true
+    - fact: build.cpu.socket
+      op: eq
+      value: LGA1851
+  then:
+  - action: prefer
+    weight: -3.0
+    message: Платформа LGA1851 больше не получит новых процессоров — апгрейд потребует замены платы
+  explain: Платформа LGA1851 больше не получит новых процессоров — апгрейд потребует замены платы.
+- code: GEN-SKT-LGA1851-MEM
+  name: Платформа LGA1851 работает только с памятью DDR5
+  kind: compat
+  group: gen_socket
+  priority: 900
+  cf: 1.0
+  origin: generated
+  source: tables/sockets.yaml#LGA1851
+  when:
+    all:
+    - fact: build.cpu.socket
+      op: eq
+      value: LGA1851
+    - fact: build.ram.mem_type
+      op: not_in
+      value:
+      - DDR5
+  then:
+  - action: reject
+    message: Память {build.ram.mem_type} не подходит к платформе LGA1851
+  explain: Контроллер памяти процессоров LGA1851 поддерживает только DDR5.

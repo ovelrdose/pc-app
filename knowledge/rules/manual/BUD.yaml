@@ -1,0 +1,664 @@
+# BUD — распределение бюджета по категориям (budget.share.*). Доли нормируются к 1
+# конфигуратором по тем категориям, которые реально подбираются.
+- code: BUD-001
+  name: Бюджет для современных игр
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: aaa_gaming
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.42
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.17
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.1
+  - action: assert
+    fact: budget.share.ram
+    value: 0.08
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.07
+  - action: assert
+    fact: budget.share.psu
+    value: 0.07
+  - action: assert
+    fact: budget.share.case
+    value: 0.05
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.03
+  explain: 'Для современных игр бюджет делится так: видеокарта 42%, процессор 17%, плата 10%, память 8%,
+    SSD 7%, блок питания 7%, корпус 5%, кулер 3%.'
+- code: BUD-002
+  name: Бюджет для киберспорта
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: esports
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.36
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.22
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.1
+  - action: assert
+    fact: budget.share.ram
+    value: 0.09
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.07
+  - action: assert
+    fact: budget.share.psu
+    value: 0.07
+  - action: assert
+    fact: budget.share.case
+    value: 0.05
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.03
+  explain: 'Для киберспорта бюджет делится так: видеокарта 36%, процессор 22%, плата 10%, память 9%, SSD
+    7%, блок питания 7%, корпус 5%, кулер 3%.'
+- code: BUD-003
+  name: Бюджет для офиса
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: office
+  then:
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.3
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.17
+  - action: assert
+    fact: budget.share.ram
+    value: 0.15
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.13
+  - action: assert
+    fact: budget.share.psu
+    value: 0.1
+  - action: assert
+    fact: budget.share.case
+    value: 0.1
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.05
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.2
+  explain: 'Для офиса бюджет делится так: процессор 30%, плата 17%, память 15%, SSD 13%, блок питания
+    10%, корпус 10%, кулер 5%, видеокарта 20%.'
+- code: BUD-004
+  name: Бюджет для разработки
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: programming
+  then:
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.28
+  - action: assert
+    fact: budget.share.ram
+    value: 0.16
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.12
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.12
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.14
+  - action: assert
+    fact: budget.share.psu
+    value: 0.08
+  - action: assert
+    fact: budget.share.case
+    value: 0.06
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.04
+  explain: 'Для разработки бюджет делится так: процессор 28%, память 16%, SSD 12%, плата 12%, видеокарта
+    14%, блок питания 8%, корпус 6%, кулер 4%.'
+- code: BUD-005
+  name: Бюджет для монтажа
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: video_editing
+  then:
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.28
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.25
+  - action: assert
+    fact: budget.share.ram
+    value: 0.14
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.11
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.09
+  - action: assert
+    fact: budget.share.psu
+    value: 0.07
+  - action: assert
+    fact: budget.share.case
+    value: 0.04
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.04
+  explain: 'Для монтажа бюджет делится так: процессор 28%, видеокарта 25%, память 14%, SSD 11%, плата
+    9%, блок питания 7%, корпус 4%, кулер 4%.'
+- code: BUD-006
+  name: Бюджет для 3D-рендера
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: render_3d
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.32
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.26
+  - action: assert
+    fact: budget.share.ram
+    value: 0.14
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.08
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.08
+  - action: assert
+    fact: budget.share.psu
+    value: 0.07
+  - action: assert
+    fact: budget.share.case
+    value: 0.03
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.04
+  explain: 'Для 3D-рендера бюджет делится так: видеокарта 32%, процессор 26%, память 14%, SSD 8%, плата
+    8%, блок питания 7%, корпус 3%, кулер 4%.'
+- code: BUD-007
+  name: Бюджет для фото и CAD
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: photo_cad
+  then:
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.28
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.18
+  - action: assert
+    fact: budget.share.ram
+    value: 0.14
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.12
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.1
+  - action: assert
+    fact: budget.share.psu
+    value: 0.08
+  - action: assert
+    fact: budget.share.case
+    value: 0.06
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.04
+  explain: 'Для фото и CAD бюджет делится так: процессор 28%, видеокарта 18%, память 14%, SSD 12%, плата
+    10%, блок питания 8%, корпус 6%, кулер 4%.'
+- code: BUD-008
+  name: Бюджет для стриминга
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.main
+    op: eq
+    value: streaming
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.34
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.25
+  - action: assert
+    fact: budget.share.ram
+    value: 0.1
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.08
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.09
+  - action: assert
+    fact: budget.share.psu
+    value: 0.07
+  - action: assert
+    fact: budget.share.case
+    value: 0.04
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.03
+  explain: 'Для стриминга бюджет делится так: видеокарта 34%, процессор 25%, память 10%, SSD 8%, плата
+    9%, блок питания 7%, корпус 4%, кулер 3%.'
+- code: BUD-009
+  name: '4K: больше на видеокарту'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.9
+  when:
+    all:
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+    - fact: user.resolution
+      op: eq
+      value: 2160p
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.48
+  explain: В 4K всё решает видеокарта — ей отдаётся почти половина бюджета.
+- code: BUD-010
+  name: '2K и современные игры: больше на видеокарту'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    all:
+    - fact: user.weight.aaa_gaming
+      op: ge
+      value: 0.5
+    - fact: user.resolution
+      op: eq
+      value: 1440p
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.44
+  explain: В 2K видеокарта нагружена сильнее, её доля растёт до 44%.
+- code: BUD-011
+  name: 'Киберспорт на высокой частоте: больше на процессор'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    all:
+    - fact: profile.main
+      op: eq
+      value: esports
+    - fact: profile.high_refresh
+      op: eq
+      value: true
+  then:
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.24
+  explain: Сотни кадров в секунду в киберспорте упираются в процессор.
+- code: BUD-012
+  name: 'Маленький бюджет: обязательные траты'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    fact: profile.budget_class
+    op: eq
+    value: entry
+  then:
+  - action: assert
+    fact: budget.share.psu
+    value: 0.09
+  - action: assert
+    fact: budget.share.case
+    value: 0.07
+  explain: При небольшом бюджете даже самые простые БП и корпус занимают заметную долю.
+- code: BUD-013
+  name: 'Премиальный бюджет: видеокарта'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.82
+  when:
+    all:
+    - fact: profile.budget_class
+      op: eq
+      value: premium
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.45
+  explain: При большом бюджете в играх выгоднее всего вложиться в видеокарту.
+- code: BUD-014
+  name: HDD для архива
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: req.need.hdd
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.hdd
+    value: 0.05
+  explain: На жёсткий диск для архива выделяется около 5% бюджета.
+- code: BUD-015
+  name: Дополнительные вентиляторы
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: req.need.case_fan
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.case_fan
+    value: 0.02
+  explain: На вентиляторы выделяется около 2% бюджета.
+- code: BUD-016
+  name: 'Внешний вид: корпус дороже'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    fact: profile.aesthetic
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.case
+    value: 0.07
+  explain: Красивый корпус со стеклом и подсветкой стоит дороже.
+- code: BUD-017
+  name: 'Компактная сборка: корпус и БП'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    fact: profile.compact
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.case
+    value: 0.07
+  - action: assert
+    fact: budget.share.psu
+    value: 0.09
+  explain: Компактные корпуса и блоки питания SFX дороже обычных.
+- code: BUD-018
+  name: 'Рабочая станция: память и охлаждение'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    fact: profile.workstation
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.ram
+    value: 0.16
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.05
+  explain: Рабочей станции нужно много памяти и хорошее охлаждение.
+- code: BUD-019
+  name: Много памяти
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.82
+  when:
+    fact: profile.ram_heavy
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.ram
+    value: 0.14
+  explain: Для тяжёлых проектов на память выделяется 14% бюджета.
+- code: BUD-020
+  name: 'Без видеокарты: больше на процессор'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.9
+  when:
+    fact: req.need.gpu
+    op: eq
+    value: false
+  then:
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.3
+  explain: Видеокарты нет — сэкономленное идёт на процессор с хорошей встроенной графикой.
+- code: BUD-021
+  name: 'Задел на будущее: плата'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: user.future_proof
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.motherboard
+    value: 0.12
+  explain: Плата с запасом слотов и питания позволит обновлять компьютер по частям.
+- code: BUD-022
+  name: Качественный БП
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: req.psu_quality
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.psu
+    value: 0.09
+  explain: На блок питания Gold выделяется около 9% бюджета.
+- code: BUD-023
+  name: 'Мощные игры: видеокарту подбирать первой'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.gaming_tier
+    op: in
+    value:
+    - high
+    - extreme
+  then:
+  - action: assert
+    fact: budget.first_category
+    value: gpu
+  explain: Видеокарта — главная деталь игровой сборки, остальное подбирается под неё.
+- code: BUD-024
+  name: 'Рабочая станция: процессор первым'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.8
+  when:
+    fact: profile.workstation
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.first_category
+    value: cpu
+  explain: Для рабочей станции главная деталь — процессор.
+- code: BUD-025
+  name: Большой SSD
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.85
+  when:
+    fact: req.storage_min_gb
+    op: ge
+    value: 2000
+  then:
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.12
+  explain: Для SSD от 2 ТБ выделяется 12% бюджета.
+- code: BUD-026
+  name: Очень большой SSD
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.88
+  when:
+    fact: req.storage_min_gb
+    op: ge
+    value: 4000
+  then:
+  - action: assert
+    fact: budget.share.ssd
+    value: 0.16
+  explain: Для SSD на 4 ТБ выделяется 16% бюджета.
+- code: BUD-027
+  name: 'Рендер на видеокарте: доля GPU'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.83
+  when:
+    fact: profile.gpu_compute
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.36
+  explain: Для GPU-рендера видеокарта получает 36% бюджета.
+- code: BUD-028
+  name: 'Трассировка лучей: доля GPU'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.86
+  when:
+    fact: profile.raytracing
+    op: eq
+    value: true
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.46
+  explain: Для трассировки лучей нужна более дорогая видеокарта.
+- code: BUD-029
+  name: Маленький бюджет и игры
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.86
+  when:
+    all:
+    - fact: profile.budget_class
+      op: in
+      value:
+      - entry
+      - low
+    - fact: profile.gaming
+      op: ge
+      value: 0.5
+  then:
+  - action: assert
+    fact: budget.share.gpu
+    value: 0.38
+  - action: assert
+    fact: budget.share.cpu
+    value: 0.16
+  explain: При небольшом бюджете важно не переплатить за процессор и оставить деньги на видеокарту.
+- code: BUD-030
+  name: 'Запас кулера: охлаждение дороже'
+  kind: inference
+  group: budget
+  priority: 500
+  cf: 0.82
+  when:
+    fact: req.cooler_margin
+    op: ge
+    value: 0.3
+  then:
+  - action: assert
+    fact: budget.share.cpu_cooler
+    value: 0.05
+  explain: Кулер с запасом по TDP стоит дороже.
