@@ -44,7 +44,7 @@ class RuleRevisionRow(Base):
     revision: Mapped[int]
     body: Mapped[dict[str, Any]] = mapped_column(JSONB)
     change_type: Mapped[str] = mapped_column(String(16))
-    author_id: Mapped[uuid.UUID | None]
+    author_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id", ondelete="SET NULL"))
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 
 
@@ -71,5 +71,7 @@ class KbSnapshotRow(Base):
     checksum: Mapped[str] = mapped_column(String(64), index=True)
     validation_report: Mapped[dict[str, Any]] = mapped_column(JSONB)
     comment: Mapped[str | None] = mapped_column(String(500))
-    published_by: Mapped[uuid.UUID | None]
+    published_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
     published_at: Mapped[datetime] = mapped_column(server_default=func.now())

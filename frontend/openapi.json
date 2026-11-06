@@ -273,6 +273,221 @@
         }
       }
     },
+    "/api/v1/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Регистрация: создаёт аккаунт и сразу входит",
+        "operationId": "register_api_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Вход по email и паролю",
+        "operationId": "login_api_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Обновить пару токенов по refresh-cookie",
+        "operationId": "refresh_api_v1_auth_refresh_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Выйти: отозвать токены",
+        "operationId": "logout_api_v1_auth_logout_post",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Текущий пользователь",
+        "operationId": "me_api_v1_auth_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sessions/guest": {
+      "post": {
+        "tags": [
+          "sessions"
+        ],
+        "summary": "Выдать или продлить гостевую сессию (токен — HttpOnly-cookie)",
+        "operationId": "create_guest_session_api_v1_sessions_guest_post",
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GuestSessionOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me/builds": {
+      "get": {
+        "tags": [
+          "me"
+        ],
+        "summary": "Сохранённые сборки аккаунта",
+        "operationId": "my_builds_api_v1_me_builds_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeBuildsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/questionnaire": {
       "get": {
         "tags": [
@@ -919,10 +1134,1566 @@
           }
         }
       }
+    },
+    "/api/v1/admin/components": {
+      "get": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Каталог: список с фильтрами (включая снятые с продажи)",
+        "operationId": "list_components_api_v1_admin_components_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Category"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "brand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Brand"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ComponentStatus"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ComponentSource"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Поиск по названию и SKU",
+              "title": "Q"
+            },
+            "description": "Поиск по названию и SKU"
+          },
+          {
+            "name": "in_stock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "In Stock"
+            }
+          },
+          {
+            "name": "price_stale_days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Цена не проверялась больше N дней",
+              "title": "Price Stale Days"
+            },
+            "description": "Цена не проверялась больше N дней"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Каталог: создать компонент из JSON фрейма категории",
+        "operationId": "create_component_api_v1_admin_components_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CPU"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Motherboard"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RAM"
+                  },
+                  {
+                    "$ref": "#/components/schemas/GPU"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SSD"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HDD"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PSU"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Case"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CPUCooler"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CaseFan"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "category",
+                  "mapping": {
+                    "cpu": "#/components/schemas/CPU",
+                    "motherboard": "#/components/schemas/Motherboard",
+                    "ram": "#/components/schemas/RAM",
+                    "gpu": "#/components/schemas/GPU",
+                    "ssd": "#/components/schemas/SSD",
+                    "hdd": "#/components/schemas/HDD",
+                    "psu": "#/components/schemas/PSU",
+                    "case": "#/components/schemas/Case",
+                    "cpu_cooler": "#/components/schemas/CPUCooler",
+                    "case_fan": "#/components/schemas/CaseFan"
+                  }
+                },
+                "title": "Frame"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/components/{component_id}": {
+      "get": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Каталог: карточка компонента",
+        "operationId": "get_component_api_v1_admin_components__component_id__get",
+        "parameters": [
+          {
+            "name": "component_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Component Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Каталог: полная замена компонента фреймом",
+        "operationId": "replace_component_api_v1_admin_components__component_id__put",
+        "parameters": [
+          {
+            "name": "component_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Component Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CPU"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Motherboard"
+                  },
+                  {
+                    "$ref": "#/components/schemas/RAM"
+                  },
+                  {
+                    "$ref": "#/components/schemas/GPU"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SSD"
+                  },
+                  {
+                    "$ref": "#/components/schemas/HDD"
+                  },
+                  {
+                    "$ref": "#/components/schemas/PSU"
+                  },
+                  {
+                    "$ref": "#/components/schemas/Case"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CPUCooler"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CaseFan"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "category",
+                  "mapping": {
+                    "cpu": "#/components/schemas/CPU",
+                    "motherboard": "#/components/schemas/Motherboard",
+                    "ram": "#/components/schemas/RAM",
+                    "gpu": "#/components/schemas/GPU",
+                    "ssd": "#/components/schemas/SSD",
+                    "hdd": "#/components/schemas/HDD",
+                    "psu": "#/components/schemas/PSU",
+                    "case": "#/components/schemas/Case",
+                    "cpu_cooler": "#/components/schemas/CPUCooler",
+                    "case_fan": "#/components/schemas/CaseFan"
+                  }
+                },
+                "title": "Frame"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Каталог: служебные поля (наличие, статус продажи)",
+        "operationId": "patch_component_api_v1_admin_components__component_id__patch",
+        "parameters": [
+          {
+            "name": "component_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Component Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComponentPatchIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/catalog/import": {
+      "post": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Импорт CSV одной категории (dry-run или применение)",
+        "operationId": "import_catalog_api_v1_admin_catalog_import_post",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Category",
+              "description": "Категория из имени файла каталога"
+            },
+            "description": "Категория из имени файла каталога"
+          },
+          {
+            "name": "dry_run",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Только отчёт, без изменения БД",
+              "default": false,
+              "title": "Dry Run"
+            },
+            "description": "Только отчёт, без изменения БД"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_import_catalog_api_v1_admin_catalog_import_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogImportOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/catalog/export": {
+      "get": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Экспорт каталога: zip с <category>.csv в формате §12",
+        "operationId": "export_catalog_api_v1_admin_catalog_export_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/catalog/issues": {
+      "get": {
+        "tags": [
+          "admin-catalog"
+        ],
+        "summary": "Позиции со статусами incomplete/needs_kb и причинами",
+        "operationId": "catalog_issues_api_v1_admin_catalog_issues_get",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Category"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComponentPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/rules": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Правила рабочей копии: список с фильтрами",
+        "operationId": "list_rules_api_v1_admin_rules_get",
+        "parameters": [
+          {
+            "name": "group",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 32
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Group"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RuleKind"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RuleOrigin"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Origin"
+            }
+          },
+          {
+            "name": "enabled",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Enabled"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Поиск по коду и названию",
+              "title": "Q"
+            },
+            "description": "Поиск по коду и названию"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulePage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Создать ручное правило (код PREFIX-NNN уникален)",
+        "operationId": "create_rule_api_v1_admin_rules_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/rules/{code}": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Правило с историей ревизий",
+        "operationId": "get_rule_api_v1_admin_rules__code__get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleDetailOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Полная замена правила (новая ревизия)",
+        "operationId": "replace_rule_api_v1_admin_rules__code__put",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Rule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/rules/{code}/retire": {
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Вывести правило из базы (enabled=false, новая ревизия)",
+        "operationId": "retire_rule_api_v1_admin_rules__code__retire_post",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/rules/{code}/test": {
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Изолированный прямой вывод на заданных фактах",
+        "operationId": "test_rule_api_v1_admin_rules__code__test_post",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RuleTestIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuleTestOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/vocabulary": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Словарь фактов для конструктора условий",
+        "operationId": "vocabulary_api_v1_admin_kb_vocabulary_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/VocabularyOut"
+                  },
+                  "type": "array",
+                  "title": "Response Vocabulary Api V1 Admin Kb Vocabulary Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/status": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Лёгкий статус черновика: checksum, совпадение со снимком, правил",
+        "operationId": "kb_status_api_v1_admin_kb_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KbStatusOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/validate": {
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Stateless-валидация черновика (§6.2 + golden), без записи",
+        "operationId": "validate_kb_api_v1_admin_kb_validate_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateReportOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/publish": {
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Опубликовать черновик (при ошибках 409, снимок не создаётся)",
+        "operationId": "publish_kb_api_v1_admin_kb_publish_post",
+        "parameters": [
+          {
+            "name": "comment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 500
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Comment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/snapshots": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Опубликованные снимки базы знаний, новые первыми",
+        "operationId": "list_snapshots_api_v1_admin_kb_snapshots_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SnapshotOut"
+                  },
+                  "type": "array",
+                  "title": "Response List Snapshots Api V1 Admin Kb Snapshots Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/snapshots/{snapshot_id}/republish": {
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Откат: повторная публикация снимка",
+        "operationId": "republish_snapshot_api_v1_admin_kb_snapshots__snapshot_id__republish_post",
+        "parameters": [
+          {
+            "name": "snapshot_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Snapshot Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublishOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/kb/export": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Экспорт БЗ: zip с деревом как в knowledge/ (round-trip)",
+        "operationId": "export_kb_api_v1_admin_kb_export_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/reference": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Все справочники, анкета и golden cases рабочей копии",
+        "operationId": "list_reference_api_v1_admin_reference_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response List Reference Api V1 Admin Reference Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/reference/{name}": {
+      "get": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Один справочник, анкета или golden cases",
+        "operationId": "get_reference_api_v1_admin_reference__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Reference Api V1 Admin Reference  Name  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Заменить справочник целиком (валидация схемами ядра)",
+        "operationId": "replace_reference_api_v1_admin_reference__name__put",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Replace Reference Api V1 Admin Reference  Name  Put"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/reference/regenerate": {
+      "post": {
+        "tags": [
+          "admin-kb"
+        ],
+        "summary": "Перегенерировать табличные правила в черновик (diff)",
+        "operationId": "regenerate_reference_api_v1_admin_reference_regenerate_post",
+        "parameters": [
+          {
+            "name": "dry_run",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Только diff-отчёт, без записи",
+              "default": true,
+              "title": "Dry Run"
+            },
+            "description": "Только diff-отчёт, без записи"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegenerateOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/users": {
+      "get": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Пользователи: список с фильтрами (superadmin)",
+        "operationId": "list_users_api_v1_admin_users_get",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/UserRole"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Role"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Поиск по email",
+              "title": "Q"
+            },
+            "description": "Поиск по email"
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Is Active"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAdminPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/users/{user_id}": {
+      "patch": {
+        "tags": [
+          "admin-users"
+        ],
+        "summary": "Сменить роль или заблокировать (отзывает токены)",
+        "operationId": "patch_user_api_v1_admin_users__user_id__patch",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPatchIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAdminOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AllCondition": {
+        "properties": {
+          "all": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/AllCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/AnyCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/NotCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/FactCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/ExprCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/GoalCondition"
+                }
+              ]
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "All"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "all"
+        ],
+        "title": "AllCondition",
+        "description": "«Все из» (И)."
+      },
       "AlternativeOut": {
         "properties": {
           "component_id": {
@@ -1006,6 +2777,44 @@
         "title": "AlternativeOut",
         "description": "Совместимая замена детали."
       },
+      "AnyCondition": {
+        "properties": {
+          "any": {
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/AllCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/AnyCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/NotCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/FactCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/ExprCondition"
+                },
+                {
+                  "$ref": "#/components/schemas/GoalCondition"
+                }
+              ]
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Any"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "any"
+        ],
+        "title": "AnyCondition",
+        "description": "«Любое из» (ИЛИ)."
+      },
       "AppOut": {
         "properties": {
           "app": {
@@ -1049,6 +2858,52 @@
         ],
         "title": "AppOut",
         "description": "Прогноз для программы."
+      },
+      "AssertAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "assert",
+            "title": "Action"
+          },
+          "fact": {
+            "type": "string",
+            "maxLength": 120,
+            "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z0-9_]+)+$",
+            "title": "Fact"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LiteralValue"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "expr": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expr"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "fact"
+        ],
+        "title": "AssertAction",
+        "description": "Добавить или усилить факт: значение-литерал (`value`) или формула (`expr`)."
       },
       "BenchmarkOut": {
         "properties": {
@@ -1157,6 +3012,21 @@
         ],
         "title": "BlockingOut",
         "description": "Требование, которое делает сборку дороже бюджета."
+      },
+      "Body_import_catalog_api_v1_admin_catalog_import_post": {
+        "properties": {
+          "upload": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "Upload",
+            "description": "CSV файл одной категории (≤ 2 МБ)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "upload"
+        ],
+        "title": "Body_import_catalog_api_v1_admin_catalog_import_post"
       },
       "BuildDetail": {
         "properties": {
@@ -1419,6 +3289,726 @@
         "title": "BuildSummary",
         "description": "Краткая карточка сборки."
       },
+      "CPU": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "cpu",
+            "title": "Категория",
+            "default": "cpu"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "socket": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Сокет"
+          },
+          "cores": {
+            "type": "integer",
+            "maximum": 128.0,
+            "minimum": 1.0,
+            "title": "Ядер"
+          },
+          "threads": {
+            "type": "integer",
+            "maximum": 256.0,
+            "minimum": 1.0,
+            "title": "Потоков"
+          },
+          "base_ghz": {
+            "type": "number",
+            "maximum": 7.0,
+            "exclusiveMinimum": 0.5,
+            "title": "Базовая частота",
+            "unit": "ГГц"
+          },
+          "boost_ghz": {
+            "type": "number",
+            "maximum": 7.0,
+            "exclusiveMinimum": 0.5,
+            "title": "Частота в бусте",
+            "unit": "ГГц"
+          },
+          "tdp_w": {
+            "type": "integer",
+            "maximum": 400.0,
+            "minimum": 10.0,
+            "title": "TDP",
+            "unit": "Вт"
+          },
+          "igpu": {
+            "type": "boolean",
+            "title": "Встроенная графика"
+          },
+          "unlocked": {
+            "type": "boolean",
+            "title": "Разблокированный множитель",
+            "default": false
+          },
+          "cooler_included": {
+            "type": "boolean",
+            "title": "Кулер в комплекте",
+            "default": false
+          },
+          "mem_types": {
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Поддерживаемые типы памяти"
+          },
+          "perf_single": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Индекс одноядерный"
+          },
+          "perf_multi": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Индекс многоядерный"
+          },
+          "cinebench_single": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cinebench 2024 single"
+          },
+          "cinebench_multi": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cinebench 2024 multi"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "socket",
+          "cores",
+          "threads",
+          "base_ghz",
+          "boost_ghz",
+          "tdp_w",
+          "igpu",
+          "mem_types"
+        ],
+        "title": "Процессор",
+        "description": "Фрейм «Процессор»."
+      },
+      "CPUCooler": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "cpu_cooler",
+            "title": "Категория",
+            "default": "cpu_cooler"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "type": {
+            "$ref": "#/components/schemas/CoolerType",
+            "title": "Тип"
+          },
+          "sockets": {
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Сокеты"
+          },
+          "height_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 200.0,
+                "minimum": 30.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Высота",
+            "unit": "мм"
+          },
+          "tdp_capacity_w": {
+            "type": "integer",
+            "maximum": 400.0,
+            "minimum": 35.0,
+            "title": "Рассеиваемая мощность",
+            "unit": "Вт"
+          },
+          "radiator_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "enum": [
+                  120,
+                  140,
+                  240,
+                  280,
+                  360,
+                  420
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Размер радиатора СЖО",
+            "unit": "мм"
+          },
+          "noise_db": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 60.0,
+                "minimum": 5.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Уровень шума",
+            "unit": "дБ"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "type",
+          "sockets",
+          "tdp_capacity_w"
+        ],
+        "title": "Кулер процессора",
+        "description": "Фрейм «Кулер процессора» (воздушный или СЖО)."
+      },
+      "Case": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "case",
+            "title": "Категория",
+            "default": "case"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "size": {
+            "$ref": "#/components/schemas/CaseSize",
+            "title": "Типоразмер"
+          },
+          "form_factors": {
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Форм-факторы плат"
+          },
+          "max_gpu_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 150.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Макс. длина видеокарты",
+            "unit": "мм"
+          },
+          "max_cooler_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 30.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Макс. высота кулера",
+            "unit": "мм"
+          },
+          "psu_ff": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Форм-фактор блока питания"
+          },
+          "fan_slots": {
+            "type": "integer",
+            "maximum": 16.0,
+            "minimum": 0.0,
+            "title": "Мест под вентиляторы"
+          },
+          "fans_included": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 0.0,
+            "title": "Вентиляторов в комплекте",
+            "default": 0
+          },
+          "radiator_support": {
+            "items": {
+              "type": "integer",
+              "enum": [
+                120,
+                140,
+                240,
+                280,
+                360,
+                420
+              ]
+            },
+            "type": "array",
+            "title": "Поддержка радиаторов",
+            "unit": "мм"
+          },
+          "glass": {
+            "type": "boolean",
+            "title": "Стеклянная панель",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "size",
+          "form_factors",
+          "psu_ff",
+          "fan_slots"
+        ],
+        "title": "Корпус",
+        "description": "Фрейм «Корпус»."
+      },
+      "CaseFan": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "case_fan",
+            "title": "Категория",
+            "default": "case_fan"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "size_mm": {
+            "type": "integer",
+            "enum": [
+              80,
+              92,
+              120,
+              140,
+              200
+            ],
+            "title": "Размер",
+            "unit": "мм"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Штук в упаковке",
+            "default": 1
+          },
+          "pwm": {
+            "type": "boolean",
+            "title": "PWM-управление",
+            "default": true
+          },
+          "noise_db": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 60.0,
+                "minimum": 5.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Уровень шума",
+            "unit": "дБ"
+          },
+          "airflow_cfm": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 200.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Воздушный поток",
+            "unit": "CFM"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "size_mm"
+        ],
+        "title": "Корпусной вентилятор",
+        "description": "Фрейм «Корпусной вентилятор» (упаковка из одного или нескольких)."
+      },
+      "CaseSize": {
+        "type": "string",
+        "enum": [
+          "mini",
+          "mid",
+          "full"
+        ],
+        "title": "CaseSize",
+        "description": "Типоразмер корпуса (для пожеланий клиента)."
+      },
+      "CatalogImportOut": {
+        "properties": {
+          "import_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Import Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "dry_run": {
+            "type": "boolean",
+            "title": "Dry Run"
+          },
+          "created": {
+            "type": "integer",
+            "title": "Created"
+          },
+          "updated": {
+            "type": "integer",
+            "title": "Updated"
+          },
+          "unchanged": {
+            "type": "integer",
+            "title": "Unchanged"
+          },
+          "catalog_revision": {
+            "type": "integer",
+            "title": "Catalog Revision"
+          },
+          "status_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Status Counts"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "import_id",
+          "status",
+          "dry_run",
+          "created",
+          "updated",
+          "unchanged",
+          "catalog_revision",
+          "status_counts",
+          "errors",
+          "warnings"
+        ],
+        "title": "CatalogImportOut",
+        "description": "Отчёт импорта CSV категории (ADR 0010 п.1)."
+      },
       "Category": {
         "type": "string",
         "enum": [
@@ -1435,6 +4025,21 @@
         ],
         "title": "Category",
         "description": "Категория комплектующего; определяет фрейм."
+      },
+      "Color": {
+        "type": "string",
+        "enum": [
+          "black",
+          "white",
+          "silver",
+          "gray",
+          "red",
+          "blue",
+          "pink",
+          "other"
+        ],
+        "title": "Color",
+        "description": "Основной цвет детали (для пожеланий по внешнему виду)."
       },
       "CompareOut": {
         "properties": {
@@ -1588,6 +4193,9 @@
             "type": "boolean",
             "title": "In Stock"
           },
+          "source": {
+            "$ref": "#/components/schemas/ComponentSource"
+          },
           "status": {
             "$ref": "#/components/schemas/ComponentStatus"
           },
@@ -1621,6 +4229,7 @@
           "price_checked_at",
           "price_note",
           "in_stock",
+          "source",
           "status",
           "status_issues",
           "specs",
@@ -1660,6 +4269,43 @@
         ],
         "title": "ComponentPage",
         "description": "Страница списка компонентов."
+      },
+      "ComponentPatchIn": {
+        "properties": {
+          "in_stock": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "In Stock"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ComponentStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ComponentPatchIn",
+        "description": "Служебная правка компонента: наличие и статус (снять с продажи / вернуть к продаже)."
+      },
+      "ComponentSource": {
+        "type": "string",
+        "enum": [
+          "manual",
+          "import"
+        ],
+        "title": "ComponentSource",
+        "description": "Откуда пришла позиция каталога."
       },
       "ComponentStatus": {
         "type": "string",
@@ -1899,6 +4545,15 @@
         "title": "ConsultationOut",
         "description": "Консультация и её сборки."
       },
+      "CoolerType": {
+        "type": "string",
+        "enum": [
+          "air",
+          "aio"
+        ],
+        "title": "CoolerType",
+        "description": "Тип процессорного охлаждения."
+      },
       "EditKind": {
         "type": "string",
         "enum": [
@@ -1960,6 +4615,29 @@
         "title": "EffectOut",
         "description": "Что правило сделало с фактом."
       },
+      "ErrorAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "error",
+            "title": "Action"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "message"
+        ],
+        "title": "ErrorAction",
+        "description": "Блокирующая ошибка по готовой сборке (validate)."
+      },
       "ExplanationOut": {
         "properties": {
           "reasoning": {
@@ -2005,6 +4683,67 @@
         ],
         "title": "ExplanationOut",
         "description": "«Почему эта сборка»: рассуждение, вклад сценариев, баллы и замечания."
+      },
+      "ExprCondition": {
+        "properties": {
+          "expr": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Expr"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expr"
+        ],
+        "title": "ExprCondition",
+        "description": "Лист: формула `{expr: \"...\"}`; проверяется интерпретатором при компиляции."
+      },
+      "FactCondition": {
+        "properties": {
+          "fact": {
+            "type": "string",
+            "maxLength": 120,
+            "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z0-9_]+)+$",
+            "title": "Fact"
+          },
+          "op": {
+            "$ref": "#/components/schemas/Op"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LiteralValue"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ref": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z0-9_]+)+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ref"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fact",
+          "op"
+        ],
+        "title": "FactCondition",
+        "description": "Лист: `{fact, op, value}` или `{fact, op, ref}` (сравнение двух фактов)."
       },
       "FpsOut": {
         "properties": {
@@ -2090,6 +4829,217 @@
         "title": "FrameOut",
         "description": "Фрейм категории: название и JSON Schema слотов (типы, единицы, ограничения)."
       },
+      "GPU": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "gpu",
+            "title": "Категория",
+            "default": "gpu"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "chip": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 2,
+            "title": "Графический чип"
+          },
+          "vram_gb": {
+            "type": "integer",
+            "maximum": 64.0,
+            "minimum": 2.0,
+            "title": "Видеопамять",
+            "unit": "ГБ"
+          },
+          "tbp_w": {
+            "type": "integer",
+            "maximum": 800.0,
+            "minimum": 30.0,
+            "title": "Энергопотребление (TBP)",
+            "unit": "Вт"
+          },
+          "length_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 400.0,
+                "minimum": 100.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Длина",
+            "unit": "мм"
+          },
+          "slots": {
+            "type": "number",
+            "maximum": 4.5,
+            "minimum": 1.0,
+            "title": "Толщина",
+            "unit": "слотов"
+          },
+          "power_connectors": {
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$"
+            },
+            "type": "array",
+            "title": "Разъёмы питания"
+          },
+          "rec_psu_w": {
+            "type": "integer",
+            "maximum": 1600.0,
+            "minimum": 200.0,
+            "title": "Рекомендуемый блок питания",
+            "unit": "Вт"
+          },
+          "pcie_gen": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 3.0,
+            "title": "Поколение PCIe"
+          },
+          "perf_raster": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Индекс растеризации"
+          },
+          "perf_rt": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Индекс трассировки"
+          },
+          "timespy": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3DMark Time Spy"
+          },
+          "steel_nomad": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "3DMark Steel Nomad"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "chip",
+          "vram_gb",
+          "tbp_w",
+          "slots",
+          "rec_psu_w",
+          "pcie_gen"
+        ],
+        "title": "Видеокарта",
+        "description": "Фрейм «Видеокарта»."
+      },
+      "GoalCondition": {
+        "properties": {
+          "goal": {
+            "$ref": "#/components/schemas/GoalRef"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "goal"
+        ],
+        "title": "GoalCondition",
+        "description": "Лист-подцель (только в правилах вида goal)."
+      },
       "GoalOut": {
         "properties": {
           "predicate": {
@@ -2125,6 +5075,188 @@
         ],
         "title": "GoalOut",
         "description": "Гипотеза, которую можно проверить («потянет ли»)."
+      },
+      "GoalRef": {
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "title": "Predicate"
+          },
+          "args": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Scalar"
+            },
+            "type": "object",
+            "title": "Args"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "predicate"
+        ],
+        "title": "GoalRef",
+        "description": "Цель обратного вывода: `predicate(args)`; аргументы могут быть переменными `$x`."
+      },
+      "GoldenReportOut": {
+        "properties": {
+          "passed": {
+            "type": "integer",
+            "title": "Passed"
+          },
+          "failed": {
+            "type": "integer",
+            "title": "Failed"
+          },
+          "failures": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Failures"
+          }
+        },
+        "type": "object",
+        "required": [
+          "passed",
+          "failed",
+          "failures"
+        ],
+        "title": "GoldenReportOut"
+      },
+      "GuestSessionOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "created",
+              "existing"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "GuestSessionOut",
+        "description": "Результат выдачи гостевой сессии (токен — HttpOnly-cookie)."
+      },
+      "HDD": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "hdd",
+            "title": "Категория",
+            "default": "hdd"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "capacity_gb": {
+            "type": "integer",
+            "maximum": 32000.0,
+            "minimum": 120.0,
+            "title": "Объём",
+            "unit": "ГБ"
+          },
+          "rpm": {
+            "type": "integer",
+            "enum": [
+              5400,
+              5900,
+              7200
+            ],
+            "title": "Скорость вращения",
+            "unit": "об/мин"
+          },
+          "cache_mb": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1024.0,
+                "minimum": 8.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Кэш",
+            "unit": "МБ"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "capacity_gb",
+          "rpm"
+        ],
+        "title": "HDD",
+        "description": "Фрейм «HDD»."
       },
       "HTTPValidationError": {
         "properties": {
@@ -2433,6 +5565,87 @@
           }
         ]
       },
+      "KbStatusOut": {
+        "properties": {
+          "checksum": {
+            "type": "string",
+            "title": "Checksum"
+          },
+          "matches_latest": {
+            "type": "boolean",
+            "title": "Matches Latest"
+          },
+          "rules_total": {
+            "type": "integer",
+            "title": "Rules Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "checksum",
+          "matches_latest",
+          "rules_total"
+        ],
+        "title": "KbStatusOut",
+        "description": "Лёгкий статус черновика: контрольная сумма, совпадение со снимком, число правил.\n\nСобирается одним чтением из БД: без компиляции и эталонных кейсов."
+      },
+      "LiteralValue": {
+        "anyOf": [
+          {
+            "$ref": "#/components/schemas/Scalar"
+          },
+          {
+            "items": {
+              "$ref": "#/components/schemas/Scalar"
+            },
+            "type": "array"
+          }
+        ]
+      },
+      "LoginIn": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginIn",
+        "description": "Вход по email и паролю."
+      },
+      "MeBuildsOut": {
+        "properties": {
+          "builds": {
+            "items": {
+              "$ref": "#/components/schemas/SavedBuildOut"
+            },
+            "type": "array",
+            "title": "Builds"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "builds",
+          "total"
+        ],
+        "title": "MeBuildsOut",
+        "description": "Сохранённые сборки пользователя с пагинацией."
+      },
       "ModificationOut": {
         "properties": {
           "build": {
@@ -2541,6 +5754,155 @@
         "title": "ModificationRequest",
         "description": "Правка сборки."
       },
+      "Motherboard": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "motherboard",
+            "title": "Категория",
+            "default": "motherboard"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "socket": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Сокет"
+          },
+          "chipset": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Чипсет"
+          },
+          "form_factor": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Форм-фактор"
+          },
+          "mem_type": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Тип памяти"
+          },
+          "mem_slots": {
+            "type": "integer",
+            "maximum": 8.0,
+            "minimum": 1.0,
+            "title": "Слотов памяти"
+          },
+          "max_mem_gb": {
+            "type": "integer",
+            "maximum": 1024.0,
+            "minimum": 16.0,
+            "title": "Максимум памяти",
+            "unit": "ГБ"
+          },
+          "m2_slots": {
+            "type": "integer",
+            "maximum": 8.0,
+            "minimum": 0.0,
+            "title": "Слотов M.2"
+          },
+          "sata_ports": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 0.0,
+            "title": "Портов SATA"
+          },
+          "pcie_gen": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 3.0,
+            "title": "Поколение PCIe слота видеокарты"
+          },
+          "wifi": {
+            "type": "boolean",
+            "title": "Wi-Fi",
+            "default": false
+          },
+          "vrm_tier": {
+            "$ref": "#/components/schemas/VrmTier",
+            "title": "Класс питания VRM"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "socket",
+          "chipset",
+          "form_factor",
+          "mem_type",
+          "mem_slots",
+          "max_mem_gb",
+          "m2_slots",
+          "sata_ports",
+          "pcie_gen",
+          "vrm_tier"
+        ],
+        "title": "Материнская плата",
+        "description": "Фрейм «Материнская плата»."
+      },
       "NeedInputOut": {
         "properties": {
           "variable": {
@@ -2595,6 +5957,58 @@
         ],
         "title": "NodeKind",
         "description": "Вид узла дерева доказательства."
+      },
+      "NotCondition": {
+        "properties": {
+          "not": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AllCondition"
+              },
+              {
+                "$ref": "#/components/schemas/AnyCondition"
+              },
+              {
+                "$ref": "#/components/schemas/NotCondition"
+              },
+              {
+                "$ref": "#/components/schemas/FactCondition"
+              },
+              {
+                "$ref": "#/components/schemas/ExprCondition"
+              },
+              {
+                "$ref": "#/components/schemas/GoalCondition"
+              }
+            ],
+            "title": "Not"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "not"
+        ],
+        "title": "NotCondition",
+        "description": "«Не»."
+      },
+      "Op": {
+        "type": "string",
+        "enum": [
+          "eq",
+          "ne",
+          "lt",
+          "le",
+          "gt",
+          "ge",
+          "in",
+          "not_in",
+          "contains",
+          "between",
+          "exists"
+        ],
+        "title": "Op",
+        "description": "Операторы сравнения в листе условия."
       },
       "OptionOut": {
         "properties": {
@@ -2661,6 +6075,117 @@
         "title": "OwnedComponentOut",
         "description": "Деталь, которая уже есть у клиента."
       },
+      "PSU": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "psu",
+            "title": "Категория",
+            "default": "psu"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "wattage": {
+            "type": "integer",
+            "maximum": 2000.0,
+            "minimum": 300.0,
+            "title": "Мощность",
+            "unit": "Вт"
+          },
+          "efficiency": {
+            "$ref": "#/components/schemas/PsuEfficiency",
+            "title": "Сертификат 80 PLUS"
+          },
+          "modular": {
+            "$ref": "#/components/schemas/PsuModularity",
+            "title": "Модульность"
+          },
+          "form_factor": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Форм-фактор"
+          },
+          "pcie_connectors": {
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$"
+            },
+            "type": "array",
+            "title": "Разъёмы питания видеокарты"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "wattage",
+          "efficiency",
+          "modular",
+          "form_factor"
+        ],
+        "title": "Блок питания",
+        "description": "Фрейм «Блок питания»."
+      },
       "PerformanceOut": {
         "properties": {
           "games": {
@@ -2706,6 +6231,41 @@
         ],
         "title": "PerformanceOut",
         "description": "Прогноз производительности сборки (оценка по референсным тестам, ±15%)."
+      },
+      "PreferAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "prefer",
+            "title": "Action"
+          },
+          "weight": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": -100.0,
+            "title": "Weight"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "weight"
+        ],
+        "title": "PreferAction",
+        "description": "Добавить к полезности `weight × cf` (score); вес может быть отрицательным."
       },
       "PreferenceOut": {
         "properties": {
@@ -2815,6 +6375,72 @@
         "title": "ProofStatus",
         "description": "Исход узла доказательства."
       },
+      "PsuEfficiency": {
+        "type": "string",
+        "enum": [
+          "80plus",
+          "bronze",
+          "silver",
+          "gold",
+          "platinum",
+          "titanium"
+        ],
+        "title": "PsuEfficiency",
+        "description": "Сертификат 80 PLUS блока питания."
+      },
+      "PsuModularity": {
+        "type": "string",
+        "enum": [
+          "none",
+          "semi",
+          "full"
+        ],
+        "title": "PsuModularity",
+        "description": "Модульность кабелей блока питания."
+      },
+      "PublishOut": {
+        "properties": {
+          "snapshot_id": {
+            "type": "integer",
+            "title": "Snapshot Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "created": {
+            "type": "boolean",
+            "title": "Created"
+          },
+          "rules": {
+            "type": "integer",
+            "title": "Rules"
+          },
+          "warnings": {
+            "type": "integer",
+            "title": "Warnings"
+          },
+          "golden_cases": {
+            "type": "integer",
+            "title": "Golden Cases"
+          },
+          "statuses_changed": {
+            "type": "integer",
+            "title": "Statuses Changed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "snapshot_id",
+          "version",
+          "created",
+          "rules",
+          "warnings",
+          "golden_cases",
+          "statuses_changed"
+        ],
+        "title": "PublishOut"
+      },
       "QuestionOut": {
         "properties": {
           "id": {
@@ -2918,6 +6544,135 @@
         "title": "QuestionnaireOut",
         "description": "Анкета визарда из опубликованной базы знаний."
       },
+      "RAM": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "ram",
+            "title": "Категория",
+            "default": "ram"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "mem_type": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$",
+            "title": "Тип памяти"
+          },
+          "capacity_gb": {
+            "type": "integer",
+            "maximum": 512.0,
+            "minimum": 4.0,
+            "title": "Объём комплекта",
+            "unit": "ГБ"
+          },
+          "modules": {
+            "type": "integer",
+            "maximum": 8.0,
+            "minimum": 1.0,
+            "title": "Модулей в комплекте"
+          },
+          "speed_mts": {
+            "type": "integer",
+            "maximum": 12000.0,
+            "minimum": 1600.0,
+            "title": "Частота",
+            "unit": "МТ/с"
+          },
+          "cl": {
+            "type": "integer",
+            "maximum": 60.0,
+            "minimum": 8.0,
+            "title": "Тайминг CL"
+          },
+          "height_mm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 70.0,
+                "minimum": 25.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Высота модуля",
+            "unit": "мм"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "mem_type",
+          "capacity_gb",
+          "modules",
+          "speed_mts",
+          "cl"
+        ],
+        "title": "Оперативная память",
+        "description": "Фрейм «Оперативная память» (комплект модулей)."
+      },
       "ReasonOut": {
         "properties": {
           "rule_code": {
@@ -3000,6 +6755,122 @@
         "title": "ReasoningStepOut",
         "description": "Шаг профилирования."
       },
+      "RefreshOut": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "const": "bearer",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "expires_in"
+        ],
+        "title": "RefreshOut",
+        "description": "Новая пара токенов по refresh (сам refresh — снова в cookie)."
+      },
+      "RegenerateOut": {
+        "properties": {
+          "dry_run": {
+            "type": "boolean",
+            "title": "Dry Run"
+          },
+          "created": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Created"
+          },
+          "updated": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Updated"
+          },
+          "removed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Removed"
+          },
+          "overrides": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Overrides"
+          }
+        },
+        "type": "object",
+        "required": [
+          "dry_run",
+          "created",
+          "updated",
+          "removed",
+          "overrides"
+        ],
+        "title": "RegenerateOut",
+        "description": "Diff регенерации табличных правил (ADR 0010 п.5)."
+      },
+      "RegisterIn": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "RegisterIn",
+        "description": "Регистрация нового клиента."
+      },
+      "RejectAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "reject",
+            "title": "Action"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "message"
+        ],
+        "title": "RejectAction",
+        "description": "Отсечь кандидата (filter) или сочетание (compat)."
+      },
       "RelaxationOut": {
         "properties": {
           "title": {
@@ -3024,6 +6895,807 @@
         ],
         "title": "RelaxationOut",
         "description": "Вариант ослабить ответы."
+      },
+      "RetractAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "retract",
+            "title": "Action"
+          },
+          "fact": {
+            "type": "string",
+            "maxLength": 120,
+            "pattern": "^[a-z][a-z0-9_]*(?:\\.[a-z0-9_]+)+$",
+            "title": "Fact"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "fact"
+        ],
+        "title": "RetractAction",
+        "description": "Снять факт."
+      },
+      "Rule": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^(?:[A-Z]{3}-\\d{3}|GEN-[A-Z0-9]+(?:-[A-Z0-9]+)+)$",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RuleKind"
+          },
+          "group": {
+            "type": "string",
+            "pattern": "^[a-z_]+$",
+            "title": "Group"
+          },
+          "priority": {
+            "type": "integer",
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Priority"
+          },
+          "cf": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": -1.0,
+            "title": "Cf"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "default": true
+          },
+          "origin": {
+            "$ref": "#/components/schemas/RuleOrigin",
+            "default": "manual"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GoalRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "when": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AllCondition"
+              },
+              {
+                "$ref": "#/components/schemas/AnyCondition"
+              },
+              {
+                "$ref": "#/components/schemas/NotCondition"
+              },
+              {
+                "$ref": "#/components/schemas/FactCondition"
+              },
+              {
+                "$ref": "#/components/schemas/ExprCondition"
+              },
+              {
+                "$ref": "#/components/schemas/GoalCondition"
+              }
+            ],
+            "title": "When"
+          },
+          "then": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssertAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RetractAction"
+                },
+                {
+                  "$ref": "#/components/schemas/RejectAction"
+                },
+                {
+                  "$ref": "#/components/schemas/PreferAction"
+                },
+                {
+                  "$ref": "#/components/schemas/WarnAction"
+                },
+                {
+                  "$ref": "#/components/schemas/ErrorAction"
+                },
+                {
+                  "$ref": "#/components/schemas/SuggestAction"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "action",
+                "mapping": {
+                  "assert": "#/components/schemas/AssertAction",
+                  "error": "#/components/schemas/ErrorAction",
+                  "prefer": "#/components/schemas/PreferAction",
+                  "reject": "#/components/schemas/RejectAction",
+                  "retract": "#/components/schemas/RetractAction",
+                  "suggest": "#/components/schemas/SuggestAction",
+                  "warn": "#/components/schemas/WarnAction"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Then"
+          },
+          "explain": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Explain"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "kind",
+          "group",
+          "priority",
+          "cf",
+          "when",
+          "explain"
+        ],
+        "title": "Rule",
+        "description": "Правило базы знаний в том виде, как оно хранится в YAML и в БД."
+      },
+      "RuleDetailOut": {
+        "properties": {
+          "rule": {
+            "$ref": "#/components/schemas/RuleOut"
+          },
+          "revisions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleRevisionOut"
+            },
+            "type": "array",
+            "title": "Revisions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rule",
+          "revisions"
+        ],
+        "title": "RuleDetailOut"
+      },
+      "RuleKind": {
+        "type": "string",
+        "enum": [
+          "inference",
+          "filter",
+          "compat",
+          "score",
+          "validate",
+          "goal"
+        ],
+        "title": "RuleKind",
+        "description": "Вид правила: на каком этапе и как оно применяется."
+      },
+      "RuleOrigin": {
+        "type": "string",
+        "enum": [
+          "manual",
+          "generated"
+        ],
+        "title": "RuleOrigin",
+        "description": "Происхождение правила."
+      },
+      "RuleOut": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/RuleKind"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority"
+          },
+          "cf": {
+            "type": "number",
+            "title": "Cf"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/RuleOrigin"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "explain": {
+            "type": "string",
+            "title": "Explain"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "updated_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated By"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Body"
+          },
+          "warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warning"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "kind",
+          "group",
+          "name",
+          "priority",
+          "cf",
+          "enabled",
+          "origin",
+          "source",
+          "explain",
+          "revision",
+          "updated_by",
+          "updated_at",
+          "body"
+        ],
+        "title": "RuleOut",
+        "description": "Правило рабочей копии; `body` — правило целиком по схеме DSL (для редактора)."
+      },
+      "RulePage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RuleOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "RulePage"
+      },
+      "RuleRevisionOut": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "body": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Body"
+          },
+          "change_type": {
+            "type": "string",
+            "title": "Change Type"
+          },
+          "author_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Author Id"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "revision",
+          "body",
+          "change_type",
+          "author_id",
+          "created_at"
+        ],
+        "title": "RuleRevisionOut"
+      },
+      "RuleTestActionOut": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "fact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fact"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "weight": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weight"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "RuleTestActionOut"
+      },
+      "RuleTestFactOut": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "cf": {
+            "type": "number",
+            "title": "Cf"
+          }
+        },
+        "type": "object",
+        "required": [
+          "path",
+          "value",
+          "cf"
+        ],
+        "title": "RuleTestFactOut"
+      },
+      "RuleTestIn": {
+        "properties": {
+          "facts": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Facts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "facts"
+        ],
+        "title": "RuleTestIn",
+        "description": "Входные факты изолированного прогона: `{path: value}` или `{path: {value, cf}}`."
+      },
+      "RuleTestOut": {
+        "properties": {
+          "matched": {
+            "type": "boolean",
+            "title": "Matched"
+          },
+          "premise_cf": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Premise Cf"
+          },
+          "actions": {
+            "items": {
+              "$ref": "#/components/schemas/RuleTestActionOut"
+            },
+            "type": "array",
+            "title": "Actions"
+          },
+          "facts_after": {
+            "items": {
+              "$ref": "#/components/schemas/RuleTestFactOut"
+            },
+            "type": "array",
+            "title": "Facts After"
+          },
+          "failures": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Failures"
+          }
+        },
+        "type": "object",
+        "required": [
+          "matched",
+          "premise_cf",
+          "actions",
+          "facts_after",
+          "failures"
+        ],
+        "title": "RuleTestOut"
+      },
+      "SSD": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "const": "ssd",
+            "title": "Категория",
+            "default": "ssd"
+          },
+          "sku": {
+            "type": "string",
+            "pattern": "^[A-Z0-9][A-Z0-9\\-]{2,63}$",
+            "title": "Артикул"
+          },
+          "brand": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Бренд"
+          },
+          "model": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Модель"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Название"
+          },
+          "price_kop": {
+            "type": "integer",
+            "maximum": 10000000000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Цена",
+            "unit": "коп."
+          },
+          "in_stock": {
+            "type": "boolean",
+            "title": "В наличии",
+            "default": true
+          },
+          "release_year": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2035.0,
+                "minimum": 2010.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Год выпуска"
+          },
+          "color": {
+            "$ref": "#/components/schemas/Color",
+            "title": "Цвет",
+            "default": "black"
+          },
+          "rgb": {
+            "type": "boolean",
+            "title": "RGB-подсветка",
+            "default": false
+          },
+          "capacity_gb": {
+            "type": "integer",
+            "maximum": 32000.0,
+            "minimum": 120.0,
+            "title": "Объём",
+            "unit": "ГБ"
+          },
+          "interface": {
+            "$ref": "#/components/schemas/SsdInterface",
+            "title": "Интерфейс"
+          },
+          "form_factor": {
+            "$ref": "#/components/schemas/SsdFormFactor",
+            "title": "Форм-фактор"
+          },
+          "read_mbs": {
+            "type": "integer",
+            "maximum": 16000.0,
+            "minimum": 100.0,
+            "title": "Скорость чтения",
+            "unit": "МБ/с"
+          },
+          "write_mbs": {
+            "type": "integer",
+            "maximum": 16000.0,
+            "minimum": 100.0,
+            "title": "Скорость записи",
+            "unit": "МБ/с"
+          },
+          "tbw": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ресурс записи",
+            "unit": "ТБ"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku",
+          "brand",
+          "model",
+          "name",
+          "price_kop",
+          "capacity_gb",
+          "interface",
+          "form_factor",
+          "read_mbs",
+          "write_mbs"
+        ],
+        "title": "SSD",
+        "description": "Фрейм «SSD»."
+      },
+      "SavedBuildOut": {
+        "properties": {
+          "consultation_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Consultation Id"
+          },
+          "build": {
+            "$ref": "#/components/schemas/BuildSummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "consultation_id",
+          "build"
+        ],
+        "title": "SavedBuildOut",
+        "description": "Сохранённая сборка в личном кабинете."
+      },
+      "Scalar": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "SnapshotOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "checksum": {
+            "type": "string",
+            "title": "Checksum"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          },
+          "published_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published By"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Published At"
+          },
+          "rules": {
+            "type": "integer",
+            "title": "Rules"
+          },
+          "warnings": {
+            "type": "integer",
+            "title": "Warnings"
+          },
+          "golden": {
+            "type": "integer",
+            "title": "Golden"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "version",
+          "checksum",
+          "comment",
+          "published_by",
+          "published_at",
+          "rules",
+          "warnings",
+          "golden"
+        ],
+        "title": "SnapshotOut"
+      },
+      "SsdFormFactor": {
+        "type": "string",
+        "enum": [
+          "m2_2280",
+          "2.5"
+        ],
+        "title": "SsdFormFactor",
+        "description": "Форм-фактор SSD."
+      },
+      "SsdInterface": {
+        "type": "string",
+        "enum": [
+          "sata",
+          "nvme_pcie3",
+          "nvme_pcie4",
+          "nvme_pcie5"
+        ],
+        "title": "SsdInterface",
+        "description": "Интерфейс SSD."
       },
       "StepOut": {
         "properties": {
@@ -3052,6 +7724,42 @@
         "title": "StepOut",
         "description": "Шаг визарда."
       },
+      "SuggestAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "suggest",
+            "title": "Action"
+          },
+          "category": {
+            "type": "string",
+            "pattern": "^[a-z_]+$",
+            "title": "Category"
+          },
+          "target": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Target"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "category",
+          "target",
+          "message"
+        ],
+        "title": "SuggestAction",
+        "description": "Предложить правку: заменить компонент категории на более подходящий класс (validate)."
+      },
       "Tier": {
         "type": "string",
         "enum": [
@@ -3061,6 +7769,213 @@
         ],
         "title": "Tier",
         "description": "Вариант сборки."
+      },
+      "TokenOut": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "const": "bearer",
+            "title": "Token Type",
+            "default": "bearer"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In",
+            "description": "срок жизни access-токена, секунды"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "access_token",
+          "expires_in",
+          "user"
+        ],
+        "title": "TokenOut",
+        "description": "Успешный вход или регистрация: access-токен и профиль.\n\nRefresh-токен приходит отдельной HttpOnly-cookie, в теле его нет."
+      },
+      "UserAdminOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "role",
+          "is_active",
+          "created_at"
+        ],
+        "title": "UserAdminOut"
+      },
+      "UserAdminPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/UserAdminOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ],
+        "title": "UserAdminPage"
+      },
+      "UserOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "role": {
+            "$ref": "#/components/schemas/UserRole"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "email",
+          "role",
+          "created_at"
+        ],
+        "title": "UserOut",
+        "description": "Публичные данные пользователя."
+      },
+      "UserPatchIn": {
+        "properties": {
+          "role": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/UserRole"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          }
+        },
+        "type": "object",
+        "title": "UserPatchIn"
+      },
+      "UserRole": {
+        "type": "string",
+        "enum": [
+          "client",
+          "catalog_admin",
+          "knowledge_engineer",
+          "superadmin"
+        ],
+        "title": "UserRole",
+        "description": "Роль пользователя. Расширяет права: от клиента до суперадмина."
+      },
+      "ValidateReportOut": {
+        "properties": {
+          "rules_total": {
+            "type": "integer",
+            "title": "Rules Total"
+          },
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Errors"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "golden": {
+            "$ref": "#/components/schemas/GoldenReportOut"
+          },
+          "checksum": {
+            "type": "string",
+            "title": "Checksum"
+          },
+          "matches_latest": {
+            "type": "boolean",
+            "title": "Matches Latest"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rules_total",
+          "errors",
+          "warnings",
+          "golden",
+          "checksum",
+          "matches_latest"
+        ],
+        "title": "ValidateReportOut",
+        "description": "Отчёт stateless-валидации черновика (ADR 0010 п.3); ничего не записывает."
       },
       "ValidationError": {
         "properties": {
@@ -3102,6 +8017,51 @@
         ],
         "title": "ValidationError"
       },
+      "VocabularyOut": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "title": "Path"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "values": {
+            "items": {},
+            "type": "array",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "path",
+          "type",
+          "role",
+          "title",
+          "values"
+        ],
+        "title": "VocabularyOut",
+        "description": "Факт словаря для конструктора условий: путь, тип, роль, название, допустимые значения."
+      },
+      "VrmTier": {
+        "type": "string",
+        "enum": [
+          "basic",
+          "mid",
+          "high"
+        ],
+        "title": "VrmTier",
+        "description": "Класс подсистемы питания материнской платы."
+      },
       "WaivedOut": {
         "properties": {
           "fact": {
@@ -3120,6 +8080,29 @@
         ],
         "title": "WaivedOut",
         "description": "Требование, от которого клиент отказался."
+      },
+      "WarnAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "const": "warn",
+            "title": "Action"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "message"
+        ],
+        "title": "WarnAction",
+        "description": "Предупреждение по готовой сборке (validate)."
       },
       "WhyNotOut": {
         "properties": {

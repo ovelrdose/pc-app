@@ -148,10 +148,10 @@ api (роутеры)  →  services  →  repositories  →  models (ORM)
 - Пароли хэшируются **argon2id**.
 - Access JWT живёт 15 минут и передаётся в заголовке `Authorization`. Refresh-токен лежит в httpOnly + SameSite=Strict cookie, в БД хранится его хэш; при каждом обновлении токен ротируется, а повторное использование старого отзывает всю цепочку.
 - Гость получает `guest_session` с непрозрачным токеном в httpOnly cookie. При входе в аккаунт гостевые сборки переносятся в аккаунт.
-- RBAC: `customer`, `catalog_admin`, `knowledge_engineer`, `superadmin`. Проверка прав идёт через зависимость `require_role(...)`.
+- RBAC: `customer`, `catalog_admin`, `knowledge_engineer`, `superadmin`. Проверка прав идёт через зависимость `require_roles(...)`; роль берётся из `OwnerContext.user.role` ([ADR 0009](adr/0009-auth-tokens-guest-sessions.md)). Матрица доступа к админ-эндпоинтам — §10, детали и правила смены ролей — [ADR 0010](adr/0010-admin-panel.md) п.9.
 - Rate limit на `/auth/*`. CORS открыт только для origin фронтенда.
 - Выражения в правилах исполняются **только собственным интерпретатором** по белому списку AST-узлов, без `eval`.
-- Импорт CSV/XLSX: ограничение размера, строгая валидация каждой строки, режим dry-run с отчётом.
+- Импорт CSV (XLSX — отложен, [ADR 0010](adr/0010-admin-panel.md)): ограничение размера (2 МБ), строгая валидация каждой строки, режим dry-run с отчётом, журнал `catalog_imports`.
 
 ---
 
@@ -374,10 +374,11 @@ stateDiagram-v2
     Published --> Exported: GET /admin/kb/export → YAML
 ```
 
-- Рабочая копия правил лежит в таблице `rules`, каждая правка пишется в `rule_revisions` (автор, время, diff).
-- **Импорт** из `knowledge/` (seed): новые правила получают ревизию 1, изменённые — новую ревизию и запись истории. Правила из реестра выведенных `knowledge/rules/retired.yaml` (код, дата, причина) выключаются (`enabled = false`, новая ревизия, запись истории `retire`) и в новые снимки не попадают; их коды в файлах правил — ошибка проверки (коды не переиспользуются). Остальные правила, которых нет в файлах (созданные в админке), не трогаются.
-- **Публикация** создаёт неизменяемый `kb_snapshots` (если содержимое совпадает с последним снимком, новый не создаётся; статусы каталога пересчитываются по справочникам снимка): полный JSON включённых правил и справочников, контрольную сумму и отчёт валидации. Ядро работает только с опубликованными снимками.
-- **Откат** — повторная публикация одного из старых снимков.
+- Рабочая копия правил лежит в таблице `rules`, каждая правка пишется в `rule_revisions` (автор, время, diff). Значения `change_type`: `seed`, `import` (из файлов), `create`, `update`, `retire`, `regenerate` ([ADR 0010](adr/0010-admin-panel.md) п.5, п.7).
+- **Импорт** из `knowledge/` (seed): новые правила получают ревизию 1, изменённые — новую ревизию и запись истории. Правила из реестра выведенных `knowledge/rules/retired.yaml` (код, дата, причина) выключаются (`enabled = false`, новая ревизия, запись истории `retire`) и в новые снимки не попадают; их коды в файлах правил — ошибка проверки (коды не переиспользуются). Остальные правила, которых нет в файлах (созданные в админке), не трогаются. Seed заодно заливает golden cases в `reference_tables['golden']`.
+- **Валидация черновика** (`POST /admin/kb/validate`) — stateless-прогон: компиляция черновика, статические проверки §6.2, golden cases на текущем каталоге; отчёт возвращается, ничего не записывается. Хранимого состояния `Validated` нет. Прогон выполняется в worker-потоке (`asyncio.to_thread`) и не блокирует event loop: перед ним фаза чтения фиксируется (`session.commit`), соединение с БД возвращается в пул и остаётся свободным всё время вычислений.
+- **Публикация** повторяет те же проверки и при любой ошибке блокируется (`KnowledgeValidationError`, 409 `kb-invalid`) — публикуется только чистый черновик. Проверки — в worker-потоке по той же схеме (чтение → commit → прогон), запись снимка и пересчёт статусов идут новой транзакцией после прогона, завершающий commit — у вызывающей стороны (зависимость запроса, seed). Снимок `kb_snapshots` неизменяем (если содержимое совпадает с последним снимком, новый не создаётся; статусы каталога пересчитываются по справочникам снимка): полный JSON включённых правил и справочников, контрольная сумма и отчёт валидации. Ядро работает только с опубликованными снимками.
+- **Откат** — `POST /admin/kb/snapshots/{id}/republish`: создаётся новая версия с содержимым выбранного снимка (checksum совпадает со старым — это нормально), черновик `rules` при этом не меняется.
 - Каждая сборка хранит `snapshot_id`, поэтому результат воспроизводим.
 
 ### 6.2 Статические проверки (блокируют публикацию)
@@ -415,7 +416,7 @@ stateDiagram-v2
       build.cpu.perf_single: { ge: 110 }
 ```
 
-Цель — 30+ кейсов, покрывающих все сценарии и граничные бюджеты. Кейсы прогоняются в pytest и перед каждой публикацией.
+Цель — 30+ кейсов, покрывающих все сценарии и граничные бюджеты. Кейсы прогоняются в pytest и перед каждой публикацией. Рабочая копия кейсов — в БД (`reference_tables` под именем `golden`): seed импортирует `knowledge/golden/*.yaml`, публикация и validate читают из БД (не с диска), экспорт выгружает обратно в `golden/cases.yaml`. В `kb_snapshots` кейсы не входят — на вывод они не влияют ([ADR 0010](adr/0010-admin-panel.md) п.2).
 
 Реализованные ожидания: `feasible`, `min_budget_rub {ge, le}` (для невыполнимых), `facts`, `fired`, `not_fired`, `rejected` (артикул → правило), `trace_rules`, а для `all_tiers` / `economy` / `optimum` / `maximum` — `max_total_rub`, `build` (путь → значение или `{ge, le, gt, lt, eq, ne, in, contains}`), `absent`, `issues`, `preferences`. На этапе 4 — 16 кейсов; каждая группа правил, кроме целей обратного вывода, покрыта хотя бы одним.
 
@@ -424,7 +425,7 @@ stateDiagram-v2
 Генератор — чистая функция `справочники → список правил` в `app/expert/generation/`. Работает детерминированно и с сортировкой, чтобы diff оставался читаемым. Каждое правило получает `origin: generated` и `source: <таблица>#<ключ>`.
 
 Генератор вызывается из двух мест:
-- **на сервере из админки** (основной режим): после правки справочника инженер знаний нажимает «Перегенерировать». Сначала показывается предпросмотр («+3 правила, ~1 изменено, −0 удалено»), а после подтверждения изменения попадают в **черновик** и дальше идут обычным путём проверки и публикации;
+- **на сервере из админки** (основной режим, [ADR 0010](adr/0010-admin-panel.md) п.5): `POST /admin/reference/regenerate?dry_run=` читает справочники из `reference_tables`, считает diff с правилами `origin: generated` (created / updated / removed) и при `dry_run=false` применяет его в черновик: новые — ревизия 1, изменённые — новая ревизия, выбывшие — `enabled = false`; всё с `change_type: regenerate`/`retire`. Предпросмотр («+3, ~1, −0») — `dry_run=true`. Правила-override (`origin: manual` с `source` из справочников) не трогаются и перечисляются в отчёте;
 - **из консоли** `scripts/generate_rules.py` при первичном наполнении: справочники читаются из `knowledge/tables/*.yaml`, результат пишется в `knowledge/rules/generated/*.yaml`.
 
 Главная копия справочников лежит в БД (как и у правил), а экспорт выгружает их обратно в YAML.
@@ -587,10 +588,10 @@ erDiagram
 | `refresh_tokens` | id, user_id, token_hash, expires_at, revoked_at, replaced_by_id |
 | `guest_sessions` | id, token_hash, created_at, last_seen_at, merged_user_id |
 | `components` | id uuid, sku unique, category enum, brand, model, name, price_kop bigint, price_checked_at date, price_note, in_stock, specs jsonb, perf jsonb, source enum(manual/import), status enum(active/incomplete/needs_kb/inactive), status_issues jsonb, timestamps. Индексы: (category, status, price_kop), GIN(specs). Статусы — §17 |
-| `catalog_imports` | id, filename, status, dry_run, report jsonb, created_by, created_at |
+| `catalog_imports` | id uuid, filename, status enum(`completed`, `failed`), dry_run bool, report jsonb (created/updated/unchanged, отклонённые строки с номерами, предупреждения, статусы, ревизия каталога), created_by uuid→users, created_at. Журнал каждого импорта из админки, включая dry-run ([ADR 0010](adr/0010-admin-panel.md) п.1) |
 | `rules` | code pk, kind, group, name, priority, cf, enabled, origin, source, body jsonb, explain, revision, updated_by, updated_at |
 | `rule_revisions` | id, rule_code, revision, body jsonb, change_type, author_id, created_at |
-| `reference_tables` | name pk (`sockets`, `chipsets`, `form_factors`, `games`, `applications`, `questionnaire`), data jsonb, updated_at — рабочая копия справочников и анкеты ([ADR 0006](adr/0006-client-api.md)) |
+| `reference_tables` | name pk (`sockets`, `chipsets`, `form_factors`, `games`, `applications`, `questionnaire`, `golden`), data jsonb, updated_at — рабочая копия справочников, анкеты и golden cases ([ADR 0006](adr/0006-client-api.md), [ADR 0010](adr/0010-admin-panel.md) п.2) |
 | `kb_snapshots` | id, version (уникальна), rules jsonb, tables jsonb, questionnaire jsonb, checksum (SHA-256 содержимого), validation_report jsonb, comment, published_by, published_at |
 | `consultations` | id, user_id?, guest_session_id? (внешние ключи — этап 8), answers jsonb, owned jsonb (артикулы имеющихся деталей), waived jsonb (снятые требования компромиссной сборки, `WAIVABLE`), derived_facts jsonb, status (`created` / `completed` / `infeasible`), snapshot_id, catalog_revision, created_at |
 | `builds` | id, consultation_id, parent_build_id?, tier, snapshot_id, catalog_revision, total_price_kop, utility, performance jsonb, trace jsonb, warnings jsonb (замечания и баллы), constraints jsonb (имеющиеся, зафиксированные, исключённые детали, доли), title, is_saved, created_at |
@@ -627,16 +628,20 @@ erDiagram
 | `GET /me/builds` | аккаунт | история (этап 8) |
 | `GET /components`, `GET /components/{id}` | все | публичный каталог: фильтры `category`, `brand`, `q`, `in_stock`, `min/max_price_kop`; снятые с продажи (`inactive`) не показываются |
 | `GET /frames` | все | схемы фреймов (для форм админки и валидации) |
-| `/admin/components` CRUD, `POST /admin/catalog/import?dry_run=`, `GET /admin/catalog/export` | catalog_admin | каталог |
-| `/admin/rules` CRUD, `POST /admin/rules/{code}/test` | knowledge_engineer | правила, тест правила на образце |
-| `/admin/reference/{games,apps,tables}` CRUD | knowledge_engineer | справочники |
-| `POST /admin/reference/regenerate?dry_run=` | knowledge_engineer | перегенерация табличных правил в черновик (сначала предпросмотр) |
+| `GET/POST /admin/components`, `GET/PUT /admin/components/{id}`, `PATCH /admin/components/{id}` (служебные поля: `in_stock`, `status`) | catalog_admin (+superadmin) | каталог: тело — JSON фрейма категории (§5.1), статус пересчитывается `compute_status` по справочникам последнего снимка, `source=manual` |
+| `POST /admin/catalog/import?category=&dry_run=`, `GET /admin/catalog/export` | catalog_admin | импорт CSV (multipart, ≤2 МБ, категория в query, отчёт как в §17, каждый вызов пишется в `catalog_imports`); экспорт — zip с `<category>.csv` в формате §12 |
 | `GET /admin/catalog/issues` | catalog_admin, knowledge_engineer | детали со статусами `incomplete` / `needs_kb` и причинами |
-| `POST /admin/kb/validate`, `POST /admin/kb/publish`, `GET /admin/kb/snapshots`, `POST /admin/kb/snapshots/{id}/republish`, `GET /admin/kb/export` | knowledge_engineer | жизненный цикл БЗ |
-| `/admin/users` (список, смена роли, блокировка) | superadmin | управление пользователями |
+| `GET/POST /admin/rules`, `GET/PUT /admin/rules/{code}`, `POST /admin/rules/{code}/retire`, `POST /admin/rules/{code}/test` | knowledge_engineer | правила. Тест — изолированный прямой вывод на заданных фактах `{facts: {path: value}}`, ответ `{matched, premise_cf, actions, facts_after, failures}`; `kind: goal` не поддерживается (422) — [ADR 0010](adr/0010-admin-panel.md) п.4, п.7 |
+| `GET /admin/kb/vocabulary` | knowledge_engineer | словарь фактов (пути, типы, допустимые значения) для конструктора условий |
+| `GET /admin/reference`, `GET/PUT /admin/reference/{name}` | knowledge_engineer | справочники, анкета, golden: чтение и замена целиком с валидацией Pydantic-схемами ядра |
+| `POST /admin/reference/regenerate?dry_run=` | knowledge_engineer | перегенерация табличных правил в черновик (сначала предпросмотр) |
+| `GET /admin/kb/status` | knowledge_engineer | лёгкий статус черновика: контрольная сумма, совпадение с последним снимком, число правил; без компиляции и golden cases |
+| `POST /admin/kb/validate` | knowledge_engineer | stateless-прогон §6.2 + golden: отчёт без записи |
+| `POST /admin/kb/publish`, `GET /admin/kb/snapshots`, `POST /admin/kb/snapshots/{id}/republish`, `GET /admin/kb/export` | knowledge_engineer | публикация блокируется при ошибке (409 `kb-invalid`); экспорт — zip с деревом как в `knowledge/` (round-trip, [ADR 0010](adr/0010-admin-panel.md) п.6) |
+| `GET /admin/users`, `PATCH /admin/users/{id}` (роль, `is_active`) | superadmin | управление пользователями: нельзя трогать себя и последнего активного superadmin (409); блокировка отзывает refresh-токены |
 | `GET /healthz`, `GET /readyz` | все | проверки живости: процесс жив / БД доступна (как и всё API, под префиксом `/api/v1`) |
 
-До этапа 8 проверки «владелец» нет: эндпоинты консультаций и сборок открыты ([ADR 0006](adr/0006-client-api.md)).
+Проверка «владелец» действует с этапа 8: запрос без access-токена и гостевой сессии — 401, чужая консультация или сборка — 404 ([ADR 0009](adr/0009-auth-tokens-guest-sessions.md)).
 
 Аккаунт: только вход и выход, без писем (нет подтверждения email и сброса пароля). Первый суперадмин создаётся командой `uv run python -m scripts.create_superadmin`.
 
@@ -665,12 +670,14 @@ PDF генерируется на сервере через **WeasyPrint** из 
    - блок «Потянет ли?» (игра + настройки → дерево доказательства);
    - экспорт в PDF.
 5. **Личный кабинет**: сохранённые сборки, история правок.
-6. **Админка каталога**: таблица с фильтрами, форма компонента (генерируется из `GET /frames`), импорт CSV/XLSX с отчётом dry-run.
-7. **Админка базы знаний**:
+6. **Админка каталога** (маршруты `/admin/catalog*`, guard по роли, [ADR 0010](adr/0010-admin-panel.md) п.10): таблица с фильтрами (категория, бренд, статус, «цена не проверялась > 30 дней»), форма компонента (генерируется из `GET /frames`), страница «Требуют внимания» (`/admin/catalog/issues`), импорт CSV с отчётом dry-run, экспорт в CSV-zip.
+7. **Админка базы знаний** (`/admin/kb*`, superadmin дополнительно `/admin/users`):
    - список правил с фильтрами по группе, kind, origin и статусу;
-   - редактор правила: визуальный конструктор условий (группы all/any/not) и режим YAML (Monaco);
-   - тест правила;
-   - отчёт валидации, golden cases, публикация, история снимков и откат, справочники игр и приложений.
+   - редактор правила: визуальный конструктор условий (группы all/any/not; листья — факт из `GET /admin/kb/vocabulary` + оператор + значение, или `expr`) и режим YAML (Monaco);
+   - тест правила на заданных фактах;
+   - панель валидации (stateless-отчёт), публикация с комментарием (ошибки показываются из problem+json), история снимков и откат;
+   - справочники: YAML-режим (Monaco + серверная валидация схемой) и «Перегенерировать» с diff-предпросмотром;
+   - `/admin` редиректит на первый доступный раздел по роли из `/auth/me`.
 
 **Реализация клиентской части (этап 7).** Страницы 1–4 и сравнение сделаны так:
 - маршруты: `/` → `/wizard` (`?from=<consultation_id>` — «Изменить ответы» с подстановкой прошлых ответов и имеющихся деталей) → `/consultations/:id` (варианты или разбор невыполнимого запроса) → `/builds/:id` (вкладки «Состав», «Производительность», «Почему так», «Потянет ли?») и `/compare?ids=a,b[,c]`;
@@ -680,6 +687,13 @@ PDF генерируется на сервере через **WeasyPrint** из 
 - «Подобрать с этим» в разборе невыполнимого запроса создаёт новую консультацию с ответами `{...прежние, ...ослабление}` и бюджетом не ниже минимального для ослабления (округление вверх до 1000 ₽); имеющиеся детали переносятся (`ConsultationOut.owned`);
 - сравнение показывает состав, цену, FPS по выбранному пресету и загрузку видеокарты; бенчмарков в `CompareOut` нет — они на странице сборки;
 - PDF — прямая ссылка `GET /builds/{id}/pdf` (Vite проксирует `/api` на backend).
+
+**Аккаунты и кабинет (этап 8).** Реализованы по [ADR 0009](adr/0009-auth-tokens-guest-sessions.md):
+- токены: access (JWT, 15 мин) в памяти вкладки и заголовке `Authorization`, refresh — HttpOnly-cookie; middleware клиента на 401 обновляет токен и повторяет запрос один раз;
+- гостевая сессия запрашивается при старте приложения (`POST /sessions/guest`), вход и регистрация — страницы `/login` и `/register`, меню пользователя — в шапке;
+- после входа гостевые консультации переносятся на аккаунт автоматически; личный кабинет `/cabinet` показывает сохранённые сборки (`GET /me/builds`).
+
+**Админка (этап 9, [ADR 0010](adr/0010-admin-panel.md)).** Зависимости `@monaco-editor/react` и `monaco-editor` (загрузка редактора из node_modules, без CDN). Доступ к маршрутам `/admin*` — через guard-компонент, читающий роль из `useMe` (`GET /auth/me`); в шапке (`UserMenu`) пункт «Админка» виден ролям не `client`. Админ-фичи лежат в `src/features/admin-catalog`, `admin-kb`, `admin-users` с общим `admin/AdminLayout`.
 
 **Технические принципы:**
 - Серверное состояние живёт только в TanStack Query; локальное UI-состояние — в `useState`/`useReducer`. Отдельный стейт-менеджер не нужен.
@@ -695,7 +709,7 @@ PDF генерируется на сервере через **WeasyPrint** из 
 - В CSV есть колонки `price_rub` (целое, обязательное), `price_checked_at` (дата проверки) и `price_note` (откуда взята цена: «сверено с рынком РФ», «ориентир»).
 - Цены проставляет Claude: медиана предложений магазинов Москвы на price.ru (видеокарты — palert.ru); с 2026-10-29 так сверены все категории, позиции, добавленные 2026-10-30, включая видеокарты, — по price.ru. Правила медианы (без Ti-store, «последняя цена» при отсутствии предложений, когда цена остаётся оценкой) описаны в `knowledge/catalog/README.md`; источник каждой цены — в `price_note`.
 - При импорте `price_rub` переводится в `price_kop`. Строка без цены отклоняется с ошибкой в отчёте.
-- Дальше цены обновляет администратор каталога (UI или импорт CSV/XLSX). В админке есть фильтр «цена не проверялась > 30 дней».
+- Дальше цены обновляет администратор каталога (UI или импорт CSV). В админке есть фильтр «цена не проверялась > 30 дней».
 
 ```
 knowledge/catalog/<category>.csv  →  scripts/seed.py  →  PostgreSQL
@@ -734,8 +748,8 @@ knowledge/catalog/<category>.csv  →  scripts/seed.py  →  PostgreSQL
 | 5 | Производительность + обратный вывод | Модель FPS и бенчмарков, гипотезы, «почему не», невыполнимые требования | Golden cases по FPS проходят |
 | 6 | API клиента | Таблицы правил и снимков БЗ, первая публикация из `knowledge/`; консультации, сборки, объяснения, сравнение, PDF | Интеграционные тесты |
 | 7 | Frontend клиента | Визард, результаты, сборка, сравнение, гипотезы | Сквозной сценарий работает вручную |
-| 8 | Auth | Регистрация, JWT, гостевые сессии, перенос сборок, RBAC | Тесты безопасности токенов |
-| 9 | Админка | Каталог + импорт, редактор правил, публикация, снимки, экспорт | Публикация блокируется при ошибке валидации |
+| 8 | Auth | Регистрация, JWT, гостевые сессии, перенос сборок, RBAC | Тесты безопасности токенов | ✅ 2026-11-03 ([ADR 0009](adr/0009-auth-tokens-guest-sessions.md)) |
+| 9 | Админка | Каталог + импорт, редактор правил, публикация, снимки, экспорт | Публикация блокируется при ошибке валидации | ✅ 2026-11-05 ([ADR 0010](adr/0010-admin-panel.md)) |
 | 10 | Верификация | 30+ golden cases, разбор «слепых зон», документация для записки | Все проверки зелёные |
 
 ---
@@ -759,9 +773,9 @@ PlantUML-исходники рендерятся в SVG/PNG локально (Ja
 
 | Что меняется | Кто | Как | Когда вступает в силу |
 |---|---|---|---|
-| Компоненты, цены, наличие | catalog_admin | форма (строится из фрейма) или импорт CSV/XLSX с dry-run | сразу: растёт `catalog_revision`, снимок каталога перечитывается при следующем подборе |
-| Правила | knowledge_engineer | визуальный редактор / YAML → черновик | после валидации и публикации снимка |
-| Справочники (игры, сокеты, чипсеты…) | knowledge_engineer | CRUD в админке → «Перегенерировать» → черновик | после валидации и публикации снимка |
+| Компоненты, цены, наличие | catalog_admin | форма (строится из фрейма) или импорт CSV с dry-run (XLSX отложен, [ADR 0010](adr/0010-admin-panel.md) п. «Альтернативы») | сразу: растёт `catalog_revision`, снимок каталога перечитывается при следующем подборе |
+| Правила | knowledge_engineer | визуальный редактор / YAML → черновик; stateless-валидация черновика (`POST /admin/kb/validate`, отчёт не сохраняется) | после валидации и публикации снимка |
+| Справочники (игры, сокеты, чипсеты…) | knowledge_engineer | замена целиком в админке → «Перегенерировать» → черновик | после валидации и публикации снимка |
 | Структура (слоты, категории) | разработчик | код фрейма + миграция Alembic | после обновления приложения |
 
 ## 17. Статусы компонентов

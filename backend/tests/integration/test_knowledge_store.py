@@ -1,5 +1,9 @@
 """База знаний в БД: импорт, ревизии, публикация, проверки, кэш снимков."""
 
+import asyncio
+from collections.abc import Callable
+from typing import Any
+
 import httpx
 import pytest
 from fastapi import FastAPI
@@ -8,6 +12,7 @@ from sqlalchemy import func, select
 from app.core.db import Database
 from app.models import RuleRevisionRow, RuleRow
 from app.repositories.meta import MetaRepository
+from app.services import knowledge_store
 from app.services.catalog_csv import read_catalog_dir
 from app.services.knowledge_files import load_golden, load_tables
 from app.services.knowledge_store import KnowledgeValidationError, import_files, publish
@@ -107,6 +112,32 @@ async def test_publish_creates_snapshot_once(database: Database) -> None:
     assert (first.created, first.version) == (True, 1)
     assert first.rules >= 500
     assert (second.created, second.snapshot_id) == (False, first.snapshot_id)
+
+
+async def test_checks_run_in_thread_with_connection_released(
+    database: Database, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """validate/publish гоняют проверки в worker-потоке; к его старту соединение уже в пуле."""
+    await seed_catalog_only(database)
+    async with database.session_factory() as session:
+        await import_files(session, KNOWLEDGE_DIR)
+        await publish(session, golden=[], catalog=None)  # эталоны не нужны: тест про потоки
+        await session.commit()
+    observed: list[bool] = []
+    real_to_thread = asyncio.to_thread
+
+    async def spy_to_thread(func: Callable[..., Any], *args: Any, **kwargs: Any) -> Any:
+        observed.append(session.in_transaction())
+        return await real_to_thread(func, *args, **kwargs)
+
+    monkeypatch.setattr(knowledge_store, "to_thread", spy_to_thread)
+    async with database.session_factory() as session:
+        report = await knowledge_store.validate_draft(session)
+        assert report.errors == ()
+        assert observed == [False]  # транзакция чтения закрыта до старта прогона
+        published = await knowledge_store.publish(session, golden=[], catalog=None)
+        assert published.created is False  # черновик совпадает с опубликованным снимком
+        assert observed == [False, False]
 
 
 async def test_publish_blocked_by_validation_errors(database: Database) -> None:

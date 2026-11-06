@@ -1,6 +1,6 @@
 """Словарь фактов и анкета визарда."""
 
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 import pytest
 from pydantic import ValidationError
@@ -54,6 +54,7 @@ def test_vocabulary_lookups() -> None:
         (Category, FactType.STR),
         (int | None, FactType.NUMBER),
         (str, FactType.STR),
+        (Annotated[int, "метаданные"], FactType.NUMBER),
     ],
 )
 def test_annotation_type(annotation: Any, kind: FactType) -> None:

@@ -96,7 +96,8 @@ async def truncate_all(database: Database) -> None:
     async with database.engine.begin() as conn:
         await conn.execute(
             text(
-                "TRUNCATE build_items, builds, consultations, rule_revisions, rules, "
+                "TRUNCATE build_items, builds, consultations, refresh_tokens, guest_sessions, "
+                "users, catalog_imports, rule_revisions, rules, "
                 "reference_tables, kb_snapshots, components, meta RESTART IDENTITY CASCADE"
             )
         )

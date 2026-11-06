@@ -6,8 +6,10 @@ from app.expert.catalog import CatalogSnapshot
 from app.expert.configurator.pipeline import Tier
 from app.expert.configurator.plan import Constraints
 from app.expert.consultation import Consultation, consult, performance_model
+from app.expert.dsl.compiler import CompiledRuleSet
 from app.expert.explanation.infeasible import explain_infeasible
 from app.expert.explanation.why_not import WhyNot, WhyNotVerdict, why_not
+from app.expert.facts import WorkingMemory
 from app.expert.knowledge import KnowledgeSnapshot
 
 WALKTHROUGH = {
@@ -178,3 +180,38 @@ def test_compromise_returns_unneeded_concessions(
     assert not any("подсветк" in t for t in titles)
     assert titles[0].startswith("SSD")
     assert report.compromise.build.build.price_kop <= 100000 * 100
+
+
+def test_explain_infeasible_memoizes_cheapest_search(
+    knowledge: KnowledgeSnapshot,
+    real_catalog: CatalogSnapshot,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Подбор цены для той же рабочей памяти не пересчитывается внутри одного разбора."""
+    import app.expert.explanation.infeasible as infeasible_module
+    from app.expert.configurator import pipeline
+
+    keys: list[tuple[tuple[str, object, float], ...]] = []
+    original = pipeline.cheapest_price_kop
+
+    def counted(
+        memory: WorkingMemory,
+        rules: CompiledRuleSet,
+        catalog: CatalogSnapshot,
+        constraints: Constraints | None = None,
+    ) -> int | None:
+        keys.append(tuple((fact.path, fact.value, fact.cf) for fact in memory))
+        return original(memory, rules, catalog, constraints)
+
+    monkeypatch.setattr(infeasible_module, "cheapest_price_kop", counted)
+    answers = {
+        "tasks": {"main": "aaa_gaming"},
+        "budget": 100000,
+        "monitor": "qhd_144",
+        "storage_gb": 2000,
+        "rgb": "yes",
+    }
+    report = infeasible_module.explain_infeasible(knowledge, real_catalog, answers)
+    assert report.compromise is not None  # разбор реальный, с лестницей уступок
+    assert keys, "разбор должен посчитать хотя бы один подбор"
+    assert len(keys) == len(set(keys)), "одна и та же память подобрана дважды"

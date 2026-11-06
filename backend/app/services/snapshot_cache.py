@@ -77,6 +77,11 @@ class SnapshotCache:
             self._knowledge.move_to_end(snapshot_id)
             return snapshot_id, cached
         async with self._lock:
+            # повторная проверка под локом: пока ждали, снимок мог собрать другой запрос
+            cached = self._knowledge.get(snapshot_id)
+            if cached is not None:
+                self._knowledge.move_to_end(snapshot_id)
+                return snapshot_id, cached
             row = await repo.snapshot(snapshot_id)
             if row is None:
                 raise KnowledgeNotPublishedError(f"снимок базы знаний {snapshot_id} не найден")
@@ -91,10 +96,17 @@ class SnapshotCache:
 
     async def catalog(self, session: AsyncSession) -> CatalogData:
         """Каталог текущей ревизии; перечитывается, если ревизия выросла."""
-        revision = await MetaRepository(session).get_catalog_revision()
-        if self._catalog is not None and self._catalog.revision == revision:
-            return self._catalog
+        data = self._catalog
+        if data is not None:
+            revision = await MetaRepository(session).get_catalog_revision()
+            if data.revision == revision:
+                return data
         async with self._lock:
+            # повторная проверка под локом; ревизию читаем заново, чтобы свежий снимок
+            # не подменить устаревшим номером ревизии, прочитанным до ожидания лока
+            revision = await MetaRepository(session).get_catalog_revision()
+            if self._catalog is not None and self._catalog.revision == revision:
+                return self._catalog
             rows = await ComponentRepository(session).all()
             entries = [CatalogEntry(row_to_frame(row), row.status) for row in rows]
             data = CatalogData(

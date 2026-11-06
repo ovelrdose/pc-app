@@ -25,6 +25,13 @@ async def component_id(api: httpx.AsyncClient, sku: str) -> str:
     return str(item["id"])
 
 
+@pytest.fixture(scope="module", autouse=True)
+async def guest_session(api: httpx.AsyncClient) -> None:
+    """Консультации и сборки требуют владельца: получаем гостевую сессию (cookie на клиент)."""
+    response = await api.post("/api/v1/sessions/guest")
+    assert response.status_code == 201, response.text
+
+
 @pytest.fixture(scope="module")
 async def consultation(api: httpx.AsyncClient) -> dict[str, Any]:
     created = await api.post("/api/v1/consultations", json={"answers": WALKTHROUGH})

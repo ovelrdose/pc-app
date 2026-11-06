@@ -8,6 +8,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.expert.frames import Category, ComponentStatus
+from app.models.component import ComponentSource
 
 
 class ComponentOut(BaseModel):
@@ -25,6 +26,7 @@ class ComponentOut(BaseModel):
     price_checked_at: date | None
     price_note: str | None
     in_stock: bool
+    source: ComponentSource
     status: ComponentStatus
     status_issues: list[str]
     specs: dict[str, Any]
@@ -50,7 +52,7 @@ class FrameOut(BaseModel):
 
 @dataclass(frozen=True, slots=True)
 class ComponentQuery:
-    """Фильтры публичного каталога."""
+    """Фильтры каталога (публичного и админского)."""
 
     category: Category | None = None
     brand: str | None = None
@@ -59,3 +61,11 @@ class ComponentQuery:
     min_price_kop: int | None = None
     max_price_kop: int | None = None
     include_inactive: bool = False
+    status: ComponentStatus | None = None
+    """Точный статус (админка)."""
+    statuses: tuple[ComponentStatus, ...] = ()
+    """Несколько статусов сразу (например, «требуют внимания»)."""
+    source: ComponentSource | None = None
+    """Источник позиции: ручное создание или импорт CSV (админка)."""
+    price_checked_before: date | None = None
+    """Цена не проверялась раньше этой даты (или не проверялась вовсе)."""

@@ -48,6 +48,8 @@ class CatalogParseResult:
 
     records: list[CatalogRecord] = field(default_factory=list)
     errors: list[RowError] = field(default_factory=list)
+    fatal: bool = False
+    """Файл отклонён целиком (не подходит заголовок): записей нет, импорт невозможен."""
 
 
 def _is_list_slot(annotation: object) -> bool:
@@ -156,6 +158,7 @@ def parse_catalog_csv(text: str, category: Category) -> CatalogParseResult:
         messages = [f"неизвестная колонка «{column}»" for column in unknown]
         messages += [f"нет обязательной колонки «{column}»" for column in missing]
         result.errors.append(RowError(line=1, messages=tuple(messages)))
+        result.fatal = True
         return result
 
     seen_skus: dict[str, int] = {}
@@ -217,3 +220,45 @@ def read_catalog_dir(directory: Path) -> CatalogDirResult:
         if errors:
             result.errors[path.name] = errors
     return result
+
+
+def frame_to_csv_row(
+    frame: Component, *, price_checked_at: date | None, price_note: str | None
+) -> dict[str, str]:
+    """Фрейм категории → строка CSV в формате `knowledge/catalog/README.md`.
+
+    Списки — через `|`, логические — `true`/`false`, пустые слоты — пустая ячейка,
+    `price_rub` — целые рубли (копейки отбрасываются).
+    """
+    data = frame.model_dump(mode="json")
+    row: dict[str, str] = {}
+    for name in csv_columns(frame.category):
+        if name == "price_rub":
+            row[name] = str(frame.price_kop // 100)
+        elif name == "price_checked_at":
+            row[name] = price_checked_at.isoformat() if price_checked_at is not None else ""
+        elif name == "price_note":
+            row[name] = price_note or ""
+        else:
+            value = data.get(name)
+            if value is None:
+                row[name] = ""
+            elif isinstance(value, bool):
+                row[name] = "true" if value else "false"
+            elif isinstance(value, list):
+                row[name] = LIST_SEPARATOR.join(str(item) for item in value)
+            else:
+                row[name] = str(value)
+    return row
+
+
+def dump_catalog_csv(
+    rows: list[tuple[Component, date | None, str | None]], category: Category
+) -> str:
+    """CSV-файл категории: заголовок и строки по порядку колонок `csv_columns`."""
+    buffer = io.StringIO()
+    writer = csv.DictWriter(buffer, fieldnames=csv_columns(category), lineterminator="\n")
+    writer.writeheader()
+    for frame, checked_at, note in rows:
+        writer.writerow(frame_to_csv_row(frame, price_checked_at=checked_at, price_note=note))
+    return buffer.getvalue()

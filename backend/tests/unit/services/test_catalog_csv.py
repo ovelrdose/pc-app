@@ -124,3 +124,54 @@ def test_read_catalog_dir_detects_cross_file_duplicates(tmp_path: Path) -> None:
     assert not result.ok
     assert "уже есть в cpu.csv" in str(result.errors["case_fan.csv"][0])
     assert "gpu.csv" in result.missing_files
+
+
+def test_dump_catalog_csv_round_trip() -> None:
+    """Фрейм → CSV-строка → фрейм: значения, списки, bool и цена в рублях сохраняются."""
+    from datetime import date
+
+    from app.services.catalog_csv import dump_catalog_csv, parse_catalog_csv
+
+    text = f"{CPU_HEADER}\n{CPU_ROW}\n"
+    parsed = parse_catalog_csv(text, Category.CPU)
+    record = parsed.records[0]
+    dumped = dump_catalog_csv(
+        [(record.frame, record.price_checked_at, record.price_note)], Category.CPU
+    )
+    # экспорт пишет полный шаблон колонок (csv_columns), а не подмножество из файла
+    assert dumped.splitlines()[0] == ",".join(csv_columns(Category.CPU))
+    reparsed = parse_catalog_csv(dumped, Category.CPU)
+    assert reparsed.errors == []
+    assert len(reparsed.records) == 1
+    again = reparsed.records[0]
+    assert again.frame == record.frame
+    assert again.price_checked_at == date(2026, 10, 29)
+    assert again.price_note == "ориентир"
+
+
+def test_dump_catalog_csv_formats_lists_bools_and_rubles() -> None:
+    """Списки через `|`, bool как true/false, целые рубли, пустые ячейки для None."""
+    from app.expert.frames import FRAMES_BY_CATEGORY
+    from app.services.catalog_csv import dump_catalog_csv, frame_to_csv_row
+    from tests.factories import slots
+
+    frame = FRAMES_BY_CATEGORY[Category.CPU](
+        **slots(
+            Category.CPU,
+            sku="CPU-TEST-CSV",
+            mem_types=["DDR4", "DDR5"],
+            igpu=False,
+            perf_single=None,
+            price_kop=123_499,
+        )
+    )
+    row = frame_to_csv_row(frame, price_checked_at=None, price_note=None)
+    assert row["mem_types"] == "DDR4|DDR5"
+    assert row["igpu"] == "false"
+    assert row["unlocked"] == "false"  # значение по умолчанию
+    assert row["perf_single"] == ""  # незаполненный слот — пустая ячейка
+    assert row["price_rub"] == "1234"  # копейки при экспорте в рубли отбрасываются
+    assert row["price_checked_at"] == ""
+    csv_text = dump_catalog_csv([(frame, None, None)], Category.CPU)
+    header_tail = csv_text.splitlines()[0].split(",")[-3:]
+    assert header_tail == ["price_rub", "price_checked_at", "price_note"]

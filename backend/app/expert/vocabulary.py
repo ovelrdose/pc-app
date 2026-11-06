@@ -267,3 +267,17 @@ def lookup(path: str) -> FactSpec | None:
 def input_paths() -> frozenset[str]:
     """Пути, которые устанавливает пользователь."""
     return frozenset(p for p, s in VOCABULARY.items() if s.role is FactRole.INPUT)
+
+
+def all_specs() -> list[FactSpec]:
+    """Все известные факты: входы пользователя, выводы правил, слоты `build.*` и `cand.*`.
+
+    Публичный словарь фактов для конструктора условий админки: путь, тип, роль,
+    название и допустимые значения (если слот — перечисление). Чистая функция, без IO.
+    """
+    merged: dict[str, FactSpec] = {}
+    for source in (VOCABULARY, BUILD_TOTALS, _BUILD_SPECS):
+        merged.update(source)
+    for path, variants in _CAND_SPECS.items():
+        merged[path] = lookup(path) or variants[0]
+    return [merged[path] for path in sorted(merged)]

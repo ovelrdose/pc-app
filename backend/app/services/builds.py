@@ -40,6 +40,7 @@ from app.schemas.consultations import (
 )
 from app.services.build_context import BuildContext, jsonable, load_context
 from app.services.consultations import persist_build, summary
+from app.services.ownership import OwnerContext, ensure_consultation_owner
 from app.services.snapshot_cache import SnapshotCache
 
 MAX_ALTERNATIVES = 10
@@ -93,8 +94,11 @@ class BuildService:
         self.cache = cache
         self.repo = ConsultationRepository(session)
 
-    async def _context(self, build_id: uuid.UUID) -> BuildContext:
-        return await load_context(self.session, self.cache, build_id)
+    async def _context(self, build_id: uuid.UUID, owner: OwnerContext) -> BuildContext:
+        """Контекст сборки с проверкой, что сборка принадлежит текущему владельцу."""
+        ctx = await load_context(self.session, self.cache, build_id)
+        ensure_consultation_owner(ctx.consultation, owner)
+        return ctx
 
     def _detail(self, ctx: BuildContext) -> BuildDetail:
         base = summary(ctx.row, ctx.items, ctx.catalog)
@@ -113,13 +117,15 @@ class BuildService:
             ],
         )
 
-    async def detail(self, build_id: uuid.UUID) -> BuildDetail:
+    async def detail(self, build_id: uuid.UUID, owner: OwnerContext) -> BuildDetail:
         """Карточка сборки: состав, цены на момент расчёта, прогноз, замечания."""
-        return self._detail(await self._context(build_id))
+        return self._detail(await self._context(build_id, owner))
 
-    async def patch(self, build_id: uuid.UUID, data: BuildPatch) -> BuildDetail:
+    async def patch(
+        self, build_id: uuid.UUID, data: BuildPatch, owner: OwnerContext
+    ) -> BuildDetail:
         """Сохранить или переименовать сборку."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         if data.title is not None:
             ctx.row.title = data.title.strip() or None
         if data.is_saved is not None:
@@ -127,9 +133,9 @@ class BuildService:
         await self.session.flush()
         return self._detail(ctx)
 
-    async def explanation(self, build_id: uuid.UUID) -> ExplanationOut:
+    async def explanation(self, build_id: uuid.UUID, owner: OwnerContext) -> ExplanationOut:
         """Рассуждение профилирования, вклад сценариев в полезность, баллы и замечания."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         steps = []
         for entry in ctx.row.trace:
             if entry.get("type") != FIRING:
@@ -166,9 +172,11 @@ class BuildService:
             issues=detail.issues,
         )
 
-    async def why_not(self, build_id: uuid.UUID, component_id: uuid.UUID) -> WhyNotOut:
+    async def why_not(
+        self, build_id: uuid.UUID, component_id: uuid.UUID, owner: OwnerContext
+    ) -> WhyNotOut:
         """«Почему не этот товар?»."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         sku = ctx.catalog.skus.get(component_id)
         if sku is None:
             raise NotFoundError("Товар не найден", component_id=str(component_id))
@@ -185,9 +193,11 @@ class BuildService:
         )
         return why_not_out(answer, component_id)
 
-    async def alternatives(self, build_id: uuid.UUID, category: Category) -> list[AlternativeOut]:
+    async def alternatives(
+        self, build_id: uuid.UUID, category: Category, owner: OwnerContext
+    ) -> list[AlternativeOut]:
         """Совместимые замены детали категории с разницей в цене, полезности и FPS."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         plan, filtering = ctx.plan_and_filtering()
         evaluated = ctx.evaluated()
         current = ctx.build.get(category)
@@ -223,9 +233,11 @@ class BuildService:
         )
         return result[:MAX_ALTERNATIVES]
 
-    async def hypothesis(self, build_id: uuid.UUID, request: HypothesisRequest) -> HypothesisOut:
+    async def hypothesis(
+        self, build_id: uuid.UUID, request: HypothesisRequest, owner: OwnerContext
+    ) -> HypothesisOut:
         """«Потянет ли?»: обратный вывод по goal-правилам; при нехватке данных — вопросы."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         checked = check_hypothesis(
             ctx.knowledge,
             ctx.memory,
@@ -244,9 +256,11 @@ class BuildService:
             ],
         )
 
-    async def modify(self, build_id: uuid.UUID, request: ModificationRequest) -> ModificationOut:
+    async def modify(
+        self, build_id: uuid.UUID, request: ModificationRequest, owner: OwnerContext
+    ) -> ModificationOut:
         """Правка: новые ограничения → новый подбор → новая сборка с родителем и разницей."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         sku = None
         if request.component_id is not None:
             sku = ctx.catalog.skus.get(request.component_id)
@@ -292,7 +306,7 @@ class BuildService:
         )
         await self.session.flush()
         await self.session.refresh(row)
-        new = await self._context(row.id)
+        new = await self._context(row.id, owner)
         before_items = {i.category: ctx.item_out(i) for i in ctx.build.items}
         after_items = {i.category: new.item_out(i) for i in new.build.items}
         changes = [
@@ -315,9 +329,9 @@ class BuildService:
             fps_avg_after=float(after_fps.value) if after_fps else None,  # type: ignore[arg-type]
         )
 
-    async def compare(self, build_ids: list[uuid.UUID]) -> CompareOut:
+    async def compare(self, build_ids: list[uuid.UUID], owner: OwnerContext) -> CompareOut:
         """Сравнение 2–3 сборок: состав по категориям, цена, FPS, баланс."""
-        contexts = [await self._context(build_id) for build_id in build_ids]
+        contexts = [await self._context(build_id, owner) for build_id in build_ids]
         summaries: list[BuildSummary] = [summary(c.row, c.items, c.catalog) for c in contexts]
         categories = [c for c in Category if any(ctx.build.get(c) for ctx in contexts)]
         rows = [
@@ -337,9 +351,9 @@ class BuildService:
             balance=[p.balance for p in performances],
         )
 
-    async def pdf_context(self, build_id: uuid.UUID) -> dict[str, Any]:
+    async def pdf_context(self, build_id: uuid.UUID, owner: OwnerContext) -> dict[str, Any]:
         """Данные для PDF-спецификации."""
-        ctx = await self._context(build_id)
+        ctx = await self._context(build_id, owner)
         detail = self._detail(ctx)
         reasoning = [entry["explanation"] for entry in ctx.row.trace if entry.get("type") == FIRING]
         return {"build": detail, "reasoning": reasoning}

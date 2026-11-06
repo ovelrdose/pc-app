@@ -89,6 +89,125 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/auth/register': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Регистрация: создаёт аккаунт и сразу входит */
+    post: operations['register_api_v1_auth_register_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/auth/login': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Вход по email и паролю */
+    post: operations['login_api_v1_auth_login_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/auth/refresh': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Обновить пару токенов по refresh-cookie */
+    post: operations['refresh_api_v1_auth_refresh_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/auth/logout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Выйти: отозвать токены */
+    post: operations['logout_api_v1_auth_logout_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/auth/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Текущий пользователь */
+    get: operations['me_api_v1_auth_me_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/sessions/guest': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Выдать или продлить гостевую сессию (токен — HttpOnly-cookie) */
+    post: operations['create_guest_session_api_v1_sessions_guest_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/me/builds': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Сохранённые сборки аккаунта */
+    get: operations['my_builds_api_v1_me_builds_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/questionnaire': {
     parameters: {
       query?: never;
@@ -328,10 +447,388 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/admin/components': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Каталог: список с фильтрами (включая снятые с продажи) */
+    get: operations['list_components_api_v1_admin_components_get'];
+    put?: never;
+    /** Каталог: создать компонент из JSON фрейма категории */
+    post: operations['create_component_api_v1_admin_components_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/components/{component_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Каталог: карточка компонента */
+    get: operations['get_component_api_v1_admin_components__component_id__get'];
+    /** Каталог: полная замена компонента фреймом */
+    put: operations['replace_component_api_v1_admin_components__component_id__put'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Каталог: служебные поля (наличие, статус продажи) */
+    patch: operations['patch_component_api_v1_admin_components__component_id__patch'];
+    trace?: never;
+  };
+  '/api/v1/admin/catalog/import': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Импорт CSV одной категории (dry-run или применение) */
+    post: operations['import_catalog_api_v1_admin_catalog_import_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/catalog/export': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Экспорт каталога: zip с <category>.csv в формате §12 */
+    get: operations['export_catalog_api_v1_admin_catalog_export_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/catalog/issues': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Позиции со статусами incomplete/needs_kb и причинами */
+    get: operations['catalog_issues_api_v1_admin_catalog_issues_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/rules': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Правила рабочей копии: список с фильтрами */
+    get: operations['list_rules_api_v1_admin_rules_get'];
+    put?: never;
+    /** Создать ручное правило (код PREFIX-NNN уникален) */
+    post: operations['create_rule_api_v1_admin_rules_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/rules/{code}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Правило с историей ревизий */
+    get: operations['get_rule_api_v1_admin_rules__code__get'];
+    /** Полная замена правила (новая ревизия) */
+    put: operations['replace_rule_api_v1_admin_rules__code__put'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/rules/{code}/retire': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Вывести правило из базы (enabled=false, новая ревизия) */
+    post: operations['retire_rule_api_v1_admin_rules__code__retire_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/rules/{code}/test': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Изолированный прямой вывод на заданных фактах */
+    post: operations['test_rule_api_v1_admin_rules__code__test_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/vocabulary': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Словарь фактов для конструктора условий */
+    get: operations['vocabulary_api_v1_admin_kb_vocabulary_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/status': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Лёгкий статус черновика: checksum, совпадение со снимком, правил */
+    get: operations['kb_status_api_v1_admin_kb_status_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/validate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Stateless-валидация черновика (§6.2 + golden), без записи */
+    post: operations['validate_kb_api_v1_admin_kb_validate_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/publish': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Опубликовать черновик (при ошибках 409, снимок не создаётся) */
+    post: operations['publish_kb_api_v1_admin_kb_publish_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/snapshots': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Опубликованные снимки базы знаний, новые первыми */
+    get: operations['list_snapshots_api_v1_admin_kb_snapshots_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/snapshots/{snapshot_id}/republish': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Откат: повторная публикация снимка */
+    post: operations['republish_snapshot_api_v1_admin_kb_snapshots__snapshot_id__republish_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/kb/export': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Экспорт БЗ: zip с деревом как в knowledge/ (round-trip) */
+    get: operations['export_kb_api_v1_admin_kb_export_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/reference': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Все справочники, анкета и golden cases рабочей копии */
+    get: operations['list_reference_api_v1_admin_reference_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/reference/{name}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Один справочник, анкета или golden cases */
+    get: operations['get_reference_api_v1_admin_reference__name__get'];
+    /** Заменить справочник целиком (валидация схемами ядра) */
+    put: operations['replace_reference_api_v1_admin_reference__name__put'];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/reference/regenerate': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Перегенерировать табличные правила в черновик (diff) */
+    post: operations['regenerate_reference_api_v1_admin_reference_regenerate_post'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/users': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Пользователи: список с фильтрами (superadmin) */
+    get: operations['list_users_api_v1_admin_users_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/admin/users/{user_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Сменить роль или заблокировать (отзывает токены) */
+    patch: operations['patch_user_api_v1_admin_users__user_id__patch'];
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /**
+     * AllCondition
+     * @description «Все из» (И).
+     */
+    AllCondition: {
+      /** All */
+      all: (
+        | components['schemas']['AllCondition']
+        | components['schemas']['AnyCondition']
+        | components['schemas']['NotCondition']
+        | components['schemas']['FactCondition']
+        | components['schemas']['ExprCondition']
+        | components['schemas']['GoalCondition']
+      )[];
+    };
     /**
      * AlternativeOut
      * @description Совместимая замена детали.
@@ -361,6 +858,21 @@ export interface components {
       price_kop: number;
     };
     /**
+     * AnyCondition
+     * @description «Любое из» (ИЛИ).
+     */
+    AnyCondition: {
+      /** Any */
+      any: (
+        | components['schemas']['AllCondition']
+        | components['schemas']['AnyCondition']
+        | components['schemas']['NotCondition']
+        | components['schemas']['FactCondition']
+        | components['schemas']['ExprCondition']
+        | components['schemas']['GoalCondition']
+      )[];
+    };
+    /**
      * AppOut
      * @description Прогноз для программы.
      */
@@ -379,6 +891,22 @@ export interface components {
       basic_ok: boolean;
       /** Pro Ok */
       pro_ok: boolean;
+    };
+    /**
+     * AssertAction
+     * @description Добавить или усилить факт: значение-литерал (`value`) или формула (`expr`).
+     */
+    AssertAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'assert';
+      /** Fact */
+      fact: string;
+      value?: components['schemas']['LiteralValue'] | null;
+      /** Expr */
+      expr?: string | null;
     };
     /**
      * BenchmarkOut
@@ -419,6 +947,14 @@ export interface components {
       rules: string[];
       /** Min Budget Without Rub */
       min_budget_without_rub: number | null;
+    };
+    /** Body_import_catalog_api_v1_admin_catalog_import_post */
+    Body_import_catalog_api_v1_admin_catalog_import_post: {
+      /**
+       * Upload
+       * @description CSV файл одной категории (≤ 2 МБ)
+       */
+      upload: string;
     };
     /**
      * BuildDetail
@@ -527,6 +1063,284 @@ export interface components {
       created_at: string;
     };
     /**
+     * Процессор
+     * @description Фрейм «Процессор».
+     */
+    CPU: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'cpu';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Сокет */
+      socket: string;
+      /** Ядер */
+      cores: number;
+      /** Потоков */
+      threads: number;
+      /** Базовая частота */
+      base_ghz: number;
+      /** Частота в бусте */
+      boost_ghz: number;
+      /** TDP */
+      tdp_w: number;
+      /** Встроенная графика */
+      igpu: boolean;
+      /**
+       * Разблокированный множитель
+       * @default false
+       */
+      unlocked: boolean;
+      /**
+       * Кулер в комплекте
+       * @default false
+       */
+      cooler_included: boolean;
+      /** Поддерживаемые типы памяти */
+      mem_types: string[];
+      /** Индекс одноядерный */
+      perf_single?: number | null;
+      /** Индекс многоядерный */
+      perf_multi?: number | null;
+      /** Cinebench 2024 single */
+      cinebench_single?: number | null;
+      /** Cinebench 2024 multi */
+      cinebench_multi?: number | null;
+    };
+    /**
+     * Кулер процессора
+     * @description Фрейм «Кулер процессора» (воздушный или СЖО).
+     */
+    CPUCooler: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'cpu_cooler';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Тип */
+      type: components['schemas']['CoolerType'];
+      /** Сокеты */
+      sockets: string[];
+      /** Высота */
+      height_mm?: number | null;
+      /** Рассеиваемая мощность */
+      tdp_capacity_w: number;
+      /** Размер радиатора СЖО */
+      radiator_mm?: (120 | 140 | 240 | 280 | 360 | 420) | null;
+      /** Уровень шума */
+      noise_db?: number | null;
+    };
+    /**
+     * Корпус
+     * @description Фрейм «Корпус».
+     */
+    Case: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'case';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Типоразмер */
+      size: components['schemas']['CaseSize'];
+      /** Форм-факторы плат */
+      form_factors: string[];
+      /** Макс. длина видеокарты */
+      max_gpu_mm?: number | null;
+      /** Макс. высота кулера */
+      max_cooler_mm?: number | null;
+      /** Форм-фактор блока питания */
+      psu_ff: string;
+      /** Мест под вентиляторы */
+      fan_slots: number;
+      /**
+       * Вентиляторов в комплекте
+       * @default 0
+       */
+      fans_included: number;
+      /** Поддержка радиаторов */
+      radiator_support?: (120 | 140 | 240 | 280 | 360 | 420)[];
+      /**
+       * Стеклянная панель
+       * @default false
+       */
+      glass: boolean;
+    };
+    /**
+     * Корпусной вентилятор
+     * @description Фрейм «Корпусной вентилятор» (упаковка из одного или нескольких).
+     */
+    CaseFan: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'case_fan';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /**
+       * Размер
+       * @enum {integer}
+       */
+      size_mm: 80 | 92 | 120 | 140 | 200;
+      /**
+       * Штук в упаковке
+       * @default 1
+       */
+      quantity: number;
+      /**
+       * PWM-управление
+       * @default true
+       */
+      pwm: boolean;
+      /** Уровень шума */
+      noise_db?: number | null;
+      /** Воздушный поток */
+      airflow_cfm?: number | null;
+    };
+    /**
+     * CaseSize
+     * @description Типоразмер корпуса (для пожеланий клиента).
+     * @enum {string}
+     */
+    CaseSize: 'mini' | 'mid' | 'full';
+    /**
+     * CatalogImportOut
+     * @description Отчёт импорта CSV категории (ADR 0010 п.1).
+     */
+    CatalogImportOut: {
+      /**
+       * Import Id
+       * Format: uuid
+       */
+      import_id: string;
+      /** Status */
+      status: string;
+      /** Dry Run */
+      dry_run: boolean;
+      /** Created */
+      created: number;
+      /** Updated */
+      updated: number;
+      /** Unchanged */
+      unchanged: number;
+      /** Catalog Revision */
+      catalog_revision: number;
+      /** Status Counts */
+      status_counts: {
+        [key: string]: number;
+      };
+      /** Errors */
+      errors: string[];
+      /** Warnings */
+      warnings: string[];
+    };
+    /**
      * Category
      * @description Категория комплектующего; определяет фрейм.
      * @enum {string}
@@ -542,6 +1356,12 @@ export interface components {
       | 'case'
       | 'cpu_cooler'
       | 'case_fan';
+    /**
+     * Color
+     * @description Основной цвет детали (для пожеланий по внешнему виду).
+     * @enum {string}
+     */
+    Color: 'black' | 'white' | 'silver' | 'gray' | 'red' | 'blue' | 'pink' | 'other';
     /**
      * CompareOut
      * @description Сравнение сборок.
@@ -602,6 +1422,7 @@ export interface components {
       price_note: string | null;
       /** In Stock */
       in_stock: boolean;
+      source: components['schemas']['ComponentSource'];
       status: components['schemas']['ComponentStatus'];
       /** Status Issues */
       status_issues: string[];
@@ -628,6 +1449,21 @@ export interface components {
       /** Offset */
       offset: number;
     };
+    /**
+     * ComponentPatchIn
+     * @description Служебная правка компонента: наличие и статус (снять с продажи / вернуть к продаже).
+     */
+    ComponentPatchIn: {
+      /** In Stock */
+      in_stock?: boolean | null;
+      status?: components['schemas']['ComponentStatus'] | null;
+    };
+    /**
+     * ComponentSource
+     * @description Откуда пришла позиция каталога.
+     * @enum {string}
+     */
+    ComponentSource: 'manual' | 'import';
     /**
      * ComponentStatus
      * @description Статус компонента в каталоге.
@@ -748,6 +1584,12 @@ export interface components {
       created_at: string;
     };
     /**
+     * CoolerType
+     * @description Тип процессорного охлаждения.
+     * @enum {string}
+     */
+    CoolerType: 'air' | 'aio';
+    /**
      * EditKind
      * @description Команда правки.
      * @enum {string}
@@ -776,6 +1618,19 @@ export interface components {
       cf: number | null;
     };
     /**
+     * ErrorAction
+     * @description Блокирующая ошибка по готовой сборке (validate).
+     */
+    ErrorAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'error';
+      /** Message */
+      message: string;
+    };
+    /**
      * ExplanationOut
      * @description «Почему эта сборка»: рассуждение, вклад сценариев, баллы и замечания.
      */
@@ -792,6 +1647,26 @@ export interface components {
       preferences: components['schemas']['PreferenceOut'][];
       /** Issues */
       issues: components['schemas']['IssueOut'][];
+    };
+    /**
+     * ExprCondition
+     * @description Лист: формула `{expr: "..."}`; проверяется интерпретатором при компиляции.
+     */
+    ExprCondition: {
+      /** Expr */
+      expr: string;
+    };
+    /**
+     * FactCondition
+     * @description Лист: `{fact, op, value}` или `{fact, op, ref}` (сравнение двух фактов).
+     */
+    FactCondition: {
+      /** Fact */
+      fact: string;
+      op: components['schemas']['Op'];
+      value?: components['schemas']['LiteralValue'] | null;
+      /** Ref */
+      ref?: string | null;
     };
     /**
      * FpsOut
@@ -836,6 +1711,75 @@ export interface components {
       };
     };
     /**
+     * Видеокарта
+     * @description Фрейм «Видеокарта».
+     */
+    GPU: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'gpu';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Графический чип */
+      chip: string;
+      /** Видеопамять */
+      vram_gb: number;
+      /** Энергопотребление (TBP) */
+      tbp_w: number;
+      /** Длина */
+      length_mm?: number | null;
+      /** Толщина */
+      slots: number;
+      /** Разъёмы питания */
+      power_connectors?: string[];
+      /** Рекомендуемый блок питания */
+      rec_psu_w: number;
+      /** Поколение PCIe */
+      pcie_gen: number;
+      /** Индекс растеризации */
+      perf_raster?: number | null;
+      /** Индекс трассировки */
+      perf_rt?: number | null;
+      /** 3DMark Time Spy */
+      timespy?: number | null;
+      /** 3DMark Steel Nomad */
+      steel_nomad?: number | null;
+    };
+    /**
+     * GoalCondition
+     * @description Лист-подцель (только в правилах вида goal).
+     */
+    GoalCondition: {
+      goal: components['schemas']['GoalRef'];
+    };
+    /**
      * GoalOut
      * @description Гипотеза, которую можно проверить («потянет ли»).
      */
@@ -853,6 +1797,87 @@ export interface components {
        * @description переменные, которые понадобятся: resolution, target_fps
        */
       needs: string[];
+    };
+    /**
+     * GoalRef
+     * @description Цель обратного вывода: `predicate(args)`; аргументы могут быть переменными `$x`.
+     */
+    GoalRef: {
+      /** Predicate */
+      predicate: string;
+      /** Args */
+      args?: {
+        [key: string]: components['schemas']['Scalar'];
+      };
+    };
+    /** GoldenReportOut */
+    GoldenReportOut: {
+      /** Passed */
+      passed: number;
+      /** Failed */
+      failed: number;
+      /** Failures */
+      failures: {
+        [key: string]: string[];
+      };
+    };
+    /**
+     * GuestSessionOut
+     * @description Результат выдачи гостевой сессии (токен — HttpOnly-cookie).
+     */
+    GuestSessionOut: {
+      /**
+       * Status
+       * @enum {string}
+       */
+      status: 'created' | 'existing';
+    };
+    /**
+     * HDD
+     * @description Фрейм «HDD».
+     */
+    HDD: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'hdd';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Объём */
+      capacity_gb: number;
+      /**
+       * Скорость вращения
+       * @enum {integer}
+       */
+      rpm: 5400 | 5900 | 7200;
+      /** Кэш */
+      cache_mb?: number | null;
     };
     /** HTTPValidationError */
     HTTPValidationError: {
@@ -956,6 +1981,44 @@ export interface components {
     };
     JsonScalar: string | number | boolean | null;
     /**
+     * KbStatusOut
+     * @description Лёгкий статус черновика: контрольная сумма, совпадение со снимком, число правил.
+     *
+     *     Собирается одним чтением из БД: без компиляции и эталонных кейсов.
+     */
+    KbStatusOut: {
+      /** Checksum */
+      checksum: string;
+      /** Matches Latest */
+      matches_latest: boolean;
+      /** Rules Total */
+      rules_total: number;
+    };
+    LiteralValue: components['schemas']['Scalar'] | components['schemas']['Scalar'][];
+    /**
+     * LoginIn
+     * @description Вход по email и паролю.
+     */
+    LoginIn: {
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+      /** Password */
+      password: string;
+    };
+    /**
+     * MeBuildsOut
+     * @description Сохранённые сборки пользователя с пагинацией.
+     */
+    MeBuildsOut: {
+      /** Builds */
+      builds: components['schemas']['SavedBuildOut'][];
+      /** Total */
+      total: number;
+    };
+    /**
      * ModificationOut
      * @description Новая сборка после правки и разница с прежней.
      */
@@ -985,6 +2048,69 @@ export interface components {
       to_category?: components['schemas']['Category'] | null;
     };
     /**
+     * Материнская плата
+     * @description Фрейм «Материнская плата».
+     */
+    Motherboard: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'motherboard';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Сокет */
+      socket: string;
+      /** Чипсет */
+      chipset: string;
+      /** Форм-фактор */
+      form_factor: string;
+      /** Тип памяти */
+      mem_type: string;
+      /** Слотов памяти */
+      mem_slots: number;
+      /** Максимум памяти */
+      max_mem_gb: number;
+      /** Слотов M.2 */
+      m2_slots: number;
+      /** Портов SATA */
+      sata_ports: number;
+      /** Поколение PCIe слота видеокарты */
+      pcie_gen: number;
+      /**
+       * Wi-Fi
+       * @default false
+       */
+      wifi: boolean;
+      /** Класс питания VRM */
+      vrm_tier: components['schemas']['VrmTier'];
+    };
+    /**
      * NeedInputOut
      * @description Вопрос клиенту.
      */
@@ -1002,6 +2128,27 @@ export interface components {
      * @enum {string}
      */
     NodeKind: 'goal' | 'rule' | 'all' | 'any' | 'not' | 'fact' | 'expr' | 'builtin';
+    /**
+     * NotCondition
+     * @description «Не».
+     */
+    NotCondition: {
+      /** Not */
+      not:
+        | components['schemas']['AllCondition']
+        | components['schemas']['AnyCondition']
+        | components['schemas']['NotCondition']
+        | components['schemas']['FactCondition']
+        | components['schemas']['ExprCondition']
+        | components['schemas']['GoalCondition'];
+    };
+    /**
+     * Op
+     * @description Операторы сравнения в листе условия.
+     * @enum {string}
+     */
+    Op:
+      'eq' | 'ne' | 'lt' | 'le' | 'gt' | 'ge' | 'in' | 'not_in' | 'contains' | 'between' | 'exists';
     /**
      * OptionOut
      * @description Вариант ответа.
@@ -1033,6 +2180,54 @@ export interface components {
       price_kop: number;
     };
     /**
+     * Блок питания
+     * @description Фрейм «Блок питания».
+     */
+    PSU: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'psu';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Мощность */
+      wattage: number;
+      /** Сертификат 80 PLUS */
+      efficiency: components['schemas']['PsuEfficiency'];
+      /** Модульность */
+      modular: components['schemas']['PsuModularity'];
+      /** Форм-фактор */
+      form_factor: string;
+      /** Разъёмы питания видеокарты */
+      pcie_connectors?: string[];
+    };
+    /**
      * PerformanceOut
      * @description Прогноз производительности сборки (оценка по референсным тестам, ±15%).
      */
@@ -1049,6 +2244,21 @@ export interface components {
       };
       /** Disclaimer */
       disclaimer: string;
+    };
+    /**
+     * PreferAction
+     * @description Добавить к полезности `weight × cf` (score); вес может быть отрицательным.
+     */
+    PreferAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'prefer';
+      /** Weight */
+      weight: number;
+      /** Message */
+      message?: string | null;
     };
     /**
      * PreferenceOut
@@ -1089,6 +2299,35 @@ export interface components {
      */
     ProofStatus: 'proved' | 'failed' | 'unknown';
     /**
+     * PsuEfficiency
+     * @description Сертификат 80 PLUS блока питания.
+     * @enum {string}
+     */
+    PsuEfficiency: '80plus' | 'bronze' | 'silver' | 'gold' | 'platinum' | 'titanium';
+    /**
+     * PsuModularity
+     * @description Модульность кабелей блока питания.
+     * @enum {string}
+     */
+    PsuModularity: 'none' | 'semi' | 'full';
+    /** PublishOut */
+    PublishOut: {
+      /** Snapshot Id */
+      snapshot_id: number;
+      /** Version */
+      version: number;
+      /** Created */
+      created: boolean;
+      /** Rules */
+      rules: number;
+      /** Warnings */
+      warnings: number;
+      /** Golden Cases */
+      golden_cases: number;
+      /** Statuses Changed */
+      statuses_changed: number;
+    };
+    /**
      * QuestionOut
      * @description Вопрос визарда (варианты из справочников уже подставлены).
      */
@@ -1121,6 +2360,56 @@ export interface components {
       kb_version: string;
       /** Steps */
       steps: components['schemas']['StepOut'][];
+    };
+    /**
+     * Оперативная память
+     * @description Фрейм «Оперативная память» (комплект модулей).
+     */
+    RAM: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'ram';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Тип памяти */
+      mem_type: string;
+      /** Объём комплекта */
+      capacity_gb: number;
+      /** Модулей в комплекте */
+      modules: number;
+      /** Частота */
+      speed_mts: number;
+      /** Тайминг CL */
+      cl: number;
+      /** Высота модуля */
+      height_mm?: number | null;
     };
     /**
      * ReasonOut
@@ -1157,6 +2446,64 @@ export interface components {
       effects: components['schemas']['EffectOut'][];
     };
     /**
+     * RefreshOut
+     * @description Новая пара токенов по refresh (сам refresh — снова в cookie).
+     */
+    RefreshOut: {
+      /** Access Token */
+      access_token: string;
+      /**
+       * Token Type
+       * @default bearer
+       * @constant
+       */
+      token_type: 'bearer';
+      /** Expires In */
+      expires_in: number;
+    };
+    /**
+     * RegenerateOut
+     * @description Diff регенерации табличных правил (ADR 0010 п.5).
+     */
+    RegenerateOut: {
+      /** Dry Run */
+      dry_run: boolean;
+      /** Created */
+      created: string[];
+      /** Updated */
+      updated: string[];
+      /** Removed */
+      removed: string[];
+      /** Overrides */
+      overrides: string[];
+    };
+    /**
+     * RegisterIn
+     * @description Регистрация нового клиента.
+     */
+    RegisterIn: {
+      /**
+       * Email
+       * Format: email
+       */
+      email: string;
+      /** Password */
+      password: string;
+    };
+    /**
+     * RejectAction
+     * @description Отсечь кандидата (filter) или сочетание (compat).
+     */
+    RejectAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'reject';
+      /** Message */
+      message: string;
+    };
+    /**
      * RelaxationOut
      * @description Вариант ослабить ответы.
      */
@@ -1171,6 +2518,300 @@ export interface components {
       min_budget_rub: number;
     };
     /**
+     * RetractAction
+     * @description Снять факт.
+     */
+    RetractAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'retract';
+      /** Fact */
+      fact: string;
+    };
+    /**
+     * Rule
+     * @description Правило базы знаний в том виде, как оно хранится в YAML и в БД.
+     */
+    Rule: {
+      /** Code */
+      code: string;
+      /** Name */
+      name: string;
+      kind: components['schemas']['RuleKind'];
+      /** Group */
+      group: string;
+      /** Priority */
+      priority: number;
+      /** Cf */
+      cf: number;
+      /**
+       * Enabled
+       * @default true
+       */
+      enabled: boolean;
+      /** @default manual */
+      origin: components['schemas']['RuleOrigin'];
+      /** Source */
+      source?: string | null;
+      goal?: components['schemas']['GoalRef'] | null;
+      /** When */
+      when:
+        | components['schemas']['AllCondition']
+        | components['schemas']['AnyCondition']
+        | components['schemas']['NotCondition']
+        | components['schemas']['FactCondition']
+        | components['schemas']['ExprCondition']
+        | components['schemas']['GoalCondition'];
+      /** Then */
+      then?: (
+        | components['schemas']['AssertAction']
+        | components['schemas']['RetractAction']
+        | components['schemas']['RejectAction']
+        | components['schemas']['PreferAction']
+        | components['schemas']['WarnAction']
+        | components['schemas']['ErrorAction']
+        | components['schemas']['SuggestAction']
+      )[];
+      /** Explain */
+      explain: string;
+    };
+    /** RuleDetailOut */
+    RuleDetailOut: {
+      rule: components['schemas']['RuleOut'];
+      /** Revisions */
+      revisions: components['schemas']['RuleRevisionOut'][];
+    };
+    /**
+     * RuleKind
+     * @description Вид правила: на каком этапе и как оно применяется.
+     * @enum {string}
+     */
+    RuleKind: 'inference' | 'filter' | 'compat' | 'score' | 'validate' | 'goal';
+    /**
+     * RuleOrigin
+     * @description Происхождение правила.
+     * @enum {string}
+     */
+    RuleOrigin: 'manual' | 'generated';
+    /**
+     * RuleOut
+     * @description Правило рабочей копии; `body` — правило целиком по схеме DSL (для редактора).
+     */
+    RuleOut: {
+      /** Code */
+      code: string;
+      kind: components['schemas']['RuleKind'];
+      /** Group */
+      group: string;
+      /** Name */
+      name: string;
+      /** Priority */
+      priority: number;
+      /** Cf */
+      cf: number;
+      /** Enabled */
+      enabled: boolean;
+      origin: components['schemas']['RuleOrigin'];
+      /** Source */
+      source: string | null;
+      /** Explain */
+      explain: string;
+      /** Revision */
+      revision: number;
+      /** Updated By */
+      updated_by: string | null;
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string;
+      /** Body */
+      body: {
+        [key: string]: unknown;
+      };
+      /** Warning */
+      warning?: string | null;
+    };
+    /** RulePage */
+    RulePage: {
+      /** Items */
+      items: components['schemas']['RuleOut'][];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit: number;
+      /** Offset */
+      offset: number;
+    };
+    /** RuleRevisionOut */
+    RuleRevisionOut: {
+      /** Revision */
+      revision: number;
+      /** Body */
+      body: {
+        [key: string]: unknown;
+      };
+      /** Change Type */
+      change_type: string;
+      /** Author Id */
+      author_id: string | null;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+    };
+    /** RuleTestActionOut */
+    RuleTestActionOut: {
+      /** Action */
+      action: string;
+      /** Fact */
+      fact?: string | null;
+      /** Value */
+      value?: unknown;
+      /** Message */
+      message?: string | null;
+      /** Weight */
+      weight?: number | null;
+      /** Category */
+      category?: string | null;
+      /** Target */
+      target?: string | null;
+    };
+    /** RuleTestFactOut */
+    RuleTestFactOut: {
+      /** Path */
+      path: string;
+      /** Value */
+      value: unknown;
+      /** Cf */
+      cf: number;
+    };
+    /**
+     * RuleTestIn
+     * @description Входные факты изолированного прогона: `{path: value}` или `{path: {value, cf}}`.
+     */
+    RuleTestIn: {
+      /** Facts */
+      facts: {
+        [key: string]: unknown;
+      };
+    };
+    /** RuleTestOut */
+    RuleTestOut: {
+      /** Matched */
+      matched: boolean;
+      /** Premise Cf */
+      premise_cf: number | null;
+      /** Actions */
+      actions: components['schemas']['RuleTestActionOut'][];
+      /** Facts After */
+      facts_after: components['schemas']['RuleTestFactOut'][];
+      /** Failures */
+      failures: string[];
+    };
+    /**
+     * SSD
+     * @description Фрейм «SSD».
+     */
+    SSD: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      category: 'ssd';
+      /** Артикул */
+      sku: string;
+      /** Бренд */
+      brand: string;
+      /** Модель */
+      model: string;
+      /** Название */
+      name: string;
+      /** Цена */
+      price_kop: number;
+      /**
+       * В наличии
+       * @default true
+       */
+      in_stock: boolean;
+      /** Год выпуска */
+      release_year?: number | null;
+      /**
+       * Цвет
+       * @default black
+       */
+      color: components['schemas']['Color'];
+      /**
+       * RGB-подсветка
+       * @default false
+       */
+      rgb: boolean;
+      /** Объём */
+      capacity_gb: number;
+      /** Интерфейс */
+      interface: components['schemas']['SsdInterface'];
+      /** Форм-фактор */
+      form_factor: components['schemas']['SsdFormFactor'];
+      /** Скорость чтения */
+      read_mbs: number;
+      /** Скорость записи */
+      write_mbs: number;
+      /** Ресурс записи */
+      tbw?: number | null;
+    };
+    /**
+     * SavedBuildOut
+     * @description Сохранённая сборка в личном кабинете.
+     */
+    SavedBuildOut: {
+      /**
+       * Consultation Id
+       * Format: uuid
+       */
+      consultation_id: string;
+      build: components['schemas']['BuildSummary'];
+    };
+    Scalar: string | number | boolean;
+    /** SnapshotOut */
+    SnapshotOut: {
+      /** Id */
+      id: number;
+      /** Version */
+      version: number;
+      /** Checksum */
+      checksum: string;
+      /** Comment */
+      comment: string | null;
+      /** Published By */
+      published_by: string | null;
+      /**
+       * Published At
+       * Format: date-time
+       */
+      published_at: string;
+      /** Rules */
+      rules: number;
+      /** Warnings */
+      warnings: number;
+      /** Golden */
+      golden: number;
+    };
+    /**
+     * SsdFormFactor
+     * @description Форм-фактор SSD.
+     * @enum {string}
+     */
+    SsdFormFactor: 'm2_2280' | '2.5';
+    /**
+     * SsdInterface
+     * @description Интерфейс SSD.
+     * @enum {string}
+     */
+    SsdInterface: 'sata' | 'nvme_pcie3' | 'nvme_pcie4' | 'nvme_pcie5';
+    /**
      * StepOut
      * @description Шаг визарда.
      */
@@ -1183,11 +2824,127 @@ export interface components {
       questions: components['schemas']['QuestionOut'][];
     };
     /**
+     * SuggestAction
+     * @description Предложить правку: заменить компонент категории на более подходящий класс (validate).
+     */
+    SuggestAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'suggest';
+      /** Category */
+      category: string;
+      /** Target */
+      target: string;
+      /** Message */
+      message: string;
+    };
+    /**
      * Tier
      * @description Вариант сборки.
      * @enum {string}
      */
     Tier: 'economy' | 'optimum' | 'maximum';
+    /**
+     * TokenOut
+     * @description Успешный вход или регистрация: access-токен и профиль.
+     *
+     *     Refresh-токен приходит отдельной HttpOnly-cookie, в теле его нет.
+     */
+    TokenOut: {
+      /** Access Token */
+      access_token: string;
+      /**
+       * Token Type
+       * @default bearer
+       * @constant
+       */
+      token_type: 'bearer';
+      /**
+       * Expires In
+       * @description срок жизни access-токена, секунды
+       */
+      expires_in: number;
+      user: components['schemas']['UserOut'];
+    };
+    /** UserAdminOut */
+    UserAdminOut: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /** Email */
+      email: string;
+      role: components['schemas']['UserRole'];
+      /** Is Active */
+      is_active: boolean;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+    };
+    /** UserAdminPage */
+    UserAdminPage: {
+      /** Items */
+      items: components['schemas']['UserAdminOut'][];
+      /** Total */
+      total: number;
+      /** Limit */
+      limit: number;
+      /** Offset */
+      offset: number;
+    };
+    /**
+     * UserOut
+     * @description Публичные данные пользователя.
+     */
+    UserOut: {
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /** Email */
+      email: string;
+      role: components['schemas']['UserRole'];
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+    };
+    /** UserPatchIn */
+    UserPatchIn: {
+      role?: components['schemas']['UserRole'] | null;
+      /** Is Active */
+      is_active?: boolean | null;
+    };
+    /**
+     * UserRole
+     * @description Роль пользователя. Расширяет права: от клиента до суперадмина.
+     * @enum {string}
+     */
+    UserRole: 'client' | 'catalog_admin' | 'knowledge_engineer' | 'superadmin';
+    /**
+     * ValidateReportOut
+     * @description Отчёт stateless-валидации черновика (ADR 0010 п.3); ничего не записывает.
+     */
+    ValidateReportOut: {
+      /** Rules Total */
+      rules_total: number;
+      /** Errors */
+      errors: string[];
+      /** Warnings */
+      warnings: string[];
+      golden: components['schemas']['GoldenReportOut'];
+      /** Checksum */
+      checksum: string;
+      /** Matches Latest */
+      matches_latest: boolean;
+    };
     /** ValidationError */
     ValidationError: {
       /** Location */
@@ -1202,6 +2959,28 @@ export interface components {
       ctx?: Record<string, never>;
     };
     /**
+     * VocabularyOut
+     * @description Факт словаря для конструктора условий: путь, тип, роль, название, допустимые значения.
+     */
+    VocabularyOut: {
+      /** Path */
+      path: string;
+      /** Type */
+      type: string;
+      /** Role */
+      role: string;
+      /** Title */
+      title: string;
+      /** Values */
+      values: unknown[];
+    };
+    /**
+     * VrmTier
+     * @description Класс подсистемы питания материнской платы.
+     * @enum {string}
+     */
+    VrmTier: 'basic' | 'mid' | 'high';
+    /**
      * WaivedOut
      * @description Требование, от которого клиент отказался.
      */
@@ -1210,6 +2989,19 @@ export interface components {
       fact: string;
       /** Title */
       title: string;
+    };
+    /**
+     * WarnAction
+     * @description Предупреждение по готовой сборке (validate).
+     */
+    WarnAction: {
+      /**
+       * @description discriminator enum property added by openapi-typescript
+       * @enum {string}
+       */
+      action: 'warn';
+      /** Message */
+      message: string;
     };
     /**
      * WhyNotOut
@@ -1386,6 +3178,182 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['FrameOut'][];
+        };
+      };
+    };
+  };
+  register_api_v1_auth_register_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RegisterIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TokenOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  login_api_v1_auth_login_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['LoginIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TokenOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  refresh_api_v1_auth_refresh_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RefreshOut'];
+        };
+      };
+    };
+  };
+  logout_api_v1_auth_logout_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  me_api_v1_auth_me_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserOut'];
+        };
+      };
+    };
+  };
+  create_guest_session_api_v1_sessions_guest_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GuestSessionOut'];
+        };
+      };
+    };
+  };
+  my_builds_api_v1_me_builds_get: {
+    parameters: {
+      query?: {
+        limit?: number;
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['MeBuildsOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
         };
       };
     };
@@ -1840,6 +3808,853 @@ export interface operations {
         };
         content: {
           'application/pdf': unknown;
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  list_components_api_v1_admin_components_get: {
+    parameters: {
+      query?: {
+        category?: components['schemas']['Category'] | null;
+        brand?: string | null;
+        status?: components['schemas']['ComponentStatus'] | null;
+        source?: components['schemas']['ComponentSource'] | null;
+        /** @description Поиск по названию и SKU */
+        q?: string | null;
+        in_stock?: boolean | null;
+        /** @description Цена не проверялась больше N дней */
+        price_stale_days?: number | null;
+        limit?: number;
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ComponentPage'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  create_component_api_v1_admin_components_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['CPU']
+          | components['schemas']['Motherboard']
+          | components['schemas']['RAM']
+          | components['schemas']['GPU']
+          | components['schemas']['SSD']
+          | components['schemas']['HDD']
+          | components['schemas']['PSU']
+          | components['schemas']['Case']
+          | components['schemas']['CPUCooler']
+          | components['schemas']['CaseFan'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ComponentOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  get_component_api_v1_admin_components__component_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        component_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ComponentOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  replace_component_api_v1_admin_components__component_id__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        component_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json':
+          | components['schemas']['CPU']
+          | components['schemas']['Motherboard']
+          | components['schemas']['RAM']
+          | components['schemas']['GPU']
+          | components['schemas']['SSD']
+          | components['schemas']['HDD']
+          | components['schemas']['PSU']
+          | components['schemas']['Case']
+          | components['schemas']['CPUCooler']
+          | components['schemas']['CaseFan'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ComponentOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  patch_component_api_v1_admin_components__component_id__patch: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        component_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ComponentPatchIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ComponentOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  import_catalog_api_v1_admin_catalog_import_post: {
+    parameters: {
+      query: {
+        /** @description Категория из имени файла каталога */
+        category: components['schemas']['Category'];
+        /** @description Только отчёт, без изменения БД */
+        dry_run?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': components['schemas']['Body_import_catalog_api_v1_admin_catalog_import_post'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CatalogImportOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  export_catalog_api_v1_admin_catalog_export_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+    };
+  };
+  catalog_issues_api_v1_admin_catalog_issues_get: {
+    parameters: {
+      query?: {
+        category?: components['schemas']['Category'] | null;
+        q?: string | null;
+        limit?: number;
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ComponentPage'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  list_rules_api_v1_admin_rules_get: {
+    parameters: {
+      query?: {
+        group?: string | null;
+        kind?: components['schemas']['RuleKind'] | null;
+        origin?: components['schemas']['RuleOrigin'] | null;
+        enabled?: boolean | null;
+        /** @description Поиск по коду и названию */
+        q?: string | null;
+        limit?: number;
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RulePage'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  create_rule_api_v1_admin_rules_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Rule'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuleOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  get_rule_api_v1_admin_rules__code__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuleDetailOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  replace_rule_api_v1_admin_rules__code__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['Rule'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuleOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  retire_rule_api_v1_admin_rules__code__retire_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuleOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  test_rule_api_v1_admin_rules__code__test_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RuleTestIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RuleTestOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  vocabulary_api_v1_admin_kb_vocabulary_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['VocabularyOut'][];
+        };
+      };
+    };
+  };
+  kb_status_api_v1_admin_kb_status_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['KbStatusOut'];
+        };
+      };
+    };
+  };
+  validate_kb_api_v1_admin_kb_validate_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ValidateReportOut'];
+        };
+      };
+    };
+  };
+  publish_kb_api_v1_admin_kb_publish_post: {
+    parameters: {
+      query?: {
+        comment?: string | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublishOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  list_snapshots_api_v1_admin_kb_snapshots_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SnapshotOut'][];
+        };
+      };
+    };
+  };
+  republish_snapshot_api_v1_admin_kb_snapshots__snapshot_id__republish_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        snapshot_id: number;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublishOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  export_kb_api_v1_admin_kb_export_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': unknown;
+        };
+      };
+    };
+  };
+  list_reference_api_v1_admin_reference_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            [key: string]: unknown;
+          };
+        };
+      };
+    };
+  };
+  get_reference_api_v1_admin_reference__name__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  replace_reference_api_v1_admin_reference__name__put: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        name: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': unknown;
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            [key: string]: unknown;
+          };
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  regenerate_reference_api_v1_admin_reference_regenerate_post: {
+    parameters: {
+      query?: {
+        /** @description Только diff-отчёт, без записи */
+        dry_run?: boolean;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['RegenerateOut'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  list_users_api_v1_admin_users_get: {
+    parameters: {
+      query?: {
+        role?: components['schemas']['UserRole'] | null;
+        /** @description Поиск по email */
+        q?: string | null;
+        is_active?: boolean | null;
+        limit?: number;
+        offset?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserAdminPage'];
+        };
+      };
+      /** @description Validation Error */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['HTTPValidationError'];
+        };
+      };
+    };
+  };
+  patch_user_api_v1_admin_users__user_id__patch: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        user_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UserPatchIn'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserAdminOut'];
         };
       };
       /** @description Validation Error */

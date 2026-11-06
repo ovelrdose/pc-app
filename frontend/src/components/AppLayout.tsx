@@ -2,6 +2,7 @@ import { AppShell, Container, Group, Text, Title } from '@mantine/core';
 import { Link, Outlet } from 'react-router-dom';
 
 import { ColorSchemeToggle } from './ColorSchemeToggle';
+import { UserMenu } from '../features/auth/UserMenu';
 import classes from './AppLayout.module.css';
 
 export function AppLayout() {
@@ -16,7 +17,10 @@ export function AppLayout() {
                 подбор комплектующих для ПК
               </Text>
             </Link>
-            <ColorSchemeToggle />
+            <Group gap="sm">
+              <UserMenu />
+              <ColorSchemeToggle />
+            </Group>
           </Group>
         </Container>
       </AppShell.Header>

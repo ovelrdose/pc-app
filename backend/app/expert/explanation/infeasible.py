@@ -8,10 +8,13 @@
    пока самая дешёвая сборка не уложится в бюджет, и подбирает лучшую сборку с этими уступками;
 4. если уступок не хватило — показывает лучшую возможную сборку в бюджете и какие требования
    она не выполняет.
+
+Повторные подборы цены и профилирование с одними и теми же входами кэшируются внутри одного
+разбора: цена зависит только от рабочей памяти, поэтому итог разбора не меняется.
 """
 
 from collections.abc import Callable, Collection, Mapping
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 
 from app.expert.catalog import CatalogSnapshot
 from app.expert.configurator.build import Build
@@ -27,7 +30,7 @@ from app.expert.configurator.plan import MANDATORY_CF, Constraints, build_plan
 from app.expert.consultation import performance_model
 from app.expert.dsl.compiler import CompiledRuleSet
 from app.expert.dsl.schema import RuleKind
-from app.expert.facts import WorkingMemory
+from app.expert.facts import Value, WorkingMemory
 from app.expert.inference.forward import run_forward
 from app.expert.knowledge import KnowledgeSnapshot
 from app.expert.questionnaire import Option, Questionnaire, answers_to_memory
@@ -93,6 +96,63 @@ class InfeasibleReport:
 
 def _rub(kop: int | None) -> int | None:
     return None if kop is None else -(-kop // 100)
+
+
+type _ProfileKey = tuple[tuple[tuple[str, object], ...], tuple[str, ...]]
+"""Ключ мемоизации профилирования: замороженные ответы и отсортированные снятые требования."""
+
+type _PriceKey = tuple[tuple[str, Value, float], ...]
+"""Ключ мемоизации цены: путь, значение и cf каждого факта памяти (обход упорядочен по пути)."""
+
+
+def _frozen(value: object) -> object:
+    """Хэшируемый вид значения ответа: словари и списки рекурсивно сворачиваются в кортежи."""
+    if isinstance(value, Mapping):
+        return tuple(sorted((key, _frozen(item)) for key, item in value.items()))
+    if isinstance(value, list | tuple | set | frozenset):
+        return tuple(_frozen(item) for item in value)
+    return value
+
+
+@dataclass(slots=True)
+class _Memo:
+    """Мемоизация внутри одного разбора: подборы и профилирование по неизменным входам.
+
+    Разбор невыполнимого запроса много раз считает «а если от этого отказаться?»: цена самой
+    дешёвой сборки зависит только от содержимого рабочей памяти, а память от профиля ответов,
+    поэтому повторные вызовы с теми же входами возвращаются из кэша без пересчёта.
+    """
+
+    prices: dict[_PriceKey, int | None] = field(default_factory=dict)
+    profiles: dict[_ProfileKey, WorkingMemory] = field(default_factory=dict)
+
+    def cheapest(
+        self,
+        memory: WorkingMemory,
+        rules: CompiledRuleSet,
+        catalog: CatalogSnapshot,
+        constraints: Constraints,
+    ) -> int | None:
+        """Цена самой дешёвой сборки для памяти; повторный вызов с той же памятью — из кэша."""
+        key = tuple((fact.path, fact.value, fact.cf) for fact in memory)
+        if key not in self.prices:
+            self.prices[key] = cheapest_price_kop(memory, rules, catalog, constraints)
+        return self.prices[key]
+
+    def profile(
+        self,
+        knowledge: KnowledgeSnapshot,
+        answers: Mapping[str, object],
+        waived: Collection[str],
+    ) -> WorkingMemory:
+        """Профилирование ответов; повторный вызов с теми же входами — из кэша."""
+        key: _ProfileKey = (
+            tuple(sorted((name, _frozen(value)) for name, value in answers.items())),
+            tuple(sorted(waived)),
+        )
+        if key not in self.profiles:
+            self.profiles[key] = _profile(knowledge, answers, waived)
+        return self.profiles[key]
 
 
 def _filter_requirements(memory: WorkingMemory, rule_set: CompiledRuleSet) -> list[str]:
@@ -284,20 +344,22 @@ def explain_infeasible(
     """Разбирает невыполнимый запрос: что мешает, как ослабить, что можно собрать.
 
     `waived` — требования, от которых клиент уже отказался в этой консультации.
+    Повторные подборы и профилирование по тем же входам кэшируются внутри одного разбора.
     """
     constraints = constraints or Constraints()
     rules = knowledge.compiled
-    memory = _profile(knowledge, answers, waived)
+    memo = _Memo()
+    memory = memo.profile(knowledge, answers, waived)
     budget_fact = memory.lookup("user.budget")
     budget_rub = int(str(budget_fact.value)) if budget_fact else 0
-    minimum = _rub(cheapest_price_kop(memory, rules, catalog, constraints))
+    minimum = _rub(memo.cheapest(memory, rules, catalog, constraints))
 
     blocking: list[BlockingRequirement] = []
     for path in _filter_requirements(memory, rules):
         fact = memory.lookup(path)
         if fact is None:
             continue
-        without = _rub(cheapest_price_kop(_without(memory, [path]), rules, catalog, constraints))
+        without = _rub(memo.cheapest(_without(memory, [path]), rules, catalog, constraints))
         if without is not None and (minimum is None or without < minimum * 0.97):
             spec = lookup(path)
             blocking.append(
@@ -313,13 +375,13 @@ def explain_infeasible(
 
     relaxations: list[Relaxation] = []
     for title, patch in _relaxed_answers(knowledge.questionnaire, answers):
-        price = _cheapest_rub(knowledge, catalog, {**answers, **patch}, waived, constraints)
+        price = _cheapest_rub(knowledge, catalog, {**answers, **patch}, waived, constraints, memo)
         if price is not None and (minimum is None or price < minimum):
             relaxations.append(Relaxation(title, patch, price))
     relaxations.sort(key=lambda r: r.min_budget_rub)
 
     compromise = _compromise(
-        knowledge, catalog, answers, set(waived), constraints, budget_rub, minimum
+        knowledge, catalog, answers, set(waived), constraints, budget_rub, minimum, memo
     )
     best, unmet = (
         (None, ()) if compromise else _best_effort(knowledge, catalog, memory, constraints)
@@ -350,9 +412,10 @@ def _cheapest_rub(
     answers: Mapping[str, object],
     waived: Collection[str],
     constraints: Constraints,
+    memo: _Memo,
 ) -> int | None:
-    memory = _profile(knowledge, answers, waived)
-    return _rub(cheapest_price_kop(memory, knowledge.compiled, catalog, constraints))
+    memory = memo.profile(knowledge, answers, waived)
+    return _rub(memo.cheapest(memory, knowledge.compiled, catalog, constraints))
 
 
 def _apply(
@@ -373,15 +436,17 @@ def _compromise(
     constraints: Constraints,
     budget_rub: int,
     minimum: int | None,
+    memo: _Memo,
 ) -> Compromise | None:
     """Сборка в бюджете ценой уступок (вики §4.10).
 
     Уступки принимаются по порядку `CONCESSION_ORDER`, только если удешевляют самую дешёвую
     сборку, пока она не уложится в бюджет. Затем лишние уступки возвращаются: от более важных
-    к менее важным, если без уступки бюджета всё ещё хватает.
+    к менее важным, если без уступки бюджета всё ещё хватает. Повторные прогоны с теми же
+    ответами кэшируются в `memo`.
     """
     questionnaire = knowledge.questionnaire
-    state = _Ladder(dict(answers), set(waived), _profile(knowledge, answers, waived))
+    state = _Ladder(dict(answers), set(waived), memo.profile(knowledge, answers, waived))
     required = state.memory.lookup("req.storage_min_gb")
     # для текстов уступок: объём SSD, который требовался до уступки (ответ или вывод правил)
     original = {**({"storage_gb": required.value} if required else {}), **answers}
@@ -392,10 +457,8 @@ def _compromise(
             for concession in step(questionnaire, original, state):
                 trial_answers = {**state.answers, **concession.answers}
                 trial_waived = state.waived | set(concession.waived)
-                memory = _profile(knowledge, trial_answers, trial_waived)
-                candidate = _rub(
-                    cheapest_price_kop(memory, knowledge.compiled, catalog, constraints)
-                )
+                memory = memo.profile(knowledge, trial_answers, trial_waived)
+                candidate = _rub(memo.cheapest(memory, knowledge.compiled, catalog, constraints))
                 if candidate is not None and (price is None or candidate < price):
                     state = _Ladder(trial_answers, trial_waived, memory)
                     price = candidate
@@ -412,11 +475,13 @@ def _compromise(
     kept = list(accepted.values())
     for concession in reversed(list(accepted.values())):
         trial = [c for c in kept if c is not concession]
-        candidate = _cheapest_rub(knowledge, catalog, *_apply(answers, waived, trial), constraints)
+        candidate = _cheapest_rub(
+            knowledge, catalog, *_apply(answers, waived, trial), constraints, memo
+        )
         if candidate is not None and candidate <= budget_rub:
             kept = trial
     final_answers, final_waived = _apply(answers, waived, kept)
-    memory = _profile(knowledge, final_answers, final_waived)
+    memory = memo.profile(knowledge, final_answers, final_waived)
     result = configure(
         memory,
         knowledge.compiled,

@@ -8,7 +8,7 @@
 from collections.abc import Mapping
 from typing import Any, Self
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 from app.expert.catalog import CatalogSnapshot
 from app.expert.configurator.build import Build
@@ -31,6 +31,23 @@ from app.expert.trace import BuildIssue, CandidateRejected, CombinationRejected,
 _OPS = ("eq", "ne", "ge", "le", "gt", "lt", "in", "contains", "between")
 
 type Matcher = str | int | float | bool | dict[str, Any]
+
+
+def cases_from_json(data: object) -> list["GoldenCase"]:
+    """Кейсы из JSON-списка (как хранится в `reference_tables['golden']`); ошибки — `ValueError`."""
+    if not isinstance(data, list):
+        raise ValueError("golden cases: ожидается список")
+    try:
+        return [GoldenCase.model_validate(item) for item in data]
+    except ValidationError as exc:
+        raise ValueError(f"golden cases не проходят схему:\n{exc}") from exc
+
+
+def cases_to_json(cases: list["GoldenCase"]) -> list[dict[str, Any]]:
+    """Кейсы в стабильном JSON для хранения: без умолчаний и пустых значений."""
+    return [
+        case.model_dump(mode="json", exclude_defaults=True, exclude_none=True) for case in cases
+    ]
 
 
 class GoldenModel(BaseModel):

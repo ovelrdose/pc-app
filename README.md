@@ -52,19 +52,26 @@ uv run uvicorn app.main:create_app --factory --reload --port 8000
 
 ### Попробовать подбор через Swagger
 
-1. `GET /api/v1/questionnaire` — вопросы визарда и допустимые ответы.
-2. `POST /api/v1/consultations` с телом, например:
+Консультации и сборки привязаны к владельцу: сначала получите гостевую сессию
+(один раз — cookie сохранится в браузере), затем работайте как обычно.
+
+1. `POST /api/v1/sessions/guest` — гостевая сессия (cookie).
+2. `POST /api/v1/auth/register` или `/auth/login` — необязательно; после входа
+   сборки попадут в личный кабинет (`GET /api/v1/me/builds`).
+3. `GET /api/v1/questionnaire` — вопросы визарда и допустимые ответы.
+4. `POST /api/v1/consultations` с телом, например:
    ```json
    {"answers": {"tasks": {"main": "aaa_gaming", "extra": ["video_editing"]}, "budget": 170000,
                 "monitor": "qhd_144", "color": "white", "storage_gb": 1000}}
    ```
-3. `POST /api/v1/consultations/{id}/builds` — три варианта сборки.
-4. Для сборки: `GET /api/v1/builds/{id}` (прогноз FPS), `…/explanation`, `…/why-not?component_id=`,
+5. `POST /api/v1/consultations/{id}/builds` — три варианта сборки.
+6. Для сборки: `GET /api/v1/builds/{id}` (прогноз FPS), `…/explanation`, `…/why-not?component_id=`,
    `…/alternatives?category=gpu`, `POST …/hypotheses` с
    `{"predicate": "runs_game", "args": {"game": "cyberpunk_2077", "preset": "ultra"}, "bindings": {"target_fps": 60}}`,
    `POST …/modifications` с `{"kind": "cheaper", "category": "gpu"}`, `GET …/pdf`.
 
 Сгенерировать `JWT_SECRET`: `python3 -c "import secrets; print(secrets.token_urlsafe(48))"`.
+Первого суперадмина создаёт `uv run python -m scripts.create_superadmin <email>` (пароль запросит интерактивно).
 
 ### 3. Frontend
 
@@ -82,6 +89,8 @@ Backend должен быть запущен (шаг 2). Сквозной сце
 3. Результаты: карточки «Эконом / Оптимум / Максимум» (совпавшие объединяются), «Сравнить варианты», «Изменить ответы».
 4. Сборка: меню «⋯» у детали (дешевле, дороже, замена, закрепить, исключить), «Почему не этот товар?», перенос бюджета, вкладки «Производительность», «Почему так» (+ «Экспертный режим»), «Потянет ли?», «Сохранить», «PDF».
 5. Невыполнимый запрос (например, игры в 4K за 50 000 ₽): что мешает, ослабления с кнопкой «Подобрать с этим», лучшее возможное.
+6. Шапка: «Войти» → email и пароль. После входа гостевые сборки переносятся в аккаунт,
+   меню пользователя ведёт в личный кабинет со списком сохранённых сборок.
 
 ## Проверки
 

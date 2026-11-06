@@ -50,6 +50,7 @@ from app.services.build_context import (
     performance_out,
     profile_memory,
 )
+from app.services.ownership import OwnerContext, ensure_consultation_owner
 from app.services.snapshot_cache import CatalogData, SnapshotCache
 
 logger = structlog.get_logger(__name__)
@@ -249,7 +250,7 @@ class ConsultationService:
             )
         return goals
 
-    async def create(self, data: ConsultationCreate) -> ConsultationOut:
+    async def create(self, data: ConsultationCreate, owner: OwnerContext) -> ConsultationOut:
         """Проверяет ответы и сохраняет консультацию (подбор — отдельным запросом)."""
         snapshot_id, knowledge = await self.cache.knowledge(self.session)
         catalog = await self.cache.catalog(self.session)
@@ -268,6 +269,8 @@ class ConsultationService:
             owned.append(sku)
         row = ConsultationRow(
             id=uuid.uuid4(),
+            user_id=owner.user.id if owner.user is not None else None,
+            guest_session_id=owner.guest.id if owner.guest is not None else None,
             answers=data.answers,
             owned=owned,
             waived=sorted(set(data.waived_requirements), key=list(WAIVABLE).index),
@@ -279,9 +282,9 @@ class ConsultationService:
         await self.session.refresh(row)
         return await self._out(row, knowledge, catalog, [])
 
-    async def run(self, consultation_id: uuid.UUID) -> ConsultationOut:
+    async def run(self, consultation_id: uuid.UUID, owner: OwnerContext) -> ConsultationOut:
         """Запускает вывод и подбор; сохраняет по сборке на вариант."""
-        row = await self._get(consultation_id)
+        row = await self._get(consultation_id, owner)
         if row.status != "created":
             raise ConsultationStateError("Подбор по этой консультации уже выполнен")
         snapshot_id, knowledge = await self.cache.knowledge(self.session, row.snapshot_id)
@@ -329,16 +332,16 @@ class ConsultationService:
             )
         return out
 
-    async def get(self, consultation_id: uuid.UUID) -> ConsultationOut:
+    async def get(self, consultation_id: uuid.UUID, owner: OwnerContext) -> ConsultationOut:
         """Консультация и её сборки."""
-        row = await self._get(consultation_id)
+        row = await self._get(consultation_id, owner)
         _, knowledge = await self.cache.knowledge(self.session, row.snapshot_id)
         catalog = await self.cache.catalog(self.session)
         return await self._out(row, knowledge, catalog, await self.repo.builds_of(row.id))
 
-    async def infeasible(self, consultation_id: uuid.UUID) -> InfeasibleOut:
+    async def infeasible(self, consultation_id: uuid.UUID, owner: OwnerContext) -> InfeasibleOut:
         """Подробный разбор невыполнимого запроса: что мешает, как ослабить, что можно собрать."""
-        row = await self._get(consultation_id)
+        row = await self._get(consultation_id, owner)
         _, knowledge = await self.cache.knowledge(self.session, row.snapshot_id)
         catalog = await self.cache.catalog(self.session)
         report = explain_infeasible(
@@ -390,10 +393,11 @@ class ConsultationService:
             else None,
         )
 
-    async def _get(self, consultation_id: uuid.UUID) -> ConsultationRow:
+    async def _get(self, consultation_id: uuid.UUID, owner: OwnerContext) -> ConsultationRow:
         row = await self.repo.consultation(consultation_id)
         if row is None:
             raise NotFoundError("Консультация не найдена", consultation_id=str(consultation_id))
+        ensure_consultation_owner(row, owner)
         return row
 
     async def _out(

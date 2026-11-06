@@ -4,7 +4,7 @@ import uuid
 
 from fastapi import APIRouter, status
 
-from app.api.deps import CacheDep, SessionDep
+from app.api.deps import CacheDep, OwnerDep, SessionDep
 from app.schemas.consultations import (
     ConsultationCreate,
     ConsultationOut,
@@ -29,16 +29,22 @@ async def get_goals(session: SessionDep, cache: CacheDep) -> list[GoalOut]:
 
 @router.post("/consultations", status_code=status.HTTP_201_CREATED, summary="Создать консультацию")
 async def create_consultation(
-    data: ConsultationCreate, session: SessionDep, cache: CacheDep
+    data: ConsultationCreate,
+    owner: OwnerDep,
+    session: SessionDep,
+    cache: CacheDep,
 ) -> ConsultationOut:
-    return await ConsultationService(session, cache).create(data)
+    return await ConsultationService(session, cache).create(data, owner)
 
 
 @router.get("/consultations/{consultation_id}", summary="Консультация и её сборки")
 async def get_consultation(
-    consultation_id: uuid.UUID, session: SessionDep, cache: CacheDep
+    consultation_id: uuid.UUID,
+    owner: OwnerDep,
+    session: SessionDep,
+    cache: CacheDep,
 ) -> ConsultationOut:
-    return await ConsultationService(session, cache).get(consultation_id)
+    return await ConsultationService(session, cache).get(consultation_id, owner)
 
 
 @router.post(
@@ -47,9 +53,12 @@ async def get_consultation(
     summary="Запустить подбор: три варианта",
 )
 async def run_consultation(
-    consultation_id: uuid.UUID, session: SessionDep, cache: CacheDep
+    consultation_id: uuid.UUID,
+    owner: OwnerDep,
+    session: SessionDep,
+    cache: CacheDep,
 ) -> ConsultationOut:
-    return await ConsultationService(session, cache).run(consultation_id)
+    return await ConsultationService(session, cache).run(consultation_id, owner)
 
 
 @router.get(
@@ -57,6 +66,9 @@ async def run_consultation(
     summary="Почему ничего не подобралось: что мешает, как ослабить, что можно собрать",
 )
 async def get_infeasible(
-    consultation_id: uuid.UUID, session: SessionDep, cache: CacheDep
+    consultation_id: uuid.UUID,
+    owner: OwnerDep,
+    session: SessionDep,
+    cache: CacheDep,
 ) -> InfeasibleOut:
-    return await ConsultationService(session, cache).infeasible(consultation_id)
+    return await ConsultationService(session, cache).infeasible(consultation_id, owner)

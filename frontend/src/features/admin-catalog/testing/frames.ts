@@ -1,0 +1,166 @@
+import type { FrameOut } from '../../../api/types';
+
+/** Упрощённая, но правдоподобная JSON Schema фрейма CPU (Pydantic: $defs, anyOf, const). */
+export const cpuFrame: FrameOut = {
+  category: 'cpu',
+  title: 'Процессор',
+  json_schema: {
+    $defs: {
+      Color: {
+        type: 'string',
+        enum: ['black', 'white', 'silver', 'gray', 'red', 'blue', 'pink', 'other'],
+      },
+    },
+    properties: {
+      category: { const: 'cpu', default: 'cpu', title: 'Категория', type: 'string' },
+      sku: { pattern: '^[A-Z0-9][A-Z0-9\\-]{2,63}$', title: 'Артикул', type: 'string' },
+      brand: { maxLength: 64, minLength: 1, title: 'Бренд', type: 'string' },
+      model: { maxLength: 128, minLength: 1, title: 'Модель', type: 'string' },
+      name: { maxLength: 200, minLength: 1, title: 'Название', type: 'string' },
+      price_kop: {
+        exclusiveMinimum: 0,
+        maximum: 10000000000,
+        title: 'Цена',
+        type: 'integer',
+        unit: 'коп.',
+      },
+      in_stock: { default: true, title: 'В наличии', type: 'boolean' },
+      release_year: {
+        anyOf: [{ maximum: 2035, minimum: 2010, type: 'integer' }, { type: 'null' }],
+        default: null,
+        title: 'Год выпуска',
+      },
+      color: { $ref: '#/$defs/Color', default: 'black', title: 'Цвет' },
+      rgb: { default: false, title: 'RGB-подсветка', type: 'boolean' },
+      socket: { pattern: '^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$', title: 'Сокет', type: 'string' },
+      cores: { maximum: 128, minimum: 1, title: 'Ядер', type: 'integer' },
+      threads: { maximum: 256, minimum: 1, title: 'Потоков', type: 'integer' },
+      base_ghz: {
+        exclusiveMinimum: 0.5,
+        maximum: 7,
+        title: 'Базовая частота',
+        type: 'number',
+        unit: 'ГГц',
+      },
+      boost_ghz: {
+        exclusiveMinimum: 0.5,
+        maximum: 7,
+        title: 'Частота в бусте',
+        type: 'number',
+        unit: 'ГГц',
+      },
+      tdp_w: { maximum: 400, minimum: 10, title: 'TDP', type: 'integer', unit: 'Вт' },
+      igpu: { title: 'Встроенная графика', type: 'boolean' },
+      unlocked: { default: false, title: 'Разблокированный множитель', type: 'boolean' },
+      cooler_included: { default: false, title: 'Кулер в комплекте', type: 'boolean' },
+      mem_types: {
+        items: { pattern: '^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$', type: 'string' },
+        minItems: 1,
+        title: 'Поддерживаемые типы памяти',
+        type: 'array',
+      },
+      perf_single: {
+        anyOf: [{ exclusiveMinimum: 0, maximum: 1000, type: 'number' }, { type: 'null' }],
+        default: null,
+        title: 'Индекс одноядерный',
+      },
+      perf_multi: {
+        anyOf: [{ exclusiveMinimum: 0, maximum: 1000, type: 'number' }, { type: 'null' }],
+        default: null,
+        title: 'Индекс многоядерный',
+      },
+    },
+    required: [
+      'sku',
+      'brand',
+      'model',
+      'name',
+      'price_kop',
+      'socket',
+      'cores',
+      'threads',
+      'base_ghz',
+      'boost_ghz',
+      'tdp_w',
+      'igpu',
+      'mem_types',
+    ],
+  },
+};
+
+/** Фрейм корпуса: enum-список радиаторов с целыми значениями и enum $defs CaseSize. */
+export const caseFrame: FrameOut = {
+  category: 'case',
+  title: 'Корпус',
+  json_schema: {
+    $defs: {
+      CaseSize: { type: 'string', enum: ['mini', 'mid', 'full'] },
+      Color: {
+        type: 'string',
+        enum: ['black', 'white', 'silver', 'gray', 'red', 'blue', 'pink', 'other'],
+      },
+    },
+    properties: {
+      category: { const: 'case', default: 'case', title: 'Категория', type: 'string' },
+      sku: { pattern: '^[A-Z0-9][A-Z0-9\\-]{2,63}$', title: 'Артикул', type: 'string' },
+      brand: { maxLength: 64, minLength: 1, title: 'Бренд', type: 'string' },
+      model: { maxLength: 128, minLength: 1, title: 'Модель', type: 'string' },
+      name: { maxLength: 200, minLength: 1, title: 'Название', type: 'string' },
+      price_kop: { exclusiveMinimum: 0, title: 'Цена', type: 'integer', unit: 'коп.' },
+      in_stock: { default: true, title: 'В наличии', type: 'boolean' },
+      release_year: {
+        anyOf: [{ maximum: 2035, minimum: 2010, type: 'integer' }, { type: 'null' }],
+        default: null,
+        title: 'Год выпуска',
+      },
+      color: { $ref: '#/$defs/Color', default: 'black', title: 'Цвет' },
+      rgb: { default: false, title: 'RGB-подсветка', type: 'boolean' },
+      size: { $ref: '#/$defs/CaseSize', title: 'Типоразмер' },
+      form_factors: {
+        items: { pattern: '^[A-Za-z0-9][A-Za-z0-9.+\\- ]{0,31}$', type: 'string' },
+        minItems: 1,
+        title: 'Форм-факторы плат',
+        type: 'array',
+      },
+      max_gpu_mm: {
+        anyOf: [{ minimum: 150, type: 'integer' }, { type: 'null' }],
+        default: null,
+        title: 'Макс. длина видеокарты',
+        unit: 'мм',
+      },
+      max_cooler_mm: {
+        anyOf: [{ minimum: 30, type: 'integer' }, { type: 'null' }],
+        default: null,
+        title: 'Макс. высота кулера',
+        unit: 'мм',
+      },
+      psu_ff: { pattern: '^[A-Za-z0-9].*$', title: 'Форм-фактор блока питания', type: 'string' },
+      fan_slots: { maximum: 16, minimum: 0, title: 'Мест под вентиляторы', type: 'integer' },
+      fans_included: {
+        default: 0,
+        maximum: 12,
+        minimum: 0,
+        title: 'Вентиляторов в комплекте',
+        type: 'integer',
+      },
+      radiator_support: {
+        items: { enum: [120, 140, 240, 280, 360, 420], type: 'integer' },
+        title: 'Поддержка радиаторов',
+        type: 'array',
+        unit: 'мм',
+      },
+      glass: { default: false, title: 'Стеклянная панель', type: 'boolean' },
+    },
+    required: [
+      'sku',
+      'brand',
+      'model',
+      'name',
+      'price_kop',
+      'size',
+      'form_factors',
+      'psu_ff',
+      'fan_slots',
+    ],
+  },
+};

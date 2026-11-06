@@ -93,6 +93,17 @@ class ComponentRepository:
             stmt = stmt.where(ComponentRow.price_kop >= query.min_price_kop)
         if query.max_price_kop is not None:
             stmt = stmt.where(ComponentRow.price_kop <= query.max_price_kop)
+        if query.status is not None:
+            stmt = stmt.where(ComponentRow.status == query.status)
+        if query.statuses:
+            stmt = stmt.where(ComponentRow.status.in_(query.statuses))
+        if query.source is not None:
+            stmt = stmt.where(ComponentRow.source == query.source)
+        if query.price_checked_before is not None:
+            stmt = stmt.where(
+                ComponentRow.price_checked_at.is_(None)
+                | (ComponentRow.price_checked_at < query.price_checked_before)
+            )
         return stmt
 
     async def list(

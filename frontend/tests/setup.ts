@@ -27,3 +27,6 @@ class ResizeObserverStub {
   disconnect() {}
 }
 window.ResizeObserver = ResizeObserverStub;
+
+// jsdom не реализует scrollIntoView, который использует выпадающий список Mantine.
+window.HTMLElement.prototype.scrollIntoView = () => {};

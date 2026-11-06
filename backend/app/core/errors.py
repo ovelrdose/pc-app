@@ -51,6 +51,14 @@ class PermissionDeniedError(DomainError):
     title = "Недостаточно прав"
 
 
+class AuthRequiredError(DomainError):
+    """Запрос требует действующего access-токена или гостевой сессии."""
+
+    status = HTTPStatus.UNAUTHORIZED
+    code = "auth-required"
+    title = "Требуется вход или гостевая сессия"
+
+
 def problem_response(
     *,
     status: int,

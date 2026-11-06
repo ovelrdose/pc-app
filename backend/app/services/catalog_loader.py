@@ -48,11 +48,13 @@ async def load_catalog(
     *,
     source: ComponentSource,
     known: KnownSlotValues | None = None,
+    dry_run: bool = False,
 ) -> LoadReport:
     """Добавляет новые позиции и обновляет изменившиеся по артикулу; ревизия растёт при изменениях.
 
     Позиции, которых нет в `records`, не трогаются. Снятые с продажи (`inactive`) остаются такими.
-    Транзакцию фиксирует вызывающий код.
+    `dry_run=True` только считает, что изменилось бы, не записывая. Транзакцию фиксирует
+    вызывающий код.
     """
     repo = ComponentRepository(session)
     existing = await repo.get_by_skus(record.frame.sku for record in records)
@@ -65,25 +67,31 @@ async def load_catalog(
         values = _row_values(record, known=known, discontinued=discontinued)
         status_counts[values["status"]] += 1
         if row is None:
-            repo.add(ComponentRow(**values, source=source))
+            if not dry_run:
+                repo.add(ComponentRow(**values, source=source))
             created += 1
             continue
         changed = {key: value for key, value in values.items() if getattr(row, key) != value}
         if not changed:
             unchanged += 1
             continue
-        for key, value in changed.items():
-            setattr(row, key, value)
+        if not dry_run:
+            for key, value in changed.items():
+                setattr(row, key, value)
         updated += 1
 
-    meta = MetaRepository(session)
-    if created or updated:
-        await session.flush()
-        revision = await meta.bump_catalog_revision()
+    if dry_run:
+        revision = await MetaRepository(session).get_catalog_revision()
     else:
-        revision = await meta.get_catalog_revision()
+        meta = MetaRepository(session)
+        if created or updated:
+            await session.flush()
+            revision = await meta.bump_catalog_revision()
+        else:
+            revision = await meta.get_catalog_revision()
     logger.info(
         "catalog_loaded",
+        dry_run=dry_run,
         created=created,
         updated=updated,
         unchanged=unchanged,

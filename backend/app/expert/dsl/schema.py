@@ -15,6 +15,11 @@ from app.expert.facts import NAMESPACES, Scalar
 CODE_PATTERN = r"^(?:[A-Z]{3}-\d{3}|GEN-[A-Z0-9]+(?:-[A-Z0-9]+)+)$"
 PATH_PATTERN = r"^[a-z][a-z0-9_]*(?:\.[a-z0-9_]+)+$"
 
+MANUAL_PREFIXES: frozenset[str] = frozenset(
+    {"PRF", "REQ", "BUD", "FLT", "CMP", "BAL", "SCR", "VAL", "GOL"}
+)
+"""Префиксы ручных правил (архитектура §6.5); `GEN-*` создаёт только генератор."""
+
 # Куда правилу вида inference разрешено писать (архитектура §5.2).
 INFERENCE_WRITABLE: frozenset[str] = frozenset({"profile", "req", "budget"})
 

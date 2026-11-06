@@ -19,7 +19,7 @@ from app.expert.frames import KnownSlotValues
 from app.models import ComponentSource
 from app.services.catalog_csv import CatalogDirResult, read_catalog_dir
 from app.services.catalog_loader import LoadReport, load_catalog
-from app.services.knowledge_files import KnowledgeFileError, load_golden, load_tables
+from app.services.knowledge_files import KnowledgeFileError, load_tables
 from app.services.knowledge_store import (
     KnowledgeValidationError,
     PublishReport,
@@ -57,7 +57,11 @@ async def seed_catalog(
 async def seed_knowledge(
     database: Database, knowledge_dir: Path, *, golden: bool = True
 ) -> PublishReport:
-    """Импортирует базу знаний из файлов и публикует снимок (с golden cases, если нужно)."""
+    """Импортирует базу знаний из файлов и публикует снимок (с golden cases, если нужно).
+
+    Эталонные кейсы `import_files` заливает в рабочую копию (`reference_tables['golden']`),
+    публикация читает их оттуда (ADR 0010 п.2); `--skip-golden` публикует без прогона кейсов.
+    """
     async with database.session_factory() as session:
         imported = await import_files(session, knowledge_dir)
         logger.info(
@@ -68,9 +72,8 @@ async def seed_knowledge(
             tables=list(imported.tables_changed),
             retired=list(imported.retired),
         )
-        cases = load_golden(knowledge_dir / "golden") if golden else []
         catalog = (await SnapshotCache().catalog(session)).snapshot if golden else None
-        report = await publish(session, comment="seed из knowledge/", golden=cases, catalog=catalog)
+        report = await publish(session, comment="seed из knowledge/", catalog=catalog)
         await session.commit()
     return report
 

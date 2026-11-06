@@ -28,5 +28,7 @@ coverage/
 .DS_Store
 *.sw?
 *CLAUDE.md
+AGENTS.md
+.kimi-code/
 .claude
 tz.docx

@@ -19,9 +19,12 @@ class ConsultationRow(Base):
     __tablename__ = "consultations"
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
-    # Владелец появится на этапе 8 (аккаунты и гостевые сессии): внешние ключи — там же.
-    user_id: Mapped[uuid.UUID | None] = mapped_column(index=True)
-    guest_session_id: Mapped[uuid.UUID | None] = mapped_column(index=True)
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
+    guest_session_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("guest_sessions.id", ondelete="SET NULL"), index=True
+    )
     answers: Mapped[dict[str, Any]] = mapped_column(JSONB)
     owned: Mapped[list[str]] = mapped_column(JSONB, server_default=text("'[]'::jsonb"))
     # требования, от которых клиент отказался ради бюджета (компромиссная сборка, вики §4.10)
